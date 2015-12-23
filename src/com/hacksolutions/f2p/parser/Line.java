@@ -1,6 +1,3 @@
-/*
- * This is a testcomment.
- */
 package com.hacksolutions.f2p.parser;
 
 import java.util.ArrayList;
