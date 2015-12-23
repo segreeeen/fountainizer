@@ -1,4 +1,4 @@
-package com.hacksolutions.f2p.parser;
+package at.hacksolutions.f2p.parser;
 
 public enum LineType {
     HEADING,

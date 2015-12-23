@@ -1,4 +1,4 @@
-package com.hacksolutions.f2p.parser;
+package at.hacksolutions.f2p.parser;
 
 import java.util.Iterator;
 import java.util.ArrayList;
