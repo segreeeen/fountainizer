@@ -4,157 +4,108 @@ import java.util.ArrayList;
 
 public class Line {
     /*
-     * Contains the original line of text in the file. May be null if line is empty.
+     * Contains the original line of text in the file. May be null if line is
+     * empty.
      */
     private final String originalText;
-    
+
     /*
      * Contains the final line of the text as a list of SubLine elements.
      */
     private ArrayList<SubLine> finalText;
-    
-    
+
     /*
      * Contains the Type of the line.
      */
     private LineType type;
-    
+
     /*
-     * Indicating that the next line is empty.
+     * The absolute line number
      */
-    private boolean nextEmpty;
-    
+    private int lineNr;
+
     /*
-     * Indicating that the previous line is empty.
-     */
-    private boolean prevEmpty;
-    
-    /*
-     * True if it is a dual dialogue
+     * True if it is a (dialogue type) dual dialogue
      */
     private boolean dualDialogue;
-    
+
     /*
      * Contains the line number if lineType is character
      */
     private int takeNumber;
-    
+
     /*
      * True if the Line starts a comment.
      */
     private boolean commentStart;
-    
+
     /*
      * True if the Line ends a comment.
      */
     private boolean commentEnd;
-    
-    
-    
+
     public ArrayList<SubLine> getFinalText() {
-        return finalText;
+	return finalText;
     }
-
-
 
     public void setFinalText(ArrayList<SubLine> finalText) {
-        this.finalText = finalText;
+	this.finalText = finalText;
     }
-
-
-
-    public boolean isNextEmpty() {
-        return nextEmpty;
-    }
-
-
-
-    public void setNextEmpty(boolean nextEmpty) {
-        this.nextEmpty = nextEmpty;
-    }
-
-
-
-    public boolean isPrevEmpty() {
-        return prevEmpty;
-    }
-
-
-
-    public void setPrevEmpty(boolean prevEmpty) {
-        this.prevEmpty = prevEmpty;
-    }
-
-
 
     public LineType getLineType() {
-        return type;
+	return type;
     }
-
-
 
     public void setLineType(LineType lineType) {
-        this.type = lineType;
+	this.type = lineType;
     }
-
-
 
     public boolean isDualDialogue() {
-        return dualDialogue;
+	return dualDialogue;
     }
-
-
 
     public void setDualDialogue(boolean dualDialogue) {
-        this.dualDialogue = dualDialogue;
+	this.dualDialogue = dualDialogue;
     }
-
-
 
     public int getTakeNumber() {
-        return takeNumber;
+	return takeNumber;
     }
-
-
 
     public void setTakeNumber(int takeNumber) {
-        this.takeNumber = takeNumber;
+	this.takeNumber = takeNumber;
     }
-
-
 
     public boolean isCommentStart() {
-        return commentStart;
+	return commentStart;
     }
-
-
 
     public void setCommentStart(boolean commentStart) {
-        this.commentStart = commentStart;
+	this.commentStart = commentStart;
     }
-
-
 
     public boolean isCommentEnd() {
-        return commentEnd;
+	return commentEnd;
     }
-
-
 
     public void setCommentEnd(boolean commentEnd) {
-        this.commentEnd = commentEnd;
+	this.commentEnd = commentEnd;
     }
-
-
 
     public String getOriginalText() {
-        return originalText;
+	return originalText;
     }
-
-
 
     public Line(String originalText) {
 	this.originalText = originalText;
     }
-    
+
+    public int getLineNr() {
+	return lineNr;
+    }
+
+    public void setLineNr(int lineNr) {
+	this.lineNr = lineNr;
+    }
+
 }
