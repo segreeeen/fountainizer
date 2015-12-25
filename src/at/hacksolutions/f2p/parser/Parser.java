@@ -55,12 +55,13 @@ public class Parser {
     }
 
     private boolean isDialogue(Line l) {
-	LineType prevType = outputLines.get(l.getLineNr()-1).getLineType();
+	LineType prevType = outputLines.get(l.getLineNr() - 1).getLineType();
 	if (l.getOriginalText() == null) {
 	    if (prevType == LineType.DIALOGUE) {
 		return true;
 	    }
-	} else if ( prevType == LineType.CHARACTER || prevType == LineType.PARENTHETICAL) {
+	} else if (prevType == LineType.CHARACTER
+		|| prevType == LineType.PARENTHETICAL) {
 	    return true;
 	}
 	return false;
@@ -76,28 +77,51 @@ public class Parser {
     }
 
     private boolean isTransition(Line l) {
+	String text = l.getOriginalText();
+	if (outputLines.prevIsEmpty(l) && outputLines.nextIsEmpty(l)) {
+	    if (text.endsWith("TO:") || text.startsWith(">")) {
+		for (int i = 0; i < text.length(); i++) {
+		    if (Character.isLowerCase(text.charAt(i))) {
+			return false;
+		    }
+		}
+		return true;
+	    }
+	}
 	return false;
 
     }
 
     private boolean isAction(Line l) {
-	return false;
+	String text = l.getOriginalText();
+	return text.startsWith("!");
 
     }
 
-    private boolean isLyrics() {
-	return false;
-
+    private boolean isLyrics(Line l) {
+	String text = l.getOriginalText();
+	if (text != null) {
+	    return text.startsWith("~");
+	} else {
+	    return false;
+	}
     }
 
-    private boolean isCentered() {
-	return false;
-
+    private boolean isCentered(Line l) {
+	String text = l.getOriginalText();
+	if (text != null && text.matches("<(.*?)>")) {
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
-    private boolean isPagebreak() {
+    private boolean isPagebreak(Line l) {
+	String text = l.getOriginalText();
+	if (text != null) {
+	    return text.matches("={3,}+");
+	}
 	return false;
-
     }
 
 }
