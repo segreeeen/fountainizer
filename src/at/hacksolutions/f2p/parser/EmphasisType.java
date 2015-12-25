@@ -1,5 +1,5 @@
 package at.hacksolutions.f2p.parser;
 
-public enum SubLineType {
+public enum EmphasisType {
     UNDERLINED, ITALIC, BOLD, UPPERCASE;
 }

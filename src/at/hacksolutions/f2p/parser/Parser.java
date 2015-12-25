@@ -16,8 +16,9 @@ public class Parser {
     }
 
     private void setAttributes(Line l) {
-	// TODO Auto-generated method stub
-
+	LineType type = LineType.getType(l, outputLines);
+	l.setLineType(type);
+	if ()
     }
 
    

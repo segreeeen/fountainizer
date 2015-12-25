@@ -3,35 +3,53 @@ package at.hacksolutions.f2p.parser;
 public enum LineType {
     HEADING, CHARACTER, DIALOGUE, PARENTHETICAL, TRANSITION, ACTION, LYRICS, CENTERED, PAGEBREAK;
 
-    public LineType getType(Line l, Lines outputLines) {
+    public static LineType getType(Line l, Lines outputLines) {
+	if (isHeading(l, outputLines)) {
+	    return LineType.HEADING;
+	} else if (isCharacter(l, outputLines)) {
+	    return LineType.CHARACTER;
+	} else if (isDialogue(l, outputLines)) {
+	    return LineType.DIALOGUE;
+	} else if (isParenthetical(l)) {
+	    return LineType.PARENTHETICAL;
+	} else if (isTransition(l, outputLines)) {
+	    return LineType.TRANSITION;
+	} else if (isLyrics(l)) {
+	    return LineType.LYRICS;
+	} else if (isCentered(l)) {
+	    return LineType.CENTERED;
+	} else if (isPagebreak(l)) {
+	    return LineType.PAGEBREAK;
+	} else {
+	    return LineType.ACTION;
+	}
 
-	return null;
     }
 
-    private boolean isHeading(Line l, Lines outputLines) {
-	String text = l.getOriginalText();
+    private static boolean isHeading(Line l, Lines outputLines) {
+	String text = l.getText();
 	if (text != null && outputLines.prevIsEmpty(l)) {
 	    return text.matches("INT|EXT|EST|INT./EXT|INT/EXT|I/E|.");
 	}
 	return false;
     }
 
-    private boolean isCharacter(Line l, Lines outputLines) {
-	String text = l.getOriginalText();
+    private static boolean isCharacter(Line l, Lines outputLines) {
+	String text = l.getText();
 
 	if (text.startsWith("@")) {
 	    return true;
 	} else {
-	    boolean isLower = false;
+	    boolean isUpper = false;
 	    for (int i = 0; i < text.length(); i++) {
 		if (Character.isLowerCase(text.charAt(i))) {
-		    isLower = true;
+		    isUpper = true;
 		    break;
 		}
 	    }
 
-	    if (isLower && !outputLines.prevIsEmpty(l)
-		    && outputLines.nextIsEmpty(l)) {
+	    if (isUpper && (!outputLines.prevIsEmpty(l)
+		    && outputLines.nextIsEmpty(l))) {
 		return false;
 	    } else {
 		return true;
@@ -40,9 +58,9 @@ public enum LineType {
 
     }
 
-    private boolean isDialogue(Line l, Lines outputLines) {
+    private static boolean isDialogue(Line l, Lines outputLines) {
 	LineType prevType = outputLines.get(l.getLineNr() - 1).getLineType();
-	if (l.getOriginalText() == null) {
+	if (l.getText() == null) {
 	    if (prevType == LineType.DIALOGUE) {
 		return true;
 	    }
@@ -53,8 +71,8 @@ public enum LineType {
 	return false;
     }
 
-    private boolean isParenthetical(Line l) {
-	String text = l.getOriginalText();
+    private static boolean isParenthetical(Line l) {
+	String text = l.getText();
 	if (text != null && text.matches("\\((.*?)\\)")) {
 	    return true;
 	}
@@ -62,8 +80,8 @@ public enum LineType {
 
     }
 
-    private boolean isTransition(Line l, Lines outputLines) {
-	String text = l.getOriginalText();
+    private static boolean isTransition(Line l, Lines outputLines) {
+	String text = l.getText();
 	if (outputLines.prevIsEmpty(l) && outputLines.nextIsEmpty(l)) {
 	    if (text.endsWith("TO:") || text.startsWith(">")) {
 		for (int i = 0; i < text.length(); i++) {
@@ -78,14 +96,8 @@ public enum LineType {
 
     }
 
-    private boolean isAction(Line l) {
-	String text = l.getOriginalText();
-	return text.startsWith("!");
-
-    }
-
-    private boolean isLyrics(Line l) {
-	String text = l.getOriginalText();
+    private static boolean isLyrics(Line l) {
+	String text = l.getText();
 	if (text != null) {
 	    return text.startsWith("~");
 	} else {
@@ -93,8 +105,8 @@ public enum LineType {
 	}
     }
 
-    private boolean isCentered(Line l) {
-	String text = l.getOriginalText();
+    private static boolean isCentered(Line l) {
+	String text = l.getText();
 	if (text != null && text.matches("<(.*?)>")) {
 	    return true;
 	} else {
@@ -102,8 +114,8 @@ public enum LineType {
 	}
     }
 
-    private boolean isPagebreak(Line l) {
-	String text = l.getOriginalText();
+    private static boolean isPagebreak(Line l) {
+	String text = l.getText();
 	if (text != null) {
 	    return text.matches("={3,}+");
 	}

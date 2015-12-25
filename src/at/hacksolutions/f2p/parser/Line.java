@@ -1,28 +1,21 @@
 package at.hacksolutions.f2p.parser;
 
-import java.util.ArrayList;
-
 public class Line {
     /*
      * Contains the original line of text in the file. May be null if line is
      * empty.
      */
-    private final String originalText;
-
+    private final String text;
+    
     /*
-     * Contains the final line of the text as a list of SubLine elements.
+     * The absolute line number, starts at 0(!)
      */
-    private ArrayList<SubLine> finalText;
-
+    private final int lineNr;
+    
     /*
      * Contains the Type of the line.
      */
     private LineType type;
-
-    /*
-     * The absolute line number
-     */
-    private int lineNr;
 
     /*
      * True if it is a (dialogue type) dual dialogue
@@ -43,14 +36,12 @@ public class Line {
      * True if the Line ends a comment.
      */
     private boolean commentEnd;
-
-    public ArrayList<SubLine> getFinalText() {
-	return finalText;
+    
+    public Line(String text, int lineNr) {
+	this.text = text;
+	this.lineNr = lineNr;
     }
-
-    public void setFinalText(ArrayList<SubLine> finalText) {
-	this.finalText = finalText;
-    }
+    
 
     public LineType getLineType() {
 	return type;
@@ -92,20 +83,12 @@ public class Line {
 	this.commentEnd = commentEnd;
     }
 
-    public String getOriginalText() {
-	return originalText;
-    }
-
-    public Line(String originalText) {
-	this.originalText = originalText;
+    public String getText() {
+	return text;
     }
 
     public int getLineNr() {
 	return lineNr;
-    }
-
-    public void setLineNr(int lineNr) {
-	this.lineNr = lineNr;
     }
 
 }
