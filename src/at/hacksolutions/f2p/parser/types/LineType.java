@@ -1,18 +1,19 @@
-package at.hacksolutions.f2p.parser;
+package at.hacksolutions.f2p.parser.types;
 
-import static at.hacksolutions.f2p.parser.ParserConstants.*;
+import static at.hacksolutions.f2p.parser.types.ParserConstants.*;
+
+import at.hacksolutions.f2p.parser.line.Line;
+import at.hacksolutions.f2p.parser.line.Lines;
 
 public enum LineType {
-    HEADING, CHARACTER, DIALOGUE, PARENTHETICAL, TRANSITION, ACTION, LYRICS, CENTERED, PAGEBREAK;
+    HEADING, CHARACTER, DIALOGUE, PARENTHETICAL, TRANSITION, ACTION, LYRICS, CENTERED, PAGEBREAK, EMPTY;
 
     public static LineType getType(Line l, Lines outputLines) {
 	if (isHeading(l, outputLines)) {
 	    return LineType.HEADING;
 	} else if (isCharacter(l, outputLines)) {
 	    return LineType.CHARACTER;
-	} else if (isDialogue(l, outputLines)) {
-	    return LineType.DIALOGUE;
-	} else if (isParenthetical(l)) {
+	}  else if (isParenthetical(l)) {
 	    return LineType.PARENTHETICAL;
 	} else if (isTransition(l, outputLines)) {
 	    return LineType.TRANSITION;
@@ -22,6 +23,8 @@ public enum LineType {
 	    return LineType.CENTERED;
 	} else if (isPagebreak(l)) {
 	    return LineType.PAGEBREAK;
+	} else if (isDialogue(l, outputLines)) {
+	    return LineType.DIALOGUE;
 	} else {
 	    return LineType.ACTION;
 	}
@@ -30,7 +33,7 @@ public enum LineType {
 
     private static boolean isHeading(Line l, Lines outputLines) {
 	String text = l.getText();
-	if (text != null && outputLines.prevIsEmpty(l)) {
+	if (text != null && outputLines.pEmptyText(l)) {
 	    return text.matches(L_HEADING);
 	}
 	return false;
@@ -42,19 +45,19 @@ public enum LineType {
 	if (text.matches(L_CHARACTER)) {
 	    return true;
 	} else {
-	    boolean isUpper = false;
+	    boolean isUpper = true;
 	    for (int i = 0; i < text.length(); i++) {
 		if (Character.isLowerCase(text.charAt(i))) {
-		    isUpper = true;
+		    isUpper = false;
 		    break;
 		}
 	    }
 
-	    if (isUpper && (!outputLines.prevIsEmpty(l)
-		    && outputLines.nextIsEmpty(l))) {
-		return false;
-	    } else {
+	    if (isUpper && (outputLines.pEmptyText(l)
+		    && !outputLines.nEmptyText(l))) {
 		return true;
+	    } else {
+		return false;
 	    }
 	}
 
@@ -84,7 +87,7 @@ public enum LineType {
 
     private static boolean isTransition(Line l, Lines outputLines) {
 	String text = l.getText();
-	if (outputLines.prevIsEmpty(l) && outputLines.nextIsEmpty(l)) {
+	if (outputLines.pEmptyText(l) && outputLines.nEmptyText(l)) {
 	    if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
 		for (int i = 0; i < text.length(); i++) {
 		    if (Character.isLowerCase(text.charAt(i))) {

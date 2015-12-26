@@ -1,4 +1,7 @@
-package at.hacksolutions.f2p.parser;
+package at.hacksolutions.f2p.parser.line;
+
+import at.hacksolutions.f2p.parser.types.LineTagType;
+import at.hacksolutions.f2p.parser.types.LineType;
 
 public class Line {
     /**
@@ -35,7 +38,8 @@ public class Line {
     public Line(String text, int lineNr) {
 	this.text = text;
 	this.lineNr = lineNr;
-	this.tags = new LineTags();
+	this.tags = null;
+	this.dualDialogue = false;
     }
     
 
@@ -71,12 +75,8 @@ public class Line {
 	return lineNr;
     }
     
-    public void addStartTag(LineTagType type) {
-	tags.pushStart(type);
-    }
-    
-    public void addEndTag(LineTagType type) {
-	tags.pushEnd(type);
+    public void setTags(LineTags tags) {
+	this.tags = tags;
     }
 
 }

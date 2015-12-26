@@ -1,7 +1,9 @@
-package at.hacksolutions.f2p.parser;
+package at.hacksolutions.f2p.parser.line;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+
+import at.hacksolutions.f2p.parser.types.LineTagType;
 
 public class LineTags {
     private Deque<LineTagType> startTags;

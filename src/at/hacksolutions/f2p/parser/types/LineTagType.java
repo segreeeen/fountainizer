@@ -1,6 +1,9 @@
-package at.hacksolutions.f2p.parser;
+package at.hacksolutions.f2p.parser.types;
 
-import static at.hacksolutions.f2p.parser.ParserConstants.*;
+import static at.hacksolutions.f2p.parser.types.ParserConstants.*;
+
+import at.hacksolutions.f2p.parser.line.Line;
+import at.hacksolutions.f2p.parser.line.LineTags;
 
 public enum LineTagType {
     UNDERLINED, ITALIC, BOLD, COMMENTARY, NOTE, BITALICS;

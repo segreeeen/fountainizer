@@ -1,10 +1,19 @@
-package at.hacksolutions.f2p.parser;
+package at.hacksolutions.f2p.parser.types;
 
 public final class ParserConstants {
-    public static final String L_HEADING = "INT|EXT|EST|INT./EXT|INT/EXT|I/E|\\.(.*?)";
     
     /**
-     * Matches @"text"
+     * Matches headings
+     */
+    public static final String L_HEADING = "INT(.*?)|EXT(.*?)|EST(.*?)|INT./EXT(.*?)|INT/EXT(.*?)|I/E(.*?)|\\.(.*?)";
+    
+    /**
+     * Matches "text ^" 
+     */
+    public static final String L_DUAL_DIALOGUE = "(.*?)\\^";
+    
+    /**
+     * Matches "@text"
      */
     public static final String L_CHARACTER = "@(.*?)";
     
