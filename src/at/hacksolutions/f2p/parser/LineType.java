@@ -1,5 +1,7 @@
 package at.hacksolutions.f2p.parser;
 
+import static at.hacksolutions.f2p.parser.ParserConstants.*;
+
 public enum LineType {
     HEADING, CHARACTER, DIALOGUE, PARENTHETICAL, TRANSITION, ACTION, LYRICS, CENTERED, PAGEBREAK;
 
@@ -29,7 +31,7 @@ public enum LineType {
     private static boolean isHeading(Line l, Lines outputLines) {
 	String text = l.getText();
 	if (text != null && outputLines.prevIsEmpty(l)) {
-	    return text.matches("INT|EXT|EST|INT./EXT|INT/EXT|I/E|.");
+	    return text.matches(L_HEADING);
 	}
 	return false;
     }
@@ -37,7 +39,7 @@ public enum LineType {
     private static boolean isCharacter(Line l, Lines outputLines) {
 	String text = l.getText();
 
-	if (text.startsWith("@")) {
+	if (text.matches(L_CHARACTER)) {
 	    return true;
 	} else {
 	    boolean isUpper = false;
@@ -73,7 +75,7 @@ public enum LineType {
 
     private static boolean isParenthetical(Line l) {
 	String text = l.getText();
-	if (text != null && text.matches("\\((.*?)\\)")) {
+	if (text != null && text.matches(L_PARENTHETICAL)) {
 	    return true;
 	}
 	return false;
@@ -83,7 +85,7 @@ public enum LineType {
     private static boolean isTransition(Line l, Lines outputLines) {
 	String text = l.getText();
 	if (outputLines.prevIsEmpty(l) && outputLines.nextIsEmpty(l)) {
-	    if (text.endsWith("TO:") || text.startsWith(">")) {
+	    if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
 		for (int i = 0; i < text.length(); i++) {
 		    if (Character.isLowerCase(text.charAt(i))) {
 			return false;
@@ -99,7 +101,7 @@ public enum LineType {
     private static boolean isLyrics(Line l) {
 	String text = l.getText();
 	if (text != null) {
-	    return text.startsWith("~");
+	    return text.startsWith(L_LYRICS);
 	} else {
 	    return false;
 	}
@@ -107,7 +109,7 @@ public enum LineType {
 
     private static boolean isCentered(Line l) {
 	String text = l.getText();
-	if (text != null && text.matches("<(.*?)>")) {
+	if (text != null && text.matches(L_CENTERED)) {
 	    return true;
 	} else {
 	    return false;
@@ -117,7 +119,7 @@ public enum LineType {
     private static boolean isPagebreak(Line l) {
 	String text = l.getText();
 	if (text != null) {
-	    return text.matches("={3,}+");
+	    return text.matches(L_PAGEBREAK);
 	}
 	return false;
     }

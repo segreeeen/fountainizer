@@ -1,45 +1,41 @@
 package at.hacksolutions.f2p.parser;
 
 public class Line {
-    /*
+    /**
      * Contains the original line of text in the file. May be null if line is
      * empty.
      */
     private final String text;
     
-    /*
+    /**
      * The absolute line number, starts at 0(!)
      */
     private final int lineNr;
     
-    /*
+    /**
      * Contains the Type of the line.
      */
     private LineType type;
+    
+    /**
+     * Contains a list of inline tags contained in this line. see InlineTypeStack
+     */
+    private LineTags tags;
 
-    /*
+    /**
      * True if it is a (dialogue type) dual dialogue
      */
     private boolean dualDialogue;
 
-    /*
+    /**
      * Contains the line number if lineType is character
      */
     private int takeNumber;
-
-    /*
-     * True if the Line starts a comment.
-     */
-    private boolean commentStart;
-
-    /*
-     * True if the Line ends a comment.
-     */
-    private boolean commentEnd;
     
     public Line(String text, int lineNr) {
 	this.text = text;
 	this.lineNr = lineNr;
+	this.tags = new LineTags();
     }
     
 
@@ -67,28 +63,20 @@ public class Line {
 	this.takeNumber = takeNumber;
     }
 
-    public boolean isCommentStart() {
-	return commentStart;
-    }
-
-    public void setCommentStart(boolean commentStart) {
-	this.commentStart = commentStart;
-    }
-
-    public boolean isCommentEnd() {
-	return commentEnd;
-    }
-
-    public void setCommentEnd(boolean commentEnd) {
-	this.commentEnd = commentEnd;
-    }
-
     public String getText() {
 	return text;
     }
 
     public int getLineNr() {
 	return lineNr;
+    }
+    
+    public void addStartTag(LineTagType type) {
+	tags.pushStart(type);
+    }
+    
+    public void addEndTag(LineTagType type) {
+	tags.pushEnd(type);
     }
 
 }
