@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
-import at.hacksolutions.f2p.parser.line.Line;
+import at.hacksolutions.f2p.parser.line.GeneralLine;
 import at.hacksolutions.f2p.parser.line.Lines;
 import at.hacksolutions.f2p.pdfbox.*;
 
@@ -32,7 +32,7 @@ public class FilePrinter {
 	mypage.drawParagraph(titleParagraph);
 	mypage.drawParagraph(authorParagraph);
 
-	for (Line line : lines) {
+	for (GeneralLine line : lines) {
 
 	    Paragraph p = line.getParagraphForPDF();
 	    if (p != null) {

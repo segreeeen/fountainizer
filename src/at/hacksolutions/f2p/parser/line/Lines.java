@@ -2,25 +2,25 @@ package at.hacksolutions.f2p.parser.line;
 
 import java.util.Iterator;
 
-public class Lines implements Iterable<Line>{
-    private Line[] lines;
+public class Lines implements Iterable<ParserLine>{
+    private ParserLine[] lines;
     private int lineCount;
 
-    public Lines(Line[] lines) {
+    public Lines(ParserLine[] lines) {
 	this.lines = lines;
 	this.lineCount = lines.length;
     }
 
-    public Line get(int index) {
+    public ParserLine get(int index) {
 	return (index >= 0 && index < lineCount) ? lines[index] : null;
     }
 
-    public Line getNext(Line l) {
+    public ParserLine getNext(ParserLine l) {
 	return (l.getLineNr() + 1 >= 0 && l.getLineNr() + 1 < lineCount)
 		? lines[l.getLineNr() + 1] : null;
     }
 
-    public Line getPrev(Line l) {
+    public ParserLine getPrev(ParserLine l) {
 	return (l.getLineNr() - 1 >= 0 && l.getLineNr() - 1 < lineCount)
 		? lines[l.getLineNr() - 1] : null;
     }
@@ -29,14 +29,14 @@ public class Lines implements Iterable<Line>{
 	return lineCount;
     }
 
-    public boolean pEmptyText(Line l) {
+    public boolean pEmptyText(ParserLine l) {
 	if (l != null && getPrev(l) != null) {
 	    return getPrev(l).getText() == null;
 	}
 	return true;
     }
 
-    public boolean nEmptyText(Line l) {
+    public boolean nEmptyText(ParserLine l) {
 	if (l != null && getNext(l) != null) {
 	    return getNext(l).getText() == null;
 	}
@@ -44,8 +44,8 @@ public class Lines implements Iterable<Line>{
     }
 
     @Override
-    public Iterator<Line> iterator() {
-	return new Iterator<Line>() {
+    public Iterator<ParserLine> iterator() {
+	return new Iterator<ParserLine>() {
 	    int i = 0;
 
 	    @Override
@@ -54,8 +54,8 @@ public class Lines implements Iterable<Line>{
 	    }
 
 	    @Override
-	    public Line next() {
-		Line l = lines[i];
+	    public ParserLine next() {
+		ParserLine l = lines[i];
 		i++;
 		return l;
 	    }

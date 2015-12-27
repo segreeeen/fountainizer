@@ -7,7 +7,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import at.hacksolutions.f2p.io.FilePrinter;
 import at.hacksolutions.f2p.io.FileReader;
 import at.hacksolutions.f2p.parser.Parser;
-import at.hacksolutions.f2p.parser.line.Line;
+import at.hacksolutions.f2p.parser.line.GeneralLine;
 import at.hacksolutions.f2p.parser.line.Lines;
 
 public class TestClass {
