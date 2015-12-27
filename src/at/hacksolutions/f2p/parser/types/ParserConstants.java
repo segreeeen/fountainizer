@@ -60,42 +60,42 @@ public final class ParserConstants {
     /**
      * Matches " *text" (without quotes)
      */
-    public static final String LT_ITALIC_START = "(.*?)(^|\\s)\\*(.*?)";
+    public static final String LT_ITALIC_START = "(.*?)(?<!\\*)\\*(?!\\s)(?!\\*)(.*?)";
     
     /**
      * Matches "text* " (without quotes)
      */
-    public static final String LT_ITALIC_END = "(.*?)\\*($|\\s)(.*?)";
+    public static final String LT_ITALIC_END = "(.*?)(?<!\\*)(?<!\\s)\\*(?!\\*)(.*?)";
     
     /**
      * Matches " **text" (without quotes)
      */
-    public static final String LT_BOLD_START = "(.*?)(^|\\s)\\*\\*(.*?)";
+    public static final String LT_BOLD_START = "(.*?)(?<!\\*)\\*\\*(?!\\s)(?!\\*)(.*?)";
     
     /**
      * Matches "text** " (without quotes)
      */
-    public static final String LT_BOLD_END = "(.*?)\\*\\*($|\\s)(.*?)";
+    public static final String LT_BOLD_END = "(.*?)(?<!\\*)(?<!\\s)\\*\\*(?!\\*)(.*?)";
     
     /**
      * Matches " ***text" (without quotes)
      */
-    public static final String LT_BITALICS_START = "(.*?)(^|\\s)\\*\\*\\*(.*?)";
+    public static final String LT_BITALICS_START = "(.*?)(?<!\\*)\\*\\*\\*(?!\\s)(?!\\*)(.*?)";
     
     /**
      * Matches "text*** " (without quotes)
      */
-    public static final String LT_BITALICS_END = "(.*?)\\*\\*\\*($|\\s)(.*?)";
+    public static final String LT_BITALICS_END = "(.*?)(?<!\\*)(?<!\\s)\\*\\*\\*(?!\\*)(.*?)";
     
     /**
      * Matches " _text" (without quotes)
      */
-    public static final String LT_UNDERLINE_START = "(.*?)(^|\\s)_(.*?)";
+    public static final String LT_UNDERLINE_START = "(.*?)(?<!_)_(?!\\s)(?!_)(.*?)";
     
     /**
      * Matches "text_ " (without quotes)
      */
-    public static final String LT_UNDERLINE_END = "(.*?)_($|\\s)(.*?)";
+    public static final String LT_UNDERLINE_END = "(.*?)(?<!_)(?<!\\s)_(?!_)(.*?)";
     
     /**
      * Matches [[

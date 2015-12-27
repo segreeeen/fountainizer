@@ -1,6 +1,8 @@
 package at.hacksolutions.f2p.parser.line;
 
-public class Lines {
+import java.util.Iterator;
+
+public class Lines implements Iterable<Line>{
     private Line[] lines;
     private int lineCount;
 
@@ -39,5 +41,25 @@ public class Lines {
 	    return getNext(l).getText() == null;
 	}
 	return true;
+    }
+
+    @Override
+    public Iterator<Line> iterator() {
+	return new Iterator<Line>() {
+	    int i = 0;
+
+	    @Override
+	    public boolean hasNext() {
+		return i < lineCount;
+	    }
+
+	    @Override
+	    public Line next() {
+		Line l = lines[i];
+		i++;
+		return l;
+	    }
+	    
+	};
     }
 }
