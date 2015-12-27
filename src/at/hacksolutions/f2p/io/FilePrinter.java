@@ -7,6 +7,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 
 import at.hacksolutions.f2p.parser.line.GeneralLine;
 import at.hacksolutions.f2p.parser.line.Lines;
+import at.hacksolutions.f2p.parser.line.ParserLine;
 import at.hacksolutions.f2p.pdfbox.*;
 
 public class FilePrinter {
@@ -32,7 +33,7 @@ public class FilePrinter {
 	mypage.drawParagraph(titleParagraph);
 	mypage.drawParagraph(authorParagraph);
 
-	for (GeneralLine line : lines) {
+	for (ParserLine line : lines) {
 
 	    Paragraph p = line.getParagraphForPDF();
 	    if (p != null) {

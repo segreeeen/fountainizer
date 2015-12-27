@@ -1,8 +1,9 @@
 package at.hacksolutions.f2p.parser.line;
 
-import java.util.Iterator;
 
-public interface ParserLinesList extends Iterator<ParserLine> {
+public interface ParserLinesList extends Iterable<ParserLine>{
+    public void add(ParserLine l);
+    
     public ParserLine get(int index);
 
     public ParserLine getNext(ParserLine l);
