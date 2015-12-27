@@ -1,7 +1,7 @@
 package at.hacksolutions.f2p.parser.line;
 
 import at.hacksolutions.f2p.parser.types.LineType;
-import at.hacksolutions.f2p.pdfbox.Paragraph;
+import at.hacksolutions.f2p.pdfbox.*;
 
 public class Line {
     /**
@@ -85,7 +85,8 @@ public class Line {
 
     public Paragraph getParagraphForPDF() {
 	if (getText() != null) {
-	    Paragraph p = new Paragraph(getText());
+	    RichString s = new RichString(getText(), null);
+	    Paragraph p = new Paragraph(s);
 	    p.setUppercase(type.isUppercase());
 	    p.setUnderlined(type.isUnderlined());
 	    p.setCentered(type.isCentered());

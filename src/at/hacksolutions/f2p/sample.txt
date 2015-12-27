@@ -1,6 +1,6 @@
 EXT. BRICK'S PATIO - DAY
 
-A gorgeous day.  The sun is shining.  But BRICK BRADDOCK, retired police detective, is sitting quietly, contemplating -- something.
+\A gorgeous day.\  The sun is shining.  {But BRICK BRADDOCK, retired police detective}, is sitting quietly, contemplating -- something.
 
 The SCREEN DOOR slides open and DICK STEEL, his former partner and fellow retiree, emerges with two cold beers.
 
@@ -11,7 +11,7 @@ BRICK
 Are they cold?
 
 STEEL
-Does a bear crap in the woods?
+/Does a bear crap in the woods?/
 
 Steel sits.  They laugh at the dumb joke.
 
