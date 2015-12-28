@@ -11,7 +11,7 @@ public class RichFormat {
 	private boolean italic = false;
 	private String text = "";
 
-	public RichFormat() {
+	public RichFormat() {  
 		this(false, false, false);
 	}
  

@@ -21,7 +21,7 @@ public class TestClass {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} catch (COSVisitorException e) {
-	    // TODO Auto-generated catch block  
+	    // TODO Auto-generated catch block     
 	    e.printStackTrace();
 	}
     }
