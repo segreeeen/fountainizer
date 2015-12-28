@@ -8,14 +8,14 @@ import at.hacksolutions.f2p.parser.types.ParserConstants;
 
 public class blaaaa {
     public static void main(String[] args) {
-	Pattern pattern = Pattern.compile(ParserConstants.LT_ITALIC_END);
-	Matcher matcher = pattern.matcher("Das ist ein* test *italic text*    cxvbc");
-	// Check all occurrences
-	while (matcher.find()) {
-	    System.out.println(" End index: " + matcher.end());
+	String bla = "> THE END <";
+	System.out.println(bla.matches(ParserConstants.L_CENTERED));
+	final Pattern pattern = Pattern.compile(ParserConstants.L_CENTERED);
+	final Matcher matcher = pattern
+		.matcher(">String I want to extract<");
+	if (matcher.find() == true) {
+	    System.out.println(matcher.group(1)); // Prints String I want to
+						  // extract
 	}
-	
-	LineType t = LineType.CHARACTER;
-	System.out.println(t.isUppercase());
     }
 }

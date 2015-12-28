@@ -40,7 +40,11 @@ public final class ParserConstants {
     /**
      * Matches < text >
      */
+<<<<<<< HEAD
     public static final String L_CENTERED = "\\>(.*?)\\<";
+=======
+    public static final String L_CENTERED = ">(.*?)<";
+>>>>>>> 102154bfdccec8b44020564566e846176c7539f2
     
     /**
      * Matches === 
