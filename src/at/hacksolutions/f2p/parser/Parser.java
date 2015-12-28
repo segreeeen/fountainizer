@@ -9,7 +9,7 @@ public class Parser {
 
     public static Lines parse(Lines outputLines) {
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
-	    Line l = outputLines.get(i);
+	    Line l = outputLines.get(i); 
 	    if (l.getText() == null) {
 		l.setLineType(LineType.EMPTY);
 		continue;

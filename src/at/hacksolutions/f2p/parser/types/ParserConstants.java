@@ -8,7 +8,7 @@ public final class ParserConstants {
     public static final String L_HEADING = "INT(.*?)|EXT(.*?)|EST(.*?)|INT./EXT(.*?)|INT/EXT(.*?)|I/E(.*?)|\\.(.*?)";
     
     /**
-     * Matches "text ^" 
+     * Matches "text ^"  
      */
     public static final String L_DUAL_DIALOGUE = "(.*?)\\^";
     

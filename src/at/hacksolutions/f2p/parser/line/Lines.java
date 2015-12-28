@@ -11,7 +11,7 @@ public class Lines implements Iterable<Line>{
 	this.lineCount = lines.length;
     }
 
-    public Line get(int index) {
+    public Line get(int index) { 
 	return (index >= 0 && index < lineCount) ? lines[index] : null;
     }
 

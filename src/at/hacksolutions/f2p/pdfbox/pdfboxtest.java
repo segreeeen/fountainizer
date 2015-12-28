@@ -17,7 +17,7 @@ public class pdfboxtest {
 	document = new PDDocument();
 
 	PDPage page = new PDPage(rec);
-	document.addPage(page);
+	document.addPage(page); 
 
 	try {
 	    PDPageContentStream content = new PDPageContentStream(document, page, true, true);

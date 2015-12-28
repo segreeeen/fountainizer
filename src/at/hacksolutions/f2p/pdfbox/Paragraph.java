@@ -17,7 +17,7 @@ public class Paragraph implements I_HasMargin {
     private float marginRight;
     private float marginBottom = 10.0f;
 
-    private boolean uppercase = false;
+    private boolean uppercase = false; 
     private boolean centered = false;
     private boolean underlined = false;
     

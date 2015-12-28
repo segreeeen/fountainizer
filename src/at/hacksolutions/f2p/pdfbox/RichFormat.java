@@ -14,7 +14,7 @@ public class RichFormat {
 	public RichFormat() {
 		this(false, false, false);
 	}
-
+ 
 	public RichFormat(boolean underline, boolean bold, boolean italic) {
 		setUnderline(underline);
 		setBold(bold);

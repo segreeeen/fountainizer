@@ -13,7 +13,7 @@ public class RichString{
 
 	public RichString(String rawText) {
 		this(rawText, null);
-	}
+	} 
 	
 	private RichString(LinkedList<RichFormat> formattings) {
 		this.formattings = formattings;

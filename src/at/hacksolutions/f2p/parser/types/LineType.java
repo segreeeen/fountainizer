@@ -12,7 +12,7 @@ public enum LineType {
     PARENTHETICAL(false, false, false, 200.0F, 0F, 0.2F, 0.0F), 
     TRANSITION(false, false, false, 10.0F, 0F, 10.0F, 10.0F),  
     ACTION(false, false, false, 40.0F, 0F, 5.0F, 0.2F), 
-    LYRICS(false, false, false, 10.0F, 0F, 10.0F, 10.0F), 
+    LYRICS(false, false, false, 10.0F, 0F, 10.0F, 10.0F),  
     CENTERED(false, true, false, 10.0F, 0F, 10.0F, 10.0F), 
     PAGEBREAK(false, false, false, 0F, 0F, 0F, 0F),  
     EMPTY(false, false, false, 0F, 0F, 0F, 0F), ;

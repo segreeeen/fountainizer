@@ -14,7 +14,7 @@ public class blaaaa {
 	while (matcher.find()) {
 	    System.out.println(" End index: " + matcher.end());
 	}
-	
+	 
 	LineType t = LineType.CHARACTER;
 	System.out.println(t.isUppercase());
     }

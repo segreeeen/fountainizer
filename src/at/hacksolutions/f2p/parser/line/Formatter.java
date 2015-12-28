@@ -15,7 +15,7 @@ public class Formatter {
 	} else if (type == LineType.DIALOGUE) {
 	    return s;
 	} else if (type == LineType.PARENTHETICAL) {
-	    return s;
+	    return s; 
 	} else if (type == LineType.TRANSITION) {
 	    return s;
 	} else if (type == LineType.ACTION) {

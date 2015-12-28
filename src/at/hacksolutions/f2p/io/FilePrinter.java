@@ -14,7 +14,7 @@ public class FilePrinter {
     public static void writePDFBox(Lines lines, String filename)
 	    throws IOException, COSVisitorException {
 	PDDocument doc = new PDDocument();
-	Pager mypage = new Pager(doc, 60, 40, 40, 60);
+	Pager mypage = new Pager(doc, 60, 40, 40, 60); 
 
 	Paragraph titleParagraph = new Paragraph(
 		new RichString("test", new RichFormat()));

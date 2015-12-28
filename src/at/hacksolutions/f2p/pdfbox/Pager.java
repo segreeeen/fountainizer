@@ -54,7 +54,7 @@ public class Pager implements I_HasMargin {
 
 	private float marginTop;
 	private float marginLeft;
-	private float marginRight;
+	private float marginRight; 
 	private float marginBottom;
 
 	public Pager(PDDocument doc, float top, float left, float right,

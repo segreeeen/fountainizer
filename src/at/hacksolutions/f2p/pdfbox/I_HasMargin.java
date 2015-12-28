@@ -7,7 +7,7 @@ public interface I_HasMargin {
 	public float getMarginBottom();
 	 
 	public void setMarginTop(float top);
-	public void setMarginLeft(float left);
+	public void setMarginLeft(float left); 
 	public void setMarginRight(float right);
 	public void setMarginBottom(float bottom);
 	public void setMargin(float top,float left, float right,float bottom);

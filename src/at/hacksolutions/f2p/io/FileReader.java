@@ -16,7 +16,7 @@ public class FileReader {
 
 	ArrayList<Line> linesList = new ArrayList<>();
 	FileInputStream fstream = new FileInputStream(fileName);
-	InputStream filein = fstream;
+	InputStream filein = fstream; 
 	InputStreamReader reader = new InputStreamReader(filein,
 		StandardCharsets.UTF_8);
 	BufferedReader readLine = new BufferedReader(reader);

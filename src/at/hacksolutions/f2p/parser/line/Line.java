@@ -1,13 +1,8 @@
 package at.hacksolutions.f2p.parser.line;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import at.hacksolutions.f2p.parser.types.LineType;
-import at.hacksolutions.f2p.parser.types.ParserConstants;
 import at.hacksolutions.f2p.pdfbox.*;
 
-public class Line {
+public class Line { 
     /**
      * Contains the original line of text in the file. May be null if line is
      * empty.
