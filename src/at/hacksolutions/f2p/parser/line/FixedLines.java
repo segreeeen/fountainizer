@@ -2,11 +2,11 @@ package at.hacksolutions.f2p.parser.line;
 
 import java.util.Iterator;
 
-public class Lines implements Iterable<Line>{
+public class FixedLines implements LinesList{
     private Line[] lines;
     private int lineCount;
 
-    public Lines(Line[] lines) {
+    public FixedLines(Line[] lines) {
 	this.lines = lines;
 	this.lineCount = lines.length;
     }
@@ -61,5 +61,9 @@ public class Lines implements Iterable<Line>{
 	    }
 	    
 	};
+    }
+    
+    public DynamicLines asDynamicLines() {
+	return new DynamicLines(lines);
     }
 }

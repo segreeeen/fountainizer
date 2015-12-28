@@ -10,9 +10,9 @@ public class Line {
     private String text;
 
     /**
-     * The absolute line number, starts at 0(!)
+     * The line number, starts at 0
      */
-    private final int lineNr;
+    private int lineNr;
 
     /**
      * Contains the Type of the line.
@@ -70,6 +70,18 @@ public class Line {
 
     public int getLineNr() {
 	return lineNr;
+    }
+    
+    public void incLineNr() {
+	this.lineNr++;
+    }
+    
+    public void decLineNr() {
+	this.lineNr--;
+    }
+    
+    public boolean emptyText() {
+	return this.text == null;
     }
 
     public Paragraph getParagraphForPDF() {

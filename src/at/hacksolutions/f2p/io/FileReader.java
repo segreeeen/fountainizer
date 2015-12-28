@@ -9,10 +9,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import at.hacksolutions.f2p.parser.line.Line;
-import at.hacksolutions.f2p.parser.line.Lines;
+import at.hacksolutions.f2p.parser.line.FixedLines;
 
 public class FileReader {
-    public static Lines getLines(String fileName) throws IOException {
+    public static FixedLines getLines(String fileName) throws IOException {
 
 	ArrayList<Line> linesList = new ArrayList<>();
 	FileInputStream fstream = new FileInputStream(fileName);
@@ -36,6 +36,6 @@ public class FileReader {
 	}
 	readLine.close();
 	Line[] lineArray = linesList.toArray(new Line[] {});
-	return new Lines(lineArray);
+	return new FixedLines(lineArray);
     }
 }

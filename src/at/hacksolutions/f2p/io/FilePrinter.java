@@ -6,12 +6,12 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import at.hacksolutions.f2p.parser.line.Line;
-import at.hacksolutions.f2p.parser.line.Lines;
+import at.hacksolutions.f2p.parser.line.FixedLines;
 import at.hacksolutions.f2p.pdfbox.*;
 
 public class FilePrinter {
 
-    public static void writePDFBox(Lines lines, String filename)
+    public static void writePDFBox(FixedLines lines, String filename)
 	    throws IOException, COSVisitorException {
 	PDDocument doc = new PDDocument();
 	Pager mypage = new Pager(doc, 60, 40, 40, 60); 

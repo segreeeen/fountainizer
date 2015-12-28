@@ -3,7 +3,7 @@ package at.hacksolutions.f2p.parser.types;
 import static at.hacksolutions.f2p.parser.types.ParserConstants.*;
 
 import at.hacksolutions.f2p.parser.line.Line;
-import at.hacksolutions.f2p.parser.line.Lines;
+import at.hacksolutions.f2p.parser.line.LinesList;
 
 public enum LineType {
     HEADING(true, false, false, 40.0F, 0F, 15.0F, 15.0F), 
@@ -62,12 +62,10 @@ public enum LineType {
 
 
 
-    public static LineType getType(Line l, Lines outputLines) {
+    public static LineType getType(Line l, LinesList outputLines) {
 	if (isHeading(l, outputLines)) {
 	    return LineType.HEADING;
-	} else if (isCharacter(l, outputLines)) {
-	    return LineType.CHARACTER;
-	} else if (isParenthetical(l)) {
+	}  else if (isParenthetical(l)) {
 	    return LineType.PARENTHETICAL;
 	}  else if (isLyrics(l)) {
 	    return LineType.LYRICS;
@@ -75,8 +73,10 @@ public enum LineType {
 	    return LineType.CENTERED;
 	} else if (isPagebreak(l)) {
 	    return LineType.PAGEBREAK;
-	}else if (isTransition(l, outputLines)) {
+	} else if (isTransition(l, outputLines)) {
 	    return LineType.TRANSITION;
+	} else if (isCharacter(l, outputLines)) {
+	    return LineType.CHARACTER;
 	} else if (isDialogue(l, outputLines)) {
 	    return LineType.DIALOGUE;
 	} else {
@@ -84,7 +84,7 @@ public enum LineType {
 	}
     }
 
-    private static boolean isHeading(Line l, Lines outputLines) {
+    private static boolean isHeading(Line l, LinesList outputLines) {
 	String text = l.getText();
 	if (text != null && outputLines.pEmptyText(l)) {
 	    return text.matches(L_HEADING);
@@ -92,7 +92,7 @@ public enum LineType {
 	return false;
     }
 
-    private static boolean isCharacter(Line l, Lines outputLines) {
+    private static boolean isCharacter(Line l, LinesList outputLines) {
 	String text = l.getText();
 
 	if (text.matches(L_CHARACTER)) {
@@ -115,7 +115,7 @@ public enum LineType {
 	}
     }
 
-    private static boolean isDialogue(Line l, Lines outputLines) {
+    private static boolean isDialogue(Line l, LinesList outputLines) {
 	LineType prevType = outputLines.get(l.getLineNr() - 1).getLineType();
 	if (l.getText() == null) {
 	    if (prevType == LineType.DIALOGUE) {
@@ -137,7 +137,7 @@ public enum LineType {
 
     }
 
-    private static boolean isTransition(Line l, Lines outputLines) {
+    private static boolean isTransition(Line l, LinesList outputLines) {
 	String text = l.getText();
 	if (outputLines.pEmptyText(l) && outputLines.nEmptyText(l)) {
 	    if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
