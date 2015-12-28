@@ -40,7 +40,7 @@ public final class ParserConstants {
     /**
      * Matches < text >
      */
-    public static final String L_CENTERED = "<(.*?)>";
+    public static final String L_CENTERED = "\\>(.*?)\\<";
     
     /**
      * Matches === 

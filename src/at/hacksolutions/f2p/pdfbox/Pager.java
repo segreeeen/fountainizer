@@ -47,7 +47,7 @@ public class Pager implements I_HasMargin {
 		return fontSize;
 	}
 
-	private int fontSize = 14;
+	private int fontSize = 11;
 	private float writtenAreaY = 0;
 	private float lineHeightFactor = 1.2f;
 	private float underLineFactor = 1.1f;

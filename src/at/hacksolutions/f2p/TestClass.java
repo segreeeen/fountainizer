@@ -13,7 +13,7 @@ import at.hacksolutions.f2p.parser.line.Lines;
 public class TestClass {
     public static void main(String[] args) {
 	try {
-	    Lines lines = FileReader.getLines("D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\sample.txt");
+	    Lines lines = FileReader.getLines("D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\bigfish.txt");
 	    Parser.parse(lines);
 	    FilePrinter.writePDFBox(lines, "testfile.pdf");
 	    

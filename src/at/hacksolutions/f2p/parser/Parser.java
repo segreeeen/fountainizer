@@ -1,9 +1,7 @@
 package at.hacksolutions.f2p.parser;
 
 import at.hacksolutions.f2p.parser.line.Line;
-import at.hacksolutions.f2p.parser.line.LineTags;
 import at.hacksolutions.f2p.parser.line.Lines;
-import at.hacksolutions.f2p.parser.types.LineTagType;
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserConstants;
 
@@ -23,9 +21,7 @@ public class Parser {
 
     private static void setAttributes(Line l, Lines outputLines) {
 	LineType type = LineType.getType(l, outputLines);
-	LineTags tags = LineTagType.getLineTags(l);
 	l.setLineType(type);
-	l.setTags(tags);
 	setDualDialogue(l, outputLines);
     }
 

@@ -8,7 +8,7 @@ import at.hacksolutions.f2p.parser.line.Lines;
 public enum LineType {
     HEADING(true, false, false, 40.0F, 0F, 15.0F, 15.0F), 
     CHARACTER(true, false, false, 250.0F, 0F, 15F, 0.0F), 
-    DIALOGUE(false, false, false, 150.0F, 150F, 0.2F, 0.0F), 
+    DIALOGUE(false, false, false, 150.0F, 70F, 0.2F, 0.0F), 
     PARENTHETICAL(false, false, false, 200.0F, 0F, 0.2F, 0.0F), 
     TRANSITION(false, false, false, 10.0F, 0F, 10.0F, 10.0F),  
     ACTION(false, false, false, 40.0F, 0F, 5.0F, 0.2F), 
@@ -69,14 +69,14 @@ public enum LineType {
 	    return LineType.CHARACTER;
 	} else if (isParenthetical(l)) {
 	    return LineType.PARENTHETICAL;
-	} else if (isTransition(l, outputLines)) {
-	    return LineType.TRANSITION;
-	} else if (isLyrics(l)) {
+	}  else if (isLyrics(l)) {
 	    return LineType.LYRICS;
 	} else if (isCentered(l)) {
 	    return LineType.CENTERED;
 	} else if (isPagebreak(l)) {
 	    return LineType.PAGEBREAK;
+	}else if (isTransition(l, outputLines)) {
+	    return LineType.TRANSITION;
 	} else if (isDialogue(l, outputLines)) {
 	    return LineType.DIALOGUE;
 	} else {

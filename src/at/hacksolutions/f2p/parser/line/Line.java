@@ -1,6 +1,10 @@
 package at.hacksolutions.f2p.parser.line;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import at.hacksolutions.f2p.parser.types.LineType;
+import at.hacksolutions.f2p.parser.types.ParserConstants;
 import at.hacksolutions.f2p.pdfbox.*;
 
 public class Line {
@@ -8,7 +12,7 @@ public class Line {
      * Contains the original line of text in the file. May be null if line is
      * empty.
      */
-    private final String text;
+    private String text;
 
     /**
      * The absolute line number, starts at 0(!)
@@ -19,12 +23,6 @@ public class Line {
      * Contains the Type of the line.
      */
     private LineType type;
-
-    /**
-     * Contains a list of inline tags contained in this line. see
-     * InlineTypeStack
-     */
-    private LineTags tags;
 
     /**
      * True if it is a (dialogue type) dual dialogue
@@ -39,7 +37,6 @@ public class Line {
     public Line(String text, int lineNr) {
 	this.text = text;
 	this.lineNr = lineNr;
-	this.tags = null;
 	this.dualDialogue = false;
     }
 
@@ -49,6 +46,7 @@ public class Line {
 
     public void setLineType(LineType lineType) {
 	this.type = lineType;
+	setText(Formatter.format(getText(),lineType));
     }
 
     public boolean isDualDialogue() {
@@ -70,17 +68,13 @@ public class Line {
     public String getText() {
 	return text;
     }
+    
+    public void setText(String text) {
+	this.text = text;
+    }
 
     public int getLineNr() {
 	return lineNr;
-    }
-
-    public void setTags(LineTags tags) {
-	this.tags = tags;
-    }
-
-    public LineTags getTags() {
-	return tags;
     }
 
     public Paragraph getParagraphForPDF() {
