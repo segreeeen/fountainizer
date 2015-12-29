@@ -6,12 +6,15 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import at.hacksolutions.f2p.parser.line.Line;
-import at.hacksolutions.f2p.parser.line.FixedLines;
-import at.hacksolutions.f2p.pdfbox.*;
+import at.hacksolutions.f2p.parser.line.LinesList;
+import at.hacksolutions.f2p.pdfbox.Pager;
+import at.hacksolutions.f2p.pdfbox.Paragraph;
+import at.hacksolutions.f2p.pdfbox.RichFormat;
+import at.hacksolutions.f2p.pdfbox.RichString;
 
 public class FilePrinter {
 
-    public static void writePDFBox(FixedLines lines, String filename)
+    public static void writePDFBox(LinesList dLines, String filename)
 	    throws IOException, COSVisitorException {
 	PDDocument doc = new PDDocument();
 	Pager mypage = new Pager(doc, 60, 40, 40, 60); 
@@ -32,7 +35,7 @@ public class FilePrinter {
 	mypage.drawParagraph(titleParagraph);
 	mypage.drawParagraph(authorParagraph);
 
-	for (Line line : lines) {
+	for (Line line : dLines) {
 
 	    Paragraph p = line.getParagraphForPDF();
 	    if (p != null) {

@@ -9,7 +9,7 @@ public class Parser {
 
     public static LinesList parse(LinesList outputLines) {
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
-	    Line l = outputLines.get(i); 
+	    Line l = outputLines.get(i);
 	    if (l.getText() == null) {
 		l.setLineType(LineType.EMPTY);
 		continue;
@@ -32,7 +32,6 @@ public class Parser {
 		Line iterator = outputLines.getPrev(l);
 		while (iterator.getLineType() != LineType.CHARACTER) {
 		    iterator = outputLines.getPrev(iterator);
-		    System.out.println(iterator.getLineNr());
 		    if (l.getLineNr() - iterator.getLineNr() > 3) {
 			break;
 		    }

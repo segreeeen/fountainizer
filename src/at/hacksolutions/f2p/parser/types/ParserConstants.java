@@ -107,4 +107,11 @@ public final class ParserConstants {
      */
     public static final String LT_NOTE_END = "(.*?)\\]\\](.*?)";
     
+    public static final String BOLD = "**";
+    
+    public static final String ITALIC = "*";
+    
+    public static final String UNDERLINED = "_";
+    
+    public static final String BITALIC = "***";
 }
