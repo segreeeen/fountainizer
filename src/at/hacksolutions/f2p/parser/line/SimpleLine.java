@@ -1,5 +1,8 @@
 package at.hacksolutions.f2p.parser.line;
+import java.util.LinkedList;
+
 import at.hacksolutions.f2p.parser.types.LineType;
+import at.hacksolutions.f2p.parser.types.ParserType;
 import at.hacksolutions.f2p.pdfbox.*;
 
 public class SimpleLine implements ParserLine{ 
@@ -17,7 +20,7 @@ public class SimpleLine implements ParserLine{
     /**
      * Contains the Type of the line.
      */
-    private LineType type;
+    private ParserType type;
 
     /**
      * True if it is a (dialogue type) dual dialogue
@@ -35,7 +38,7 @@ public class SimpleLine implements ParserLine{
 	this.dualDialogue = false;
     }
 
-    public LineType getLineType() {
+    public ParserType getLineType() {
 	return type;
     }
 
@@ -84,7 +87,7 @@ public class SimpleLine implements ParserLine{
 	return this.text == null;
     }
 
-    public Paragraph getParagraphForPDF() {
+    public LinkedList<Paragraph> getParagraphForPDF() {
 	if (getText() != null) {
 	    RichString s = new RichString(getText(), null);
 	    Paragraph p = new Paragraph(s);
@@ -93,7 +96,9 @@ public class SimpleLine implements ParserLine{
 	    p.setCentered(type.isCentered());
 	    p.setMargin(type.getMarginTop(), type.getMarginLeft(), type.getMarginRight(),
 		    type.getMarginBottom());
-	    return p;
+	    LinkedList<Paragraph> paragraphs = new LinkedList<>();
+	    paragraphs.add(p);
+	    return paragraphs;
 	} else {
 	    return null;
 	}

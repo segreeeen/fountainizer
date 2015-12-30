@@ -23,12 +23,12 @@ public class TestClass {
 	    DynamicLines dLines = lines.asDynamicLines();
 	    
 	    dLines.add(
-		    "This is the last line, and it is an ACTION line, and new.");
+		    "This is the last line, and it is an ACTION\n line, and new.");
 	    time = System.nanoTime() - time;
 	    System.out.println(time);
 	    Parser.parse(dLines);
 	    
-	    FilePrinter.writePDFBox(dLines, "testfile.pdf");
+	    FilePrinter.writePDFBox(dLines, "testfile2.pdf");
 	    
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block

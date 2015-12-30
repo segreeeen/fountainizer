@@ -5,7 +5,7 @@ import static at.hacksolutions.f2p.parser.types.ParserConstants.*;
 import at.hacksolutions.f2p.parser.line.SimpleLine;
 import at.hacksolutions.f2p.parser.line.ParserLines;
 
-public enum LineType {
+public enum LineType implements ParserType{
     HEADING(true, false, false, 40.0F, 0F, 15.0F, 15.0F), 
     CHARACTER(true, false, false, 250.0F, 0F, 15F, 0.0F), 
     DIALOGUE(false, false, false, 150.0F, 70F, 0.2F, 0.0F), 
@@ -116,7 +116,7 @@ public enum LineType {
     }
 
     private static boolean isDialogue(SimpleLine l, ParserLines outputLines) {
-	LineType prevType = outputLines.get(l.getLineNr() - 1).getLineType();
+	ParserType prevType = outputLines.get(l.getLineNr() - 1).getLineType();
 	if (l.getText() == null) {
 	    if (prevType == LineType.DIALOGUE) {
 		return true;
