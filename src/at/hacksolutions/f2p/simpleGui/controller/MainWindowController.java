@@ -37,7 +37,7 @@ import javafx.stage.Stage;
  */
 public class MainWindowController {
 
-	private final String BUILD = "Build dcb2486 30.12.2015 12:17";
+	private final String BUILD = "Build 6fdc3c4 30.12.2015 19:47";
 	private Stage stage;
 	private AnchorPane root;
 	private File exportFile;
