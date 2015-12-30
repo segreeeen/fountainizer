@@ -1,8 +1,9 @@
 package at.hacksolutions.f2p.simpleGui.controller;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.Executor;
+import java.util.Optional;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
 
@@ -10,14 +11,15 @@ import at.hacksolutions.f2p.io.FilePrinter;
 import at.hacksolutions.f2p.io.FileReader;
 import at.hacksolutions.f2p.parser.Parser;
 import at.hacksolutions.f2p.parser.line.DynamicLines;
-import at.hacksolutions.f2p.parser.line.FixedLines;
 import at.hacksolutions.f2p.simpleGui.Fountainizer;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -38,6 +40,7 @@ public class MainWindowController {
 	private final String BUILD = "Build dcb2486 30.12.2015 12:17";
 	private Stage stage;
 	private AnchorPane root;
+	private File exportFile;
 
 	public MainWindowController(Stage stage) {
 		this.stage = stage;
@@ -73,15 +76,22 @@ public class MainWindowController {
 	private TextField txtResourcePath;
 
 	@FXML
-	private Button create;
+	private TextArea infobox;
 
 	@FXML
-	private TextArea infobox;
+	private Button show;
 
 	@FXML
 	void createPDF(ActionEvent event) {
 		infobox.setText("Creating pdf...");
-		
+		if (exportFile.exists()) {
+			Alert a = new Alert(AlertType.CONFIRMATION);
+			Optional<ButtonType> o = a.showAndWait();
+			if (o.get().getText().contains(ButtonType.CANCEL.getText())) {
+				infobox.setText(infobox.getText() + "   User aborted...");
+				return;
+			}
+		}
 		String source = txtResourcePath.getText();
 		String dest = txtTargetPath.getText();
 		DynamicLines lines = null;
@@ -105,6 +115,7 @@ public class MainWindowController {
 		}
 
 		infobox.setText("!!!   Document successfully created   !!!");
+		show.setDisable(false);
 
 	}
 
@@ -114,12 +125,26 @@ public class MainWindowController {
 		fc.setTitle("Choose txt-File to parse...");
 		fc.setInitialDirectory(new File(System.getProperty("user.home")));
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(".txt", "*.txt"));
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(".fountain", "*.fountain"));
 		File selectedFile = fc.showOpenDialog(stage);
 		if (selectedFile == null) {
 			infobox.setText("Please select a valid *.txt-file!");
 			return;
 		}
 		txtResourcePath.setText(selectedFile.getAbsolutePath());
+
+		String path = createNewPath(selectedFile);
+		exportFile = new File(path);
+		txtTargetPath.setText(path);
+		show.setDisable(true);
+	}
+
+	private String createNewPath(File f) {
+		String path = f.getParentFile().toString() + File.separator;
+		String name = f.getName();
+		String newName = name.endsWith(".txt") ? f.getName().substring(0, name.length() - 4)
+				: name.substring(0, name.length() - 9);
+		return path + newName + ".pdf";
 	}
 
 	@FXML
@@ -134,6 +159,18 @@ public class MainWindowController {
 			return;
 		}
 		txtTargetPath.setText(selectedFile.getAbsolutePath());
+		exportFile = new File(txtTargetPath.getText());
+		show.setDisable(true);
+	}
+
+	@FXML
+	void showPdf(ActionEvent event) throws IOException {
+		if (exportFile.exists()) {
+			Desktop.getDesktop().open(exportFile);
+			infobox.setText("File opened!");
+		} else {
+			infobox.setText("File does not exist!");
+		}
 	}
 
 }
