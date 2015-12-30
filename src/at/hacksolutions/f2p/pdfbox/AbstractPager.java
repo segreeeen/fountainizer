@@ -143,6 +143,10 @@ public abstract class AbstractPager implements Pager {
     public int getFontSize() {
 	return fontSize;
     }
+    
+    public PDDocument getDoc() {
+        return doc;
+    }
 
     public void setMargin(float top, float left, float right, float bottom) {
 	setMarginTop(top);

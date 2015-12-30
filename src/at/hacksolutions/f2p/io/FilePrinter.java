@@ -9,50 +9,36 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import at.hacksolutions.f2p.parser.line.ParserLine;
 import at.hacksolutions.f2p.parser.line.ParserLines;
 import at.hacksolutions.f2p.parser.types.TitleLineType;
-import at.hacksolutions.f2p.pdfbox.StandardPager;
+import at.hacksolutions.f2p.pdfbox.Pager;
 import at.hacksolutions.f2p.pdfbox.Paragraph;
-import at.hacksolutions.f2p.pdfbox.RichFormat;
-import at.hacksolutions.f2p.pdfbox.RichString;
+import at.hacksolutions.f2p.pdfbox.StandardPager;
+import at.hacksolutions.f2p.pdfbox.TitlePager;
 
 public class FilePrinter {
 
     public static void writePDFBox(ParserLines dLines, String filename)
 	    throws IOException, COSVisitorException {
 	PDDocument doc = new PDDocument();
-	StandardPager mypage = new StandardPager(doc, 60, 40, 40, 60);
-
-	Paragraph titleParagraph = new Paragraph(
-		new RichString("test", new RichFormat()));
-	titleParagraph.setCentered(true);
-	titleParagraph.setUnderlined(true);
-	titleParagraph.setMarginTop(
-		(mypage.getPageHeight() / 2) - mypage.getLineHeight());
-
-	Paragraph authorParagraph = new Paragraph(
-		new RichString("testautor", new RichFormat()));
-	authorParagraph.setMarginLeft(10);
-	authorParagraph.setMarginTop(
-		((mypage.getPageHeight() / 4)) - mypage.getLineHeight());
-	
-	mypage.drawParagraph(titleParagraph);
-	mypage.drawParagraph(authorParagraph);
-	
-	mypage.initNextPage();
+	Pager titlePager = new TitlePager(doc, 60, 40, 40, 60);
+	Pager standardPager = new StandardPager(doc, 60, 40, 40,60);
 
 	for (ParserLine line : dLines) {
-	    if (line.getLineType().getClass() == TitleLineType.class) {
-		
-	    }
 	    LinkedList<Paragraph> paragraphs = line.getParagraphForPDF();
-	    if (paragraphs != null) {
-		for (Paragraph p : paragraphs) {
-
-		    mypage.drawParagraph(p);
-
+	    if (line.getLineType().getClass() == TitleLineType.class) {
+		if (paragraphs != null) {
+		    for (Paragraph p : paragraphs) {
+			titlePager.drawParagraph(p);
+		    }
+		}
+	    } else {
+		if (paragraphs != null) {
+		    for (Paragraph p : paragraphs) {
+			standardPager.drawParagraph(p);
+		    }
 		}
 	    }
 	}
-	mypage.finalize(filename);
+	standardPager.finalize(filename);
 
     }
 }

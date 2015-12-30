@@ -17,20 +17,13 @@ public class TestClass {
     public static void main(String[] args) {
 	try {
 	    Long time = System.currentTimeMillis();
-	    FixedLines lines = FileReader.getLines(
+	    DynamicLines lines = FileReader.getLines(
 		    "D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\bigfish.txt");
-	    
-//	    DynamicLines dLines = lines.asDynamicLines();
-//	    
-//	    dLines.add(
-//		    "This is the last line, and it is an ACTION\n line, and new.");
-
-
 	    Parser.parse(lines);
-	    time = (System.currentTimeMillis() - time);
 	    FilePrinter.writePDFBox(lines, "testfile2.pdf");
-
+	    time = (System.currentTimeMillis() - time);
 	    System.out.println(time);
+
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();

@@ -3,6 +3,7 @@ package at.hacksolutions.f2p.pdfbox;
 import java.io.IOException;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
 public interface Pager extends I_HasMargin {
@@ -28,4 +29,5 @@ public interface Pager extends I_HasMargin {
 
     public int getFontSize();
     
+    public PDDocument getDoc();
 }

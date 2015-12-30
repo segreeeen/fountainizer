@@ -1,18 +1,18 @@
 package at.hacksolutions.f2p.parser.line;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class DynamicLines implements ParserLines {
-    LinkedList<SimpleLine> lines;
+    ArrayList<SimpleLine> lines;
 
     public DynamicLines() {
-	lines = new LinkedList<>();
+	lines = new ArrayList<>(100);
     }
 
     DynamicLines(SimpleLine[] array) {
-	lines = new LinkedList<SimpleLine>(Arrays.asList(array));
+	lines = new ArrayList<SimpleLine>(Arrays.asList(array));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class DynamicLines implements ParserLines {
 
     public void add(String text) {
 	if (!lines.isEmpty()) {
-	    SimpleLine lastLine = lines.getLast();
+	    SimpleLine lastLine = lines.get(lines.size()-1);
 	    int lineNr = lastLine.getLineNr()+1;
 	    SimpleLine l;
 	    if (text == null || text.isEmpty()) {
@@ -82,7 +82,7 @@ public class DynamicLines implements ParserLines {
 	    } else {
 		l = new SimpleLine(text, lineNr++);
 	    }
-	    lines.addLast(l);
+	    lines.add(l);
 	} else {
 	    SimpleLine l;
 	    if (text == null || text.isEmpty()) {
@@ -90,7 +90,7 @@ public class DynamicLines implements ParserLines {
 	    } else {
 		l = new SimpleLine(text, 0);
 	    }
-	    lines.addLast(l);
+	    lines.add(l);
 	}
     }
 

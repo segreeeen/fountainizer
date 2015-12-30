@@ -9,6 +9,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import at.hacksolutions.f2p.io.FilePrinter;
 import at.hacksolutions.f2p.io.FileReader;
 import at.hacksolutions.f2p.parser.Parser;
+import at.hacksolutions.f2p.parser.line.DynamicLines;
 import at.hacksolutions.f2p.parser.line.FixedLines;
 import at.hacksolutions.f2p.simpleGui.Fountainizer;
 import javafx.application.Platform;
@@ -83,7 +84,7 @@ public class MainWindowController {
 		
 		String source = txtResourcePath.getText();
 		String dest = txtTargetPath.getText();
-		FixedLines lines = null;
+		DynamicLines lines = null;
 
 		try {
 			lines = FileReader.getLines(source);

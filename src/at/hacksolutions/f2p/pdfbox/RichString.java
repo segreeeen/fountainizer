@@ -1,13 +1,14 @@
 package at.hacksolutions.f2p.pdfbox;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class RichString {
 
-    private LinkedList<RichFormat> formattings;
+    private ArrayList<RichFormat> formattings;
 
-    public LinkedList<RichFormat> getFormattings() {
+    public ArrayList<RichFormat> getFormattings() {
 	return formattings;
     }
 
@@ -15,12 +16,12 @@ public class RichString {
 	this(rawText, null);
     }
 
-    private RichString(LinkedList<RichFormat> formattings) {
+    private RichString(ArrayList<RichFormat> formattings) {
 	this.formattings = formattings;
     }
 
     public RichString(String rawText, RichFormat singleFormatting) {
-	formattings = new LinkedList<RichFormat>();
+	formattings = new ArrayList<RichFormat>();
 
 	if (singleFormatting == null) {
 	    RichFormatParser rfp = new RichFormatParser(rawText);
@@ -33,11 +34,11 @@ public class RichString {
     }
 
     public RichString substring(int beginIndex, int endIndex) {
-	LinkedList<RichFormat> formattings = new LinkedList<RichFormat>();
+	ArrayList<RichFormat> formattings = new ArrayList<RichFormat>();
 
 	int i = 0;
 
-	RichFormat currentFormat = this.formattings.getFirst();
+	RichFormat currentFormat = this.formattings.get(0);
 	String currentString = currentFormat.getText();
 	String newString = "";
 	while (i < endIndex) {
@@ -61,7 +62,7 @@ public class RichString {
 		formattings.add(currentFormat.cloneWithNewText(newString));
 	    }
 	    i = i + currentString.length();
-	    if (currentFormat != this.formattings.getLast()) {
+	    if (currentFormat != this.formattings.get(formattings.size()-1)) {
 		currentFormat = this.formattings
 			.get(this.formattings.indexOf(currentFormat) + 1);
 		currentString = currentFormat.getText();
