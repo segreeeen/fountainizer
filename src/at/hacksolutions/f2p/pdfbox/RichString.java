@@ -32,64 +32,6 @@ public class RichString {
 
     }
 
-    // public RichString(String rawText, RichFormat singleFormatting) {
-    // formattings = new LinkedList<RichFormat>();
-    //
-    // if (singleFormatting == null) {
-    //
-    // int lastSplit = 0;
-    // String currentString="";
-    // RichFormat currentFormat = new RichFormat();
-    //
-    //
-    // while (i < chars.length) {
-    // if (chars[i] == '_') {
-    // currentString = rawText.substring(lastSplit, i);
-    // currentFormat.setText(currentString);
-    // formattings.add(currentFormat);
-    // currentFormat = new
-    // RichFormat(!currentFormat.isUnderline(),currentFormat.isBold(),
-    // currentFormat.isItalic());
-    // lastSplit = i+1;
-    //
-    // }else if (chars[i] == '\\') {
-    // currentString = rawText.substring(lastSplit, i);
-    // currentFormat.setText(currentString);
-    // formattings.add(currentFormat);
-    // currentFormat = new
-    // RichFormat(currentFormat.isUnderline(),currentFormat.isBold(),
-    // !currentFormat.isItalic());
-    // lastSplit = i+1;
-    //
-    // }else if (chars[i] == '{') {
-    // currentString = rawText.substring(lastSplit, i);
-    // currentFormat.setText(currentString);
-    // formattings.add(currentFormat);
-    // currentFormat = new RichFormat(currentFormat.isUnderline(),true,
-    // currentFormat.isItalic());
-    // lastSplit = i+1;
-    //
-    // }else if (chars[i] == '}') {
-    // currentString = rawText.substring(lastSplit, i);
-    // currentFormat.setText(currentString);
-    // formattings.add(currentFormat);
-    // currentFormat = new RichFormat(currentFormat.isUnderline(),false,
-    // currentFormat.isItalic());
-    // lastSplit = i+1;
-    // }
-    // i++;
-    // }
-    // currentString = rawText.substring(lastSplit, i);
-    // currentFormat.setText(currentString);
-    // formattings.add(currentFormat);
-    // } else {
-    // singleFormatting.setText(rawText);
-    // formattings.add(singleFormatting);
-    //
-    // }
-    //
-    // }
-
     public RichString substring(int beginIndex, int endIndex) {
 	LinkedList<RichFormat> formattings = new LinkedList<RichFormat>();
 

@@ -2,8 +2,8 @@ package at.hacksolutions.f2p.parser.types;
 
 import static at.hacksolutions.f2p.parser.types.ParserConstants.*;
 
-import at.hacksolutions.f2p.parser.line.Line;
-import at.hacksolutions.f2p.parser.line.LinesList;
+import at.hacksolutions.f2p.parser.line.SimpleLine;
+import at.hacksolutions.f2p.parser.line.ParserLines;
 
 public enum LineType {
     HEADING(true, false, false, 40.0F, 0F, 15.0F, 15.0F), 
@@ -62,7 +62,7 @@ public enum LineType {
 
 
 
-    public static LineType getType(Line l, LinesList outputLines) {
+    public static LineType getType(SimpleLine l, ParserLines outputLines) {
 	if (isHeading(l, outputLines)) {
 	    return LineType.HEADING;
 	}  else if (isParenthetical(l)) {
@@ -84,7 +84,7 @@ public enum LineType {
 	}
     }
 
-    private static boolean isHeading(Line l, LinesList outputLines) {
+    private static boolean isHeading(SimpleLine l, ParserLines outputLines) {
 	String text = l.getText();
 	if (text != null && outputLines.pEmptyText(l)) {
 	    return text.matches(L_HEADING);
@@ -92,7 +92,7 @@ public enum LineType {
 	return false;
     }
 
-    private static boolean isCharacter(Line l, LinesList outputLines) {
+    private static boolean isCharacter(SimpleLine l, ParserLines outputLines) {
 	String text = l.getText();
 
 	if (text.matches(L_CHARACTER)) {
@@ -115,7 +115,7 @@ public enum LineType {
 	}
     }
 
-    private static boolean isDialogue(Line l, LinesList outputLines) {
+    private static boolean isDialogue(SimpleLine l, ParserLines outputLines) {
 	LineType prevType = outputLines.get(l.getLineNr() - 1).getLineType();
 	if (l.getText() == null) {
 	    if (prevType == LineType.DIALOGUE) {
@@ -128,7 +128,7 @@ public enum LineType {
 	return false;
     }
 
-    private static boolean isParenthetical(Line l) {
+    private static boolean isParenthetical(SimpleLine l) {
 	String text = l.getText();
 	if (text != null && text.matches(L_PARENTHETICAL)) {
 	    return true;
@@ -137,7 +137,7 @@ public enum LineType {
 
     }
 
-    private static boolean isTransition(Line l, LinesList outputLines) {
+    private static boolean isTransition(SimpleLine l, ParserLines outputLines) {
 	String text = l.getText();
 	if (outputLines.pEmptyText(l) && outputLines.nEmptyText(l)) {
 	    if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
@@ -152,7 +152,7 @@ public enum LineType {
 	return false;
     }
 
-    private static boolean isLyrics(Line l) {
+    private static boolean isLyrics(SimpleLine l) {
 	String text = l.getText();
 	if (text != null) {
 	    return text.startsWith(L_LYRICS);
@@ -161,7 +161,7 @@ public enum LineType {
 	}
     }
 
-    private static boolean isCentered(Line l) {
+    private static boolean isCentered(SimpleLine l) {
 	String text = l.getText();
 	if (text != null && text.matches(L_CENTERED)) {
 	    return true;
@@ -170,7 +170,7 @@ public enum LineType {
 	}
     }
 
-    private static boolean isPagebreak(Line l) {
+    private static boolean isPagebreak(SimpleLine l) {
 	String text = l.getText();
 	if (text != null) {
 	    return text.matches(L_PAGEBREAK);

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserConstants;
 
-public class Formatter {
+class Formatter {
     public static String format(String s, LineType type) {
 	if (type == LineType.HEADING) {
 	    return s;

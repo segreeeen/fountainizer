@@ -8,13 +8,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import at.hacksolutions.f2p.parser.line.Line;
+import at.hacksolutions.f2p.parser.line.SimpleLine;
+import at.hacksolutions.f2p.parser.line.ParserLines;
 import at.hacksolutions.f2p.parser.line.FixedLines;
 
 public class FileReader {
     public static FixedLines getLines(String fileName) throws IOException {
 
-	ArrayList<Line> linesList = new ArrayList<>();
+	ArrayList<SimpleLine> linesList = new ArrayList<>();
 	FileInputStream fstream = new FileInputStream(fileName);
 	InputStream filein = fstream; 
 	InputStreamReader reader = new InputStreamReader(filein,
@@ -25,17 +26,17 @@ public class FileReader {
 	// read content lines
 	while (readLine.ready()) {
 	    String text = readLine.readLine();
-	    Line newLine;
+	    SimpleLine newLine;
 	    if (text.isEmpty()) {
-		newLine = new Line(null, lineNr);
+		newLine = new SimpleLine(null, lineNr);
 	    } else {
-		newLine = new Line(text, lineNr);
+		newLine = new SimpleLine(text, lineNr);
 	    }
 	    linesList.add(newLine);
 	    lineNr++;
 	}
 	readLine.close();
-	Line[] lineArray = linesList.toArray(new Line[] {});
+	SimpleLine[] lineArray = linesList.toArray(new SimpleLine[] {});
 	return new FixedLines(lineArray);
     }
 }

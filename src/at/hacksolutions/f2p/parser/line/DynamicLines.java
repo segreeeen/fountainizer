@@ -4,24 +4,24 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class DynamicLines implements LinesList {
-    LinkedList<Line> lines;
+public class DynamicLines implements ParserLines {
+    LinkedList<SimpleLine> lines;
 
     public DynamicLines() {
 	lines = new LinkedList<>();
     }
 
-    DynamicLines(Line[] array) {
-	lines = new LinkedList<Line>(Arrays.asList(array));
+    DynamicLines(SimpleLine[] array) {
+	lines = new LinkedList<SimpleLine>(Arrays.asList(array));
     }
 
     @Override
-    public Iterator<Line> iterator() {
+    public Iterator<SimpleLine> iterator() {
 	return lines.iterator();
     }
 
     @Override
-    public Line get(int index) {
+    public SimpleLine get(int index) {
 	if (index >= 0 && index < lines.size()) {
 	    return lines.get(index);
 	} else {
@@ -30,7 +30,7 @@ public class DynamicLines implements LinesList {
     }
 
     @Override
-    public Line getNext(Line l) {
+    public SimpleLine getNext(SimpleLine l) {
 	int index = l.getLineNr() + 1;
 	if (index > 0 && index < lines.size()) {
 	    return lines.get(index);
@@ -40,7 +40,7 @@ public class DynamicLines implements LinesList {
     }
 
     @Override
-    public Line getPrev(Line l) {
+    public SimpleLine getPrev(SimpleLine l) {
 	int index = l.getLineNr() - 1;
 	if (index > 0 && index < lines.size()) {
 	    return lines.get(index);
@@ -55,7 +55,7 @@ public class DynamicLines implements LinesList {
     }
 
     @Override
-    public boolean pEmptyText(Line l) {
+    public boolean pEmptyText(SimpleLine l) {
 	if (getPrev(l) != null) {
 	    return getPrev(l).emptyText();
 	} else {
@@ -64,7 +64,7 @@ public class DynamicLines implements LinesList {
     }
 
     @Override
-    public boolean nEmptyText(Line l) {
+    public boolean nEmptyText(SimpleLine l) {
 	if (getNext(l) != null) {
 	    return getNext(l).emptyText();
 	} else {
@@ -74,35 +74,35 @@ public class DynamicLines implements LinesList {
 
     public void add(String text) {
 	if (!lines.isEmpty()) {
-	    Line lastLine = lines.getLast();
+	    SimpleLine lastLine = lines.getLast();
 	    int lineNr = lastLine.getLineNr()+1;
-	    Line l;
+	    SimpleLine l;
 	    if (text == null || text.isEmpty()) {
-		l = new Line(null, lineNr);
+		l = new SimpleLine(null, lineNr);
 	    } else {
-		l = new Line(text, lineNr++);
+		l = new SimpleLine(text, lineNr++);
 	    }
 	    lines.addLast(l);
 	} else {
-	    Line l;
+	    SimpleLine l;
 	    if (text == null || text.isEmpty()) {
-		l = new Line(null, 0);
+		l = new SimpleLine(null, 0);
 	    } else {
-		l = new Line(text, 0);
+		l = new SimpleLine(text, 0);
 	    }
 	    lines.addLast(l);
 	}
     }
 
     public void add(String text, int index) {
-	Line l;
+	SimpleLine l;
 	if (text == null || text.isEmpty()) {
-	    l = new Line(null, index);
+	    l = new SimpleLine(null, index);
 	} else {
-	    l = new Line(text, index);
+	    l = new SimpleLine(text, index);
 	}
 	if (index > 0 && index < lines.size() - 1) {
-	    Line nextLine = lines.get(index);
+	    SimpleLine nextLine = lines.get(index);
 	    incFollowing(nextLine);
 	    lines.add(index, l);
 	} else if (index == lines.size() - 1) {
@@ -112,13 +112,13 @@ public class DynamicLines implements LinesList {
 
     public void remove(int index) {
 	if (index > 0 && index < lines.size()) {
-	    Line l = lines.get(index);
+	    SimpleLine l = lines.get(index);
 	    decFollowing(l);
 	    lines.remove(index);
 	}
     }
 
-    private void decFollowing(Line l) {
+    private void decFollowing(SimpleLine l) {
 	int start = l.getLineNr();
 	int end = getLineCount();
 	for (int i = start; i < end; i++) {
@@ -126,7 +126,7 @@ public class DynamicLines implements LinesList {
 	}
     }
 
-    private void incFollowing(Line l) {
+    private void incFollowing(SimpleLine l) {
 	int start = l.getLineNr();
 	int end = getLineCount();
 	for (int i = start; i < end; i++) {

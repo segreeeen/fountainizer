@@ -2,7 +2,7 @@ package at.hacksolutions.f2p.parser.line;
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.pdfbox.*;
 
-public class Line { 
+public class SimpleLine implements ParserLine{ 
     /**
      * Contains the original line of text in the file. May be null if line is
      * empty.
@@ -29,7 +29,7 @@ public class Line {
      */
     private int takeNumber;
 
-    public Line(String text, int lineNr) {
+    public SimpleLine(String text, int lineNr) {
 	this.text = text;
 	this.lineNr = lineNr;
 	this.dualDialogue = false;
