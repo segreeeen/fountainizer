@@ -11,6 +11,7 @@ import at.hacksolutions.f2p.io.FileReader;
 import at.hacksolutions.f2p.parser.Parser;
 import at.hacksolutions.f2p.parser.line.FixedLines;
 import at.hacksolutions.f2p.simpleGui.Fountainizer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +24,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * This class is a controller class that loads the Mainwindow.fxml and
- * offers methods that are used by the gui.
+ * This class is a controller class that loads the Mainwindow.fxml and offers
+ * methods that are used by the gui.
+ * 
  * @author Thomas Sulzbacher
  * @version 0.1
  *
@@ -72,7 +74,7 @@ public class MainWindowController {
 	@FXML
 	void createPDF(ActionEvent event) {
 		Runnable r = new Runnable() {
-			
+
 			@Override
 			public void run() {
 				String source = txtResourcePath.getText();
@@ -83,6 +85,7 @@ public class MainWindowController {
 					lines = FileReader.getLines(source);
 				} catch (IOException e) {
 					infobox.setText("Error opening File!");
+					Platform.runLater(buttonChange(0));
 					e.printStackTrace();
 					return;
 				}
@@ -93,49 +96,51 @@ public class MainWindowController {
 					FilePrinter.writePDFBox(lines, dest);
 				} catch (COSVisitorException | IOException e) {
 					infobox.setText("Error writing File!");
+					Platform.runLater(buttonChange(0));
 					e.printStackTrace();
 					return;
 				}
-				
+
 			}
 		};
-		
+
 		Thread thread = new Thread(r);
 		thread.start();
-		
+
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		infobox.setText("Creating pdf");
-		while(thread.isAlive()) {
-			infobox.setText(infobox.getText()+".");
+		while (thread.isAlive()) {
+			infobox.setText(infobox.getText() + ".");
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		buttonChange(1);
-		infobox.setText("Document successfully created!");
 		
+		Platform.runLater(buttonChange(1));
+		infobox.setText("Document successfully created!");
+
 	}
-	
-	private void buttonChange(int i) {
-		new Runnable() {
+
+	private Runnable buttonChange(int i) {
+		return new Runnable() {
 
 			@Override
 			public void run() {
-				if(i == 1) {
+				if (i == 1) {
 					create.setText("Done");
-					create.setStyle("-fx-background-color=green");
+					create.setStyle("-fx-background-color: green;");
 					create.applyCss();
 				} else {
 					create.setText("Error");
-					create.setStyle("-fx-background-color=red");
+					create.setStyle("-fx-background-color: red;");
 					create.applyCss();
 				}
 				try {
@@ -147,8 +152,8 @@ public class MainWindowController {
 				create.setStyle("");
 				create.applyCss();
 			}
-			
-		}.run();
+
+		};
 	}
 
 	@FXML
