@@ -1,12 +1,8 @@
 package at.hacksolutions.f2p.parser.types;
 
 public enum TitleLineType implements ParserType{
-    TITLE(true, false, false, 40.0F, 0F, 15.0F, 15.0F),
-    CREDIT(true, false, false, 40.0F, 0F, 15.0F, 15.0F),
-    AUTHOR(true, false, false, 40.0F, 0F, 15.0F, 15.0F),
-    SOURCE(true, false, false, 40.0F, 0F, 15.0F, 15.0F),
-    DATE(true, false, false, 40.0F, 0F, 15.0F, 15.0F),
-    CONTACT(true, false, false, 40.0F, 0F, 15.0F, 15.0F);
+    CENTERED(false, true, false, 0F, 0F, 0F, 15.0F),
+    LOWERLEFT(false, false, false, 0.0F, 0F, 0.0F, 15.0F);
 
     private final boolean uppercase;
     private final boolean centered;

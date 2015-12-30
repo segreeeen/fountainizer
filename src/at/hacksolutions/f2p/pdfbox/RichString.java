@@ -90,10 +90,10 @@ public class RichString {
 	}
     }
 
-    public float stringWidth(Pager page) throws IOException {
+    public float stringWidth(AbstractPager pager) throws IOException {
 	float width = 0.0f;
 	for (RichFormat text : formattings) {
-	    width = width + text.stringWidth(page);
+	    width = width + text.stringWidth(pager);
 	}
 	return width;
     }

@@ -2,6 +2,8 @@ package at.hacksolutions.f2p.parser.line;
 
 import java.util.LinkedList;
 
+import at.hacksolutions.f2p.parser.types.LineType;
+import at.hacksolutions.f2p.parser.types.ParserType;
 import at.hacksolutions.f2p.pdfbox.Paragraph;
 
 /**
@@ -12,6 +14,7 @@ import at.hacksolutions.f2p.pdfbox.Paragraph;
  */
 public class TitlePage implements ParserLine {
     private LinkedList<TitlePageLine> titlePageLines;
+    private ParserType type = LineType.TITLE;
     
     public TitlePage() {
 	this.titlePageLines = new LinkedList<>();
@@ -29,6 +32,12 @@ public class TitlePage implements ParserLine {
 	    p.addAll(t.getParagraphForPDF()); 
 	}
 	return p;
+    }
+
+
+    @Override
+    public ParserType getLineType() {
+	return type;
     }
 
 }

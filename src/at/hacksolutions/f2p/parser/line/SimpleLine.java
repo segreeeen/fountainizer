@@ -91,6 +91,7 @@ public class SimpleLine implements ParserLine{
 	if (getText() != null) {
 	    RichString s = new RichString(getText(), null);
 	    Paragraph p = new Paragraph(s);
+	    p.setLinetype(type);
 	    p.setUppercase(type.isUppercase());
 	    p.setUnderlined(type.isUnderlined());
 	    p.setCentered(type.isCentered());

@@ -4,13 +4,15 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import at.hacksolutions.f2p.parser.types.ParserType;
 import at.hacksolutions.f2p.pdfbox.RichString;
 
 public class Paragraph implements I_HasMargin {
 
     // private String text;
     private RichString richText;
-    private Pager pager;
+    private AbstractPager pager;
+    private ParserType linetype;
 
     private float marginTop;
     private float marginLeft;
@@ -29,10 +31,8 @@ public class Paragraph implements I_HasMargin {
 	this(new RichString(text, new RichFormat()));
     }
 
-
-
-    public void initForPager(Pager pager) {
-	this.pager = pager;
+    public void initForPager(AbstractPager abstractPager) {
+	this.pager = abstractPager;
     }
 
     public List<RichString> getLines() throws IOException {
@@ -137,6 +137,14 @@ public class Paragraph implements I_HasMargin {
 
     public void setUnderlined(boolean underlined) {
 	this.underlined = underlined;
+    }
+
+    public ParserType getLinetype() {
+	return linetype;
+    }
+
+    public void setLinetype(ParserType linetype) {
+	this.linetype = linetype;
     }
 
 }

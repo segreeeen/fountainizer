@@ -5,17 +5,14 @@ import java.util.regex.Pattern;
 
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserConstants;
+import at.hacksolutions.f2p.parser.types.ParserType;
+import at.hacksolutions.f2p.parser.types.TitleLineType;
 
 public class blaaaa {
     public static void main(String[] args) {
-	Pattern pattern = Pattern.compile(ParserConstants.LT_ITALIC_END);
-	Matcher matcher = pattern.matcher("Das ist ein* test *italic text*    cxvbc");
-	// Check all occurrences
-	while (matcher.find()) {
-	    System.out.println(" End index: " + matcher.end());
+	ParserType t = TitleLineType.CENTERED;
+	if (t.getClass() == TitleLineType.class) {
+	    System.out.println("lal");
 	}
-	 
-	LineType t = LineType.CHARACTER;
-	System.out.println(t.isUppercase());
     }
 }

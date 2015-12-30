@@ -15,6 +15,7 @@ public enum LineType implements ParserType{
     LYRICS(false, false, false, 10.0F, 0F, 10.0F, 10.0F),  
     CENTERED(false, true, false, 10.0F, 0F, 10.0F, 10.0F), 
     PAGEBREAK(false, false, false, 0F, 0F, 0F, 0F),  
+    TITLE(false, false, false, 0F, 0F, 0F, 0F),
     EMPTY(false, false, false, 0F, 0F, 0F, 0F), ;
 
     private final boolean uppercase;
