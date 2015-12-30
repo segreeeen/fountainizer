@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -33,12 +34,14 @@ import javafx.stage.Stage;
  */
 public class MainWindowController {
 
+	private final String BUILD = "Build dcb2486 30.12.2015 12:17";
 	private Stage stage;
 	private AnchorPane root;
 
 	public MainWindowController(Stage stage) {
 		this.stage = stage;
 		initialize();
+		versionInfo.setText(BUILD);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.setTitle("Fountainizer v0.1");
@@ -60,6 +63,9 @@ public class MainWindowController {
 	}
 
 	@FXML
+	private Label versionInfo;
+
+	@FXML
 	private TextField txtTargetPath;
 
 	@FXML
@@ -73,87 +79,32 @@ public class MainWindowController {
 
 	@FXML
 	void createPDF(ActionEvent event) {
-		Runnable r = new Runnable() {
-
-			@Override
-			public void run() {
-				String source = txtResourcePath.getText();
-				String dest = txtTargetPath.getText();
-				FixedLines lines = null;
-
-				try {
-					lines = FileReader.getLines(source);
-				} catch (IOException e) {
-					infobox.setText("Error opening File!");
-					Platform.runLater(buttonChange(0));
-					e.printStackTrace();
-					return;
-				}
-
-				Parser.parse(lines);
-
-				try {
-					FilePrinter.writePDFBox(lines, dest);
-				} catch (COSVisitorException | IOException e) {
-					infobox.setText("Error writing File!");
-					Platform.runLater(buttonChange(0));
-					e.printStackTrace();
-					return;
-				}
-
-			}
-		};
-
-		Thread thread = new Thread(r);
-		thread.start();
+		infobox.setText("Creating pdf...");
+		
+		String source = txtResourcePath.getText();
+		String dest = txtTargetPath.getText();
+		FixedLines lines = null;
 
 		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			lines = FileReader.getLines(source);
+		} catch (IOException e) {
+			infobox.setText("Error opening File!");
 			e.printStackTrace();
+			return;
 		}
 
-		infobox.setText("Creating pdf");
-		while (thread.isAlive()) {
-			infobox.setText(infobox.getText() + ".");
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		Parser.parse(lines);
+
+		try {
+			FilePrinter.writePDFBox(lines, dest);
+		} catch (COSVisitorException | IOException e) {
+			infobox.setText("Error writing File!");
+			e.printStackTrace();
+			return;
 		}
-		
-		Platform.runLater(buttonChange(1));
-		infobox.setText("Document successfully created!");
 
-	}
+		infobox.setText("!!!   Document successfully created   !!!");
 
-	private Runnable buttonChange(int i) {
-		return new Runnable() {
-
-			@Override
-			public void run() {
-				if (i == 1) {
-					create.setText("Done");
-					create.setStyle("-fx-background-color: green;");
-					create.applyCss();
-				} else {
-					create.setText("Error");
-					create.setStyle("-fx-background-color: red;");
-					create.applyCss();
-				}
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				create.setText("Create PDF");
-				create.setStyle("");
-				create.applyCss();
-			}
-
-		};
 	}
 
 	@FXML

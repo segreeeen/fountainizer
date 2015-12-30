@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="106.0" layoutY="31.0" prefHeight="45.0" prefWidth="388.0" text="Fountainizer (simpleGui v0.1)" textAlignment="CENTER">
+      <Label layoutX="214.0" layoutY="30.0" prefHeight="45.0" prefWidth="170.0" text="Fountainizer" textAlignment="CENTER">
          <font>
             <Font size="30.0" />
          </font>
@@ -36,5 +36,6 @@
       </Label>
       <TextArea fx:id="infobox" editable="false" layoutX="50.0" layoutY="266.0" prefHeight="84.0" prefWidth="358.0" promptText="Thx for using Fountainizer! This displays info regarding progress, warnings or errors!" />
       <Label layoutX="50.0" layoutY="242.0" text="Infobox:" />
+      <Label fx:id="versionInfo" disable="true" layoutX="425.0" layoutY="378.0" prefHeight="17.0" prefWidth="170.0" text="Version Info" />
    </children>
 </AnchorPane>
