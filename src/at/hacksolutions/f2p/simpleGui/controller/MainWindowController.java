@@ -84,8 +84,14 @@ public class MainWindowController {
 	@FXML
 	void createPDF(ActionEvent event) {
 		infobox.setText("Creating pdf...");
+		if(exportFile == null) {
+			infobox.setText("ERROR!   You have to set source and destination!");
+			return;
+		}
 		if (exportFile.exists()) {
 			Alert a = new Alert(AlertType.CONFIRMATION);
+			a.setTitle("Overwrite?");
+			a.setContentText("File at \"" + exportFile.getPath() + "\" already exists. Are you sure you want to overwrite the existing file?");
 			Optional<ButtonType> o = a.showAndWait();
 			if (o.get().getText().contains(ButtonType.CANCEL.getText())) {
 				infobox.setText(infobox.getText() + "   User aborted...");
