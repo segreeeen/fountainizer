@@ -32,24 +32,27 @@ import javafx.stage.Stage;
  * methods that are used by the gui.
  * 
  * @author Thomas Sulzbacher
- * @version 0.1
+ * @version 0.2
  *
  */
 public class MainWindowController {
 
-	private final String BUILD = "Build 6fdc3c4 30.12.2015 19:47";
+	private final String BUILD = "Build 2427ba2 31.12.2015 01:30";
 	private Stage stage;
 	private AnchorPane root;
 	private File exportFile;
+	private boolean pressed;
 
 	public MainWindowController(Stage stage) {
 		this.stage = stage;
+		pressed = false;
 		initialize();
 		versionInfo.setText(BUILD);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
-		stage.setTitle("Fountainizer v0.1");
+		stage.setTitle("Fountainizer - SimpleGui v0.2");
 		stage.show();
+		stage.setResizable(false);
 	}
 
 	private void initialize() {
@@ -81,6 +84,9 @@ public class MainWindowController {
 	@FXML
 	private Button show;
 
+	@FXML
+	private Button btnChooseDest;
+	
 	@FXML
 	void createPDF(ActionEvent event) {
 		infobox.setText("Creating pdf...");
@@ -143,6 +149,7 @@ public class MainWindowController {
 		exportFile = new File(path);
 		txtTargetPath.setText(path);
 		show.setDisable(true);
+		infobox.setText("");
 	}
 
 	private String createNewPath(File f) {
@@ -167,6 +174,7 @@ public class MainWindowController {
 		txtTargetPath.setText(selectedFile.getAbsolutePath());
 		exportFile = new File(txtTargetPath.getText());
 		show.setDisable(true);
+		infobox.setText("");
 	}
 
 	@FXML
@@ -176,6 +184,18 @@ public class MainWindowController {
 			infobox.setText("File opened!");
 		} else {
 			infobox.setText("File does not exist!");
+		}
+	}
+	
+	@FXML
+	void changeDestPath(ActionEvent event) {
+		pressed = !pressed;
+		if(pressed) {
+			txtTargetPath.setDisable(false);
+			btnChooseDest.setDisable(false);
+		} else {
+			txtTargetPath.setDisable(true);
+			btnChooseDest.setDisable(true);
 		}
 	}
 
