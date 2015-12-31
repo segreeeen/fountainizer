@@ -66,4 +66,16 @@ public class FixedLines implements ParserLines{
     public DynamicLines asDynamicLines() {
 	return new DynamicLines(lines);
     }
+
+    @Override
+    public ParserLine getNext(ParserLine l) {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    public ParserLine getPrev(ParserLine iterator) {
+	// TODO Auto-generated method stub
+	return null;
+    }
 }

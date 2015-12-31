@@ -1,17 +1,18 @@
 package at.hacksolutions.f2p.pdfbox;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class RichFormatParser {
 
-    private ArrayList<RichFormat> formats = new ArrayList<RichFormat>();
+    private LinkedList<RichFormat> formats = new LinkedList<RichFormat>();
     private final String s;
 
     public RichFormatParser(String s) {
 	this.s = s;
     }
 
-    public ArrayList<RichFormat> parse() {
+    public LinkedList<RichFormat> parse() {
 	char[] c = s.toCharArray();
 	StringBuffer currentString = new StringBuffer();
 	Format currentFormat = null;

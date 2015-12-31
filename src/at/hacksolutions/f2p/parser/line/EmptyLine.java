@@ -2,31 +2,16 @@ package at.hacksolutions.f2p.parser.line;
 
 import java.util.LinkedList;
 
+import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserType;
 import at.hacksolutions.f2p.pdfbox.Paragraph;
 
+public class EmptyLine implements ParserLine{
+    LineType type = LineType.EMPTY;
 
-public class TitlePageLine implements ParserLine {
-    private ParserType type;
-    private LinkedList<SimpleLine> lines;
-    
-    public TitlePageLine(ParserType type) {
-	this.lines = new LinkedList<>();
-	this.type = type;
-    }
-    
-    
     @Override
     public LinkedList<Paragraph> getParagraphForPDF() {
-	LinkedList<Paragraph> p = new LinkedList<>();
-	for (SimpleLine t: lines) {
-	    p.addAll(t.getParagraphForPDF()); 
-	}
-	return p;
-    }
-    
-    public void addLine(SimpleLine l) {
-	lines.add(l);
+	return null;
     }
 
     @Override
@@ -34,26 +19,18 @@ public class TitlePageLine implements ParserLine {
 	return type;
     }
 
-
     @Override
     public int getLineNr() {
-	// TODO Auto-generated method stub
 	return 0;
     }
 
-
     @Override
-    public void setDualDialogue(boolean b) {
-	// TODO Auto-generated method stub
-	
-    }
-
+    public void setDualDialogue(boolean b) {}
 
     @Override
     public boolean emptyText() {
-	return false;
+	return true;
     }
-
 
     @Override
     public String getText() {
@@ -61,10 +38,10 @@ public class TitlePageLine implements ParserLine {
 	return null;
     }
 
-
     @Override
     public void setLineType(ParserType type) {
 	// TODO Auto-generated method stub
 	
     }
+
 }

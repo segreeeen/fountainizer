@@ -30,7 +30,7 @@ public class DynamicLines implements ParserLines {
     }
 
     @Override
-    public SimpleLine getNext(SimpleLine l) {
+    public ParserLine getNext(ParserLine l) {
 	int index = l.getLineNr() + 1;
 	if (index > 0 && index < lines.size()) {
 	    return lines.get(index);
@@ -40,7 +40,7 @@ public class DynamicLines implements ParserLines {
     }
 
     @Override
-    public SimpleLine getPrev(SimpleLine l) {
+    public ParserLine getPrev(ParserLine l) {
 	int index = l.getLineNr() - 1;
 	if (index > 0 && index < lines.size()) {
 	    return lines.get(index);
@@ -133,5 +133,6 @@ public class DynamicLines implements ParserLines {
 	    lines.get(i).incLineNr();
 	}
     }
+
 
 }

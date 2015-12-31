@@ -32,7 +32,7 @@ public class TitlePager extends AbstractPager {
 				- text.stringWidth(this)) / 2);
 		y = centerOffset;
 		centerOffset += getLineHeight();
-	    } else if (p.getLinetype() == TitleLineType.LOWERLEFT) {
+	    } else if (p.getLinetype() == TitleLineType.LEFT) {
 		x = getMarginLeft() + p.getMarginLeft();
 		y = lowerLeftOffset;
 		lowerLeftOffset += getLineHeight();

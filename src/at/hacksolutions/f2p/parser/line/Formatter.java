@@ -5,9 +5,10 @@ import java.util.regex.Pattern;
 
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserConstants;
+import at.hacksolutions.f2p.parser.types.ParserType;
 
 class Formatter {
-    public static String format(String s, LineType type) {
+    public static String format(String s, ParserType type) {
 	if (type == LineType.HEADING) {
 	    return s;
 	} else if (type == LineType.CHARACTER) {

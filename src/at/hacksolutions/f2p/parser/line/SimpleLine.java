@@ -1,35 +1,15 @@
 package at.hacksolutions.f2p.parser.line;
+
 import java.util.LinkedList;
-
-import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserType;
-import at.hacksolutions.f2p.pdfbox.*;
+import at.hacksolutions.f2p.pdfbox.Paragraph;
+import at.hacksolutions.f2p.pdfbox.RichString;
 
-public class SimpleLine implements ParserLine{ 
-    /**
-     * Contains the original line of text in the file. May be null if line is
-     * empty.
-     */
+public class SimpleLine implements ParserLine {
     private String text;
-
-    /**
-     * The line number, starts at 0
-     */
     private int lineNr;
-
-    /**
-     * Contains the Type of the line.
-     */
     private ParserType type;
-
-    /**
-     * True if it is a (dialogue type) dual dialogue
-     */
     private boolean dualDialogue;
-
-    /**
-     * Contains the line number if lineType is character
-     */
     private int takeNumber;
 
     public SimpleLine(String text, int lineNr) {
@@ -42,9 +22,9 @@ public class SimpleLine implements ParserLine{
 	return type;
     }
 
-    public void setLineType(LineType lineType) {
-	this.type = lineType;
-	setText(Formatter.format(getText(),lineType));
+    public void setLineType(ParserType type) {
+	this.type = type;
+	setText(Formatter.format(getText(), type));
     }
 
     public boolean isDualDialogue() {
@@ -66,7 +46,7 @@ public class SimpleLine implements ParserLine{
     public String getText() {
 	return text;
     }
-    
+
     public void setText(String text) {
 	this.text = text;
     }
@@ -74,15 +54,15 @@ public class SimpleLine implements ParserLine{
     public int getLineNr() {
 	return lineNr;
     }
-    
+
     public void incLineNr() {
 	this.lineNr++;
     }
-    
+
     public void decLineNr() {
 	this.lineNr--;
     }
-    
+
     public boolean emptyText() {
 	return this.text == null;
     }
@@ -95,8 +75,8 @@ public class SimpleLine implements ParserLine{
 	    p.setUppercase(type.isUppercase());
 	    p.setUnderlined(type.isUnderlined());
 	    p.setCentered(type.isCentered());
-	    p.setMargin(type.getMarginTop(), type.getMarginLeft(), type.getMarginRight(),
-		    type.getMarginBottom());
+	    p.setMargin(type.getMarginTop(), type.getMarginLeft(),
+		    type.getMarginRight(), type.getMarginBottom());
 	    LinkedList<Paragraph> paragraphs = new LinkedList<>();
 	    paragraphs.add(p);
 	    return paragraphs;
@@ -104,5 +84,6 @@ public class SimpleLine implements ParserLine{
 	    return null;
 	}
     }
+
 
 }

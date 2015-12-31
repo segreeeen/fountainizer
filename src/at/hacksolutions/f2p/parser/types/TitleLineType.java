@@ -1,8 +1,8 @@
 package at.hacksolutions.f2p.parser.types;
 
-public enum TitleLineType implements ParserType{
-    CENTERED(false, true, false, 0F, 0F, 0F, 15.0F),
-    LOWERLEFT(false, false, false, 0.0F, 0F, 0.0F, 15.0F);
+public enum TitleLineType implements ParserType {
+    CENTERED(false, true, false, 0F, 0F, 0F, 15.0F), LEFT(false, false,
+	    false, 0.0F, 0F, 0.0F, 15.0F);
 
     private final boolean uppercase;
     private final boolean centered;
@@ -11,9 +11,10 @@ public enum TitleLineType implements ParserType{
     private final float marginRight;
     private final float marginTop;
     private final float marginBottom;
-    
-    private TitleLineType(boolean uppercase, boolean centered, boolean underlined, 
-	    float marginLeft, float marginRight, float marginTop, float marginBottom) {
+
+    private TitleLineType(boolean uppercase, boolean centered,
+	    boolean underlined, float marginLeft, float marginRight,
+	    float marginTop, float marginBottom) {
 	this.uppercase = uppercase;
 	this.centered = centered;
 	this.underlined = underlined;
@@ -23,33 +24,40 @@ public enum TitleLineType implements ParserType{
 	this.marginBottom = marginBottom;
     }
 
+    public TitleLineType getType(String s) {
+	if (s.matches(ParserConstants.TP_CENTERED)) {
+	    return CENTERED;
+	} else {
+	    return LEFT;
+	}
+    }
 
     public boolean isUppercase() {
-        return uppercase;
+	return uppercase;
     }
 
     public boolean isCentered() {
-        return centered;
+	return centered;
     }
 
     public boolean isUnderlined() {
-        return underlined;
+	return underlined;
     }
 
     public float getMarginLeft() {
-        return marginLeft;
+	return marginLeft;
     }
 
     public float getMarginRight() {
-        return marginRight;
+	return marginRight;
     }
 
     public float getMarginTop() {
-        return marginTop;
+	return marginTop;
     }
 
     public float getMarginBottom() {
-        return marginBottom;
+	return marginBottom;
     }
 
 }

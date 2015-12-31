@@ -40,4 +40,38 @@ public class TitlePage implements ParserLine {
 	return type;
     }
 
+
+    @Override
+    public int getLineNr() {
+	// TODO Auto-generated method stub
+	return 0;
+    }
+
+
+    @Override
+    public void setDualDialogue(boolean b) {
+	// TODO Auto-generated method stub
+	
+    }
+
+
+    @Override
+    public boolean emptyText() {
+	return false;
+    }
+
+
+    @Override
+    public String getText() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+
+    @Override
+    public void setLineType(ParserType type) {
+	// TODO Auto-generated method stub
+	
+    }
+
 }
