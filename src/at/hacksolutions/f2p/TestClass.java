@@ -23,7 +23,7 @@ public class TestClass {
 	try {
 	    Long time = System.currentTimeMillis();
 	    DynamicLines lines = FileReader.getLines(
-		    "D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\titlestest");
+		    "D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\sample.txt");
 	    
 	    
 	    Parser.parse(lines);

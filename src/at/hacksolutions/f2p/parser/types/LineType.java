@@ -5,7 +5,7 @@ public enum LineType implements ParserType{
     CHARACTER(true, false, false, 250.0F, 0F, 15F, 0.0F), 
     DIALOGUE(false, false, false, 150.0F, 70F, 0.2F, 0.0F), 
     PARENTHETICAL(false, false, false, 200.0F, 0F, 0.2F, 0.0F), 
-    TRANSITION(false, false, false, 10.0F, 0F, 10.0F, 10.0F),  
+    TRANSITION(false, false, false, 450.0F, 0F, 15.0F, 15.0F),  
     ACTION(false, false, false, 40.0F, 0F, 5.0F, 0.2F), 
     LYRICS(false, false, false, 10.0F, 0F, 10.0F, 10.0F),  
     CENTERED(false, true, false, 10.0F, 0F, 10.0F, 10.0F), 

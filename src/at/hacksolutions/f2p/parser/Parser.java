@@ -44,7 +44,9 @@ public class Parser {
 		&& text.matches(ParserConstants.L_DUAL_DIALOGUE)) {
 	    ParserLine iterator = outputLines.getPrev(l);
 	    if (iterator != null) {
-		while (iterator.getLineType() != LineType.CHARACTER) {
+		while (iterator.getLineType() != LineType.CHARACTER ||
+			iterator.getLineType() != LineType.DIALOGUE ||
+			iterator.getLineType() != LineType.EMPTY) {
 		    iterator = outputLines.getPrev(iterator);
 		    if (l.getLineNr() - iterator.getLineNr() > 3) {
 			break;
@@ -63,7 +65,7 @@ public class Parser {
 	    ParserLine l = outputLines.get(i);
 	    TitlePageLine tpl;
 	    if (!l.emptyText()) {
-		((SimpleLine) l).setText(l.getText().trim());
+		((SimpleLine) l).setText(l.getText());
 		if (isTitle(l) == TitleLineType.CENTERED) {
 		    l.setLineType(TitleLineType.CENTERED);
 		    tpl = new TitlePageLine(TitleLineType.CENTERED);
@@ -113,7 +115,7 @@ public class Parser {
 		outputLines.remove(iterator);
 		String fText = Formatter.format(iterator.getText(), iterator.getLineType());
 		if (fText != null) {
-		    iterator.setText(fText.trim());
+		    iterator.setText(fText);
 		}
 		iterator = (SimpleLine) outputLines.getNext(iterator);
 	    }

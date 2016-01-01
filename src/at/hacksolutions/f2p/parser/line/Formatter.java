@@ -15,7 +15,18 @@ public class Formatter {
 	}
 
 	if (type == LineType.HEADING) {
-	    return s;
+	    Pattern p = Pattern.compile("\\.(.*?)");
+	    Matcher m = p.matcher(s);
+	    if (m.find()) {
+		String rets = s.substring(m.end(), s.length()).trim();
+		if (rets.isEmpty()) {
+		    return s;
+		} else {
+		    return rets.trim();
+		}
+	    } else {
+		return s;
+	    }
 	} else if (type == LineType.CHARACTER) {
 	    return s;
 	} else if (type == LineType.DIALOGUE) {
@@ -30,7 +41,7 @@ public class Formatter {
 		if (rets.isEmpty()) {
 		    return s;
 		} else {
-		    return rets;
+		    return rets.trim();
 		}
 	    } else {
 		return s;

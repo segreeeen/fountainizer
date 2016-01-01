@@ -1,8 +1,10 @@
 package at.hacksolutions.f2p.pdfbox;
 
-import java.awt.Color;
 import java.io.IOException;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
+
+import at.hacksolutions.f2p.parser.types.LineType;
 
 public class StandardPager extends AbstractPager {
     public StandardPager(PDDocument doc, float top, float left, float right,
@@ -30,25 +32,21 @@ public class StandardPager extends AbstractPager {
 	    float y = page.getMediaBox().getHeight() - getMarginTop()
 		    - writtenAreaY;
 
-	    float xOfRow = 0.0f;
+	    float currentLineWidth = 0.0f;
 
 	    for (RichFormat rowPart : text.getFormattings()) {
-
-		stream.beginText();
-		stream.setNonStrokingColor(Color.BLACK);
-
-		stream.setFont(rowPart.selectFont(this), fontSize);
-
-		stream.moveTextPositionByAmount(x + xOfRow, y);
-		stream.drawString(rowPart.getText());
-		stream.endText();
+		if (p.getLinetype() == LineType.TRANSITION) {
+		    printRightAligned(rowPart, x, y, currentLineWidth);
+		} else {
+		    printLeftAligned(rowPart, x, y, currentLineWidth);
+		}
 		if (rowPart.isUnderline()) {
-		    stream.addLine(x + xOfRow, y + getUnderLineDifference(),
-			    x + xOfRow + rowPart.stringWidth(this),
+		    stream.addLine(x + currentLineWidth, y + getUnderLineDifference(),
+			    x + currentLineWidth + rowPart.stringWidth(this),
 			    y + getUnderLineDifference());
 		}
 
-		xOfRow = xOfRow + rowPart.stringWidth(this);
+		currentLineWidth = currentLineWidth + rowPart.stringWidth(this);
 
 	    }
 

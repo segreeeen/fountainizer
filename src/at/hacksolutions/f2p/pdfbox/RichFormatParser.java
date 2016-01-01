@@ -1,6 +1,5 @@
 package at.hacksolutions.f2p.pdfbox;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class RichFormatParser {
@@ -21,7 +20,7 @@ public class RichFormatParser {
 	    addFormat(s, null);
 	    return formats;
 	}
-	
+
 	for (int i = 0; i < c.length; i++) {
 	    char curChar = c[i];
 	    if (curChar == '*') {
@@ -74,9 +73,26 @@ public class RichFormatParser {
 		    currentFormat = f;
 		    subFormat = null;
 		}
+	    } else if (curChar == '/') {
+		Format f = getFormat(s, i);
+		i += (f.val - 1);
+		if (currentFormat == null) {
+		    addFormat(currentString.toString(), null);
+		    currentString = new StringBuffer();
+		    currentFormat = f;
+		} else if (currentFormat == f) {
+		    addFormat(currentString.toString(), f);
+		    currentString = new StringBuffer();
+		    currentFormat = null;
+		} else {
+		    addFormat(currentString.toString(), null);
+		    currentString = new StringBuffer();
+		    currentFormat = f;
+		    subFormat = null;
+		}
 	    } else {
 		currentString.append(c[i]);
-		if (i == c.length-1) {
+		if (i == c.length - 1) {
 		    addFormat(currentString.toString(), null);
 		}
 	    }
@@ -85,28 +101,50 @@ public class RichFormatParser {
 	return formats;
     }
 
-    /**
-     * @return format at position pos in string s
-     */
-    private static Format getFormat(String s, int pos) {
+    private Format getFormat(String s, int pos) {
 	if (s.charAt(pos) == '*') {
-	    int count = 0;
+	    int astCount = getDoubleFormat(s, pos, '*');
+	    if (astCount == 1) {
+		int slashCount = getDoubleFormat(s, pos, '/');
+		if (slashCount == 1) {
+		    System.out.println(Format.COMMENT.toString());
+		    return Format.COMMENT;
+		} else {
+		    return Format.ITALIC;
+		}
+	    } else if (astCount == 2) {
+		return Format.BOLD;
+	    } else if (astCount == 3) {
+		return Format.BITALIC;
+	    }
+
+	} else if (s.charAt(pos) == '_') {
+	    return Format.UNDERLINED;
+	} else if (s.charAt(pos) == '/') {
+	    int slashCount = getDoubleFormat(s, pos, '*');
+	    if (slashCount == 1) {
+		System.out.println(Format.COMMENT.toString());
+		return Format.COMMENT;
+	    }
+	}
+	return null;
+    }
+
+    private int getDoubleFormat(String s, int pos, char followingChar) {
+	int count = 0;
+	if (s.charAt(pos) == followingChar) {
 	    do {
 		count++;
 	    } while ((pos + count) < s.length()
-		    && s.charAt(pos + count) == '*');
-
-	    if (count == 1) {
-		return Format.ITALIC;
-	    } else if (count == 2) {
-		return Format.BOLD;
-	    } else if (count == 3) {
-		return Format.BITALIC;
-	    }
-	} else if (s.charAt(pos) == '_') {
-	    return Format.UNDERLINED;
+		    && s.charAt(pos + count) == followingChar);
+	} else {
+	    while (((pos + 1) + count) < s.length()
+		    && s.charAt((pos + 1) + count) == followingChar) {
+		count++;
+	    } 
 	}
-	return null;
+	return count;
+
     }
 
     private void addFormat(String s, Format f) {
@@ -119,16 +157,20 @@ public class RichFormatParser {
 	    newFormat = new RichFormat(false, true, true);
 	} else if (f == Format.UNDERLINED) {
 	    newFormat = new RichFormat(true, false, false);
+	} else if (f == Format.COMMENT) {
+	    newFormat = null;
 	} else {
 	    newFormat = new RichFormat(false, false, false);
 	}
 
-	newFormat.setText(s);
-	formats.add(newFormat);
+	if (newFormat != null) {
+	    newFormat.setText(s);
+	    formats.add(newFormat);
+	}
     }
 
     enum Format {
-	BOLD(2), ITALIC(1), BITALIC(3), UNDERLINED(1);
+	BOLD(2), ITALIC(1), BITALIC(3), UNDERLINED(1), COMMENT(2);
 
 	int val;
 

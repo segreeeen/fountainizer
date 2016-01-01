@@ -1,5 +1,6 @@
 package at.hacksolutions.f2p.pdfbox;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import org.apache.pdfbox.cos.COSName;
@@ -158,6 +159,23 @@ public abstract class AbstractPager implements Pager {
     protected float getUnderLineDifference() { 
 	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000
 		* fontSize * underLineFactor - getLineHeight();
+    }
+    
+    protected void printLeftAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
+	stream.beginText();
+	stream.setNonStrokingColor(Color.BLACK);
+	stream.setFont(rowPart.selectFont(this), fontSize);
+	stream.moveTextPositionByAmount(x + currentLineWidth, y);
+	stream.drawString(rowPart.getText());
+	stream.endText();
+    }
+    
+    protected void printRightAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
+	float text_width = (font.getStringWidth(rowPart.getText()) / 1000.0f) * fontSize;
+	stream.beginText();
+	stream.moveTextPositionByAmount(x-text_width, y);
+	stream.drawString(rowPart.getText());
+	stream.endText();
     }
 
 }
