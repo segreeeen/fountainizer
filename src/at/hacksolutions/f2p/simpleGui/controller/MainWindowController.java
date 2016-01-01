@@ -38,7 +38,7 @@ import javafx.stage.Stage;
 public class MainWindowController {
 
 	private final String BUILD = "Build 2427ba2 31.12.2015 01:30";
-	private Stage stage;
+	private final Stage stage;
 	private AnchorPane root;
 	private File exportFile;
 	private boolean pressed;
@@ -67,7 +67,11 @@ public class MainWindowController {
 			System.exit(0);
 		}
 	}
-
+	
+	//***************************************************************************//
+	//							FXML Specific Section							 //
+	//***************************************************************************//
+	
 	@FXML
 	private Label versionInfo;
 
@@ -106,7 +110,7 @@ public class MainWindowController {
 		String source = txtResourcePath.getText();
 		String dest = txtTargetPath.getText();
 		DynamicLines lines = null;
-
+		
 		try {
 			lines = FileReader.getLines(source);
 		} catch (IOException e) {
