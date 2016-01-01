@@ -1,9 +1,8 @@
-package at.hacksolutions.f2p.parser.line;
+package at.hacksolutions.f2p.parser.interfaces;
 
 import java.util.LinkedList;
 
-import at.hacksolutions.f2p.parser.types.ParserType;
-import at.hacksolutions.f2p.pdfbox.Paragraph;
+import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 
 public interface ParserLine {
 

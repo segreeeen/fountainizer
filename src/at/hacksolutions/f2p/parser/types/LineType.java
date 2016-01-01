@@ -1,5 +1,7 @@
 package at.hacksolutions.f2p.parser.types;
 
+import at.hacksolutions.f2p.parser.interfaces.ParserType;
+
 public enum LineType implements ParserType{
     HEADING(true, false, false, 40.0F, 0F, 15.0F, 15.0F), 
     CHARACTER(true, false, false, 250.0F, 0F, 15F, 0.0F), 

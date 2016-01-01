@@ -9,8 +9,9 @@ import static at.hacksolutions.f2p.parser.types.ParserConstants.L_PARENTHETICAL;
 import static at.hacksolutions.f2p.parser.types.ParserConstants.L_TRANSITION_1;
 import static at.hacksolutions.f2p.parser.types.ParserConstants.L_TRANSITION_2;
 
-import at.hacksolutions.f2p.parser.line.ParserLine;
-import at.hacksolutions.f2p.parser.line.ParserLines;
+import at.hacksolutions.f2p.parser.interfaces.ParserLine;
+import at.hacksolutions.f2p.parser.interfaces.ParserLines;
+import at.hacksolutions.f2p.parser.interfaces.ParserType;
 import at.hacksolutions.f2p.parser.line.SimpleLine;
 
 public class TypeHelper {

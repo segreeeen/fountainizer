@@ -1,4 +1,4 @@
-package at.hacksolutions.f2p.pdfbox;
+package at.hacksolutions.f2p.pdfbox.paragraph;
 
 import java.util.LinkedList;
 
@@ -107,7 +107,6 @@ public class RichFormatParser {
 	    if (astCount == 1) {
 		int slashCount = getDoubleFormat(s, pos, '/');
 		if (slashCount == 1) {
-		    System.out.println(Format.COMMENT.toString());
 		    return Format.COMMENT;
 		} else {
 		    return Format.ITALIC;
@@ -123,7 +122,6 @@ public class RichFormatParser {
 	} else if (s.charAt(pos) == '/') {
 	    int slashCount = getDoubleFormat(s, pos, '*');
 	    if (slashCount == 1) {
-		System.out.println(Format.COMMENT.toString());
 		return Format.COMMENT;
 	    }
 	}

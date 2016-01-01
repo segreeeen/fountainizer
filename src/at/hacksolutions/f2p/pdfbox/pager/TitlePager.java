@@ -1,9 +1,12 @@
-package at.hacksolutions.f2p.pdfbox;
+package at.hacksolutions.f2p.pdfbox.pager;
 
 import java.awt.Color;
 import java.io.IOException;
 
 import at.hacksolutions.f2p.parser.types.TitleLineType;
+import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
+import at.hacksolutions.f2p.pdfbox.paragraph.RichFormat;
+import at.hacksolutions.f2p.pdfbox.paragraph.RichString;
 
 public class TitlePager extends AbstractPager {
     private float centerOffset;

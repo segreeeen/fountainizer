@@ -1,9 +1,11 @@
 package at.hacksolutions.f2p.parser.line;
 
 import java.util.LinkedList;
-import at.hacksolutions.f2p.parser.types.ParserType;
-import at.hacksolutions.f2p.pdfbox.Paragraph;
-import at.hacksolutions.f2p.pdfbox.RichString;
+
+import at.hacksolutions.f2p.parser.interfaces.ParserLine;
+import at.hacksolutions.f2p.parser.interfaces.ParserType;
+import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
+import at.hacksolutions.f2p.pdfbox.paragraph.RichString;
 
 public class SimpleLine implements ParserLine {
     private String text;
@@ -74,8 +76,7 @@ public class SimpleLine implements ParserLine {
 	    p.setUppercase(type.isUppercase());
 	    p.setUnderlined(type.isUnderlined());
 	    p.setCentered(type.isCentered());
-	    p.setMargin(type.getMarginTop(), type.getMarginLeft(),
-		    type.getMarginRight(), type.getMarginBottom());
+	    p.setMargin(type.getMarginTop(), type.getMarginLeft(), type.getMarginRight(), type.getMarginBottom());
 	    LinkedList<Paragraph> paragraphs = new LinkedList<>();
 	    paragraphs.add(p);
 	    return paragraphs;
@@ -83,6 +84,5 @@ public class SimpleLine implements ParserLine {
 	    return null;
 	}
     }
-
 
 }

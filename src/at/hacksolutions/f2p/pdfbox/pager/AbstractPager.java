@@ -1,4 +1,4 @@
-package at.hacksolutions.f2p.pdfbox;
+package at.hacksolutions.f2p.pdfbox.pager;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -12,6 +12,9 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import at.hacksolutions.f2p.pdfbox.interfaces.Pager;
+import at.hacksolutions.f2p.pdfbox.paragraph.RichFormat;
 
 public abstract class AbstractPager implements Pager {
 

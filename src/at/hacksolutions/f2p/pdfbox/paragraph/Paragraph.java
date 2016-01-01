@@ -1,13 +1,15 @@
-package at.hacksolutions.f2p.pdfbox;
+package at.hacksolutions.f2p.pdfbox.paragraph;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import at.hacksolutions.f2p.parser.types.ParserType;
-import at.hacksolutions.f2p.pdfbox.RichString;
+import at.hacksolutions.f2p.parser.interfaces.ParserType;
+import at.hacksolutions.f2p.pdfbox.interfaces.Margins;
+import at.hacksolutions.f2p.pdfbox.pager.AbstractPager;
+import at.hacksolutions.f2p.pdfbox.paragraph.RichString;
 
-public class Paragraph implements I_HasMargin {
+public class Paragraph implements Margins {
 
     // private String text;
     private RichString richText;

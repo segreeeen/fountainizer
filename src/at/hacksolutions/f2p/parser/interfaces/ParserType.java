@@ -1,4 +1,4 @@
-package at.hacksolutions.f2p.parser.types;
+package at.hacksolutions.f2p.parser.interfaces;
 
 public interface ParserType {
 

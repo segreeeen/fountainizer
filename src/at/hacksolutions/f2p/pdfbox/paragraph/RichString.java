@@ -1,7 +1,9 @@
-package at.hacksolutions.f2p.pdfbox;
+package at.hacksolutions.f2p.pdfbox.paragraph;
 
 import java.io.IOException;
 import java.util.LinkedList;
+
+import at.hacksolutions.f2p.pdfbox.interfaces.Pager;
 
 public class RichString {
 

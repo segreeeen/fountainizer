@@ -1,6 +1,6 @@
-package at.hacksolutions.f2p.pdfbox;
+package at.hacksolutions.f2p.pdfbox.interfaces;
 
-public interface I_HasMargin {
+public interface Margins {
 	public float getMarginTop();
 	public float getMarginLeft();
 	public float getMarginRight();

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import at.hacksolutions.f2p.parser.interfaces.ParserLine;
+import at.hacksolutions.f2p.parser.interfaces.ParserLines;
+
 public class DynamicLines implements ParserLines {
     private TitlePage tp;
     private ArrayList<ParserLine> lines;
@@ -75,8 +78,8 @@ public class DynamicLines implements ParserLines {
 
     public void add(String text) {
 	if (!lines.isEmpty()) {
-	    ParserLine lastLine = lines.get(lines.size()-1);
-	    int lineNr = lastLine.getLineNr()+1;
+	    ParserLine lastLine = lines.get(lines.size() - 1);
+	    int lineNr = lastLine.getLineNr() + 1;
 	    ParserLine l;
 	    if (text == null || text.isEmpty()) {
 		l = new SimpleLine(null, lineNr);
@@ -110,8 +113,6 @@ public class DynamicLines implements ParserLines {
 	    add(text);
 	}
     }
-    
-
 
     public void remove(int index) {
 	if (index >= 0 && index < lines.size()) {
@@ -144,13 +145,13 @@ public class DynamicLines implements ParserLines {
 
     @Override
     public void remove(ParserLine l) {
-	remove(l.getLineNr());	
+	remove(l.getLineNr());
     }
 
     @Override
     public void add(TitlePage tp, int i) {
-	lines.add(i,tp);
-	
+	lines.add(i, tp);
+
     }
 
     public TitlePage getTitlepage() {
@@ -160,6 +161,5 @@ public class DynamicLines implements ParserLines {
     public void setTitlepage(TitlePage tp) {
 	this.tp = tp;
     }
-
 
 }

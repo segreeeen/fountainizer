@@ -1,4 +1,7 @@
-package at.hacksolutions.f2p.parser.line;
+package at.hacksolutions.f2p.parser.interfaces;
+
+import at.hacksolutions.f2p.parser.line.SimpleLine;
+import at.hacksolutions.f2p.parser.line.TitlePage;
 
 public interface ParserLines extends Iterable<ParserLine> {
     public ParserLine get(int index);

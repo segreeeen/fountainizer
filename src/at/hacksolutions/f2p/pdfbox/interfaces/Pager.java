@@ -1,4 +1,4 @@
-package at.hacksolutions.f2p.pdfbox;
+package at.hacksolutions.f2p.pdfbox.interfaces;
 
 import java.io.IOException;
 
@@ -6,7 +6,9 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
-public interface Pager extends I_HasMargin {
+import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
+
+public interface Pager extends Margins {
 
     public void drawParagraph(Paragraph p) throws IOException;
 

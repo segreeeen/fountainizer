@@ -1,8 +1,10 @@
-package at.hacksolutions.f2p.pdfbox;
+package at.hacksolutions.f2p.pdfbox.paragraph;
 
 import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
+
+import at.hacksolutions.f2p.pdfbox.interfaces.Pager;
 
 public class RichFormat {
 
