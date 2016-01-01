@@ -56,9 +56,8 @@ public class MainWindowController {
 	}
 
 	private void initialize() {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(
-				Fountainizer.class.getResource(File.separator + "view" + File.separator + "MainWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(Fountainizer.class.getResource("/at/hacksolutions/f2p/simpleGui/view/MainWindow.fxml"));
+		
 		try {
 			loader.setController(this);
 			root = loader.load();
