@@ -8,8 +8,13 @@ import at.hacksolutions.f2p.pdfbox.Paragraph;
 
 public class TitlePageLine implements ParserLine {
     private ParserType type;
-    private LinkedList<SimpleLine> lines;
+    private LinkedList<ParserLine> lines;
     
+    public LinkedList<ParserLine> getLines() {
+        return lines;
+    }
+
+
     public TitlePageLine(ParserType type) {
 	this.lines = new LinkedList<>();
 	this.type = type;
@@ -19,14 +24,14 @@ public class TitlePageLine implements ParserLine {
     @Override
     public LinkedList<Paragraph> getParagraphForPDF() {
 	LinkedList<Paragraph> p = new LinkedList<>();
-	for (SimpleLine t: lines) {
+	for (ParserLine t: lines) {
 	    p.addAll(t.getParagraphForPDF()); 
 	}
 	return p;
     }
     
-    public void addLine(SimpleLine l) {
-	lines.add(l);
+    public void addLine(ParserLine iterator) {
+	lines.add(iterator);
     }
 
     @Override
@@ -37,14 +42,12 @@ public class TitlePageLine implements ParserLine {
 
     @Override
     public int getLineNr() {
-	// TODO Auto-generated method stub
 	return 0;
     }
 
 
     @Override
     public void setDualDialogue(boolean b) {
-	// TODO Auto-generated method stub
 	
     }
 
@@ -57,14 +60,24 @@ public class TitlePageLine implements ParserLine {
 
     @Override
     public String getText() {
-	// TODO Auto-generated method stub
 	return null;
     }
 
 
     @Override
     public void setLineType(ParserType type) {
-	// TODO Auto-generated method stub
+	
+    }
+
+
+    @Override
+    public void decLineNr() {
+	
+    }
+
+
+    @Override
+    public void incLineNr() {
 	
     }
 }

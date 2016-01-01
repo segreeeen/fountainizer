@@ -24,7 +24,6 @@ public class SimpleLine implements ParserLine {
 
     public void setLineType(ParserType type) {
 	this.type = type;
-	setText(Formatter.format(getText(), type));
     }
 
     public boolean isDualDialogue() {

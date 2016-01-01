@@ -14,14 +14,18 @@ public class FileReader {
 
 	DynamicLines linesList = new DynamicLines();
 	FileInputStream fstream = new FileInputStream(fileName);
-	InputStream filein = fstream; 
+	InputStream filein = fstream;
 	InputStreamReader reader = new InputStreamReader(filein,
 		StandardCharsets.UTF_8);
 	BufferedReader readLine = new BufferedReader(reader);
 
 	while (readLine.ready()) {
 	    String text = readLine.readLine();
-	    linesList.add(text);
+	    if (text.trim().isEmpty()) {
+		linesList.add(null);
+	    } else {
+		linesList.add(text.trim());
+	    }
 	}
 	readLine.close();
 	return linesList;

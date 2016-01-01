@@ -5,23 +5,24 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public class DynamicLines implements ParserLines {
-    ArrayList<SimpleLine> lines;
+    private TitlePage tp;
+    private ArrayList<ParserLine> lines;
 
     public DynamicLines() {
 	lines = new ArrayList<>(100);
     }
 
-    DynamicLines(SimpleLine[] array) {
-	lines = new ArrayList<SimpleLine>(Arrays.asList(array));
+    DynamicLines(ParserLine[] array) {
+	lines = new ArrayList<ParserLine>(Arrays.asList(array));
     }
 
     @Override
-    public Iterator<SimpleLine> iterator() {
+    public Iterator<ParserLine> iterator() {
 	return lines.iterator();
     }
 
     @Override
-    public SimpleLine get(int index) {
+    public ParserLine get(int index) {
 	if (index >= 0 && index < lines.size()) {
 	    return lines.get(index);
 	} else {
@@ -74,9 +75,9 @@ public class DynamicLines implements ParserLines {
 
     public void add(String text) {
 	if (!lines.isEmpty()) {
-	    SimpleLine lastLine = lines.get(lines.size()-1);
+	    ParserLine lastLine = lines.get(lines.size()-1);
 	    int lineNr = lastLine.getLineNr()+1;
-	    SimpleLine l;
+	    ParserLine l;
 	    if (text == null || text.isEmpty()) {
 		l = new SimpleLine(null, lineNr);
 	    } else {
@@ -101,24 +102,26 @@ public class DynamicLines implements ParserLines {
 	} else {
 	    l = new SimpleLine(text, index);
 	}
-	if (index > 0 && index < lines.size() - 1) {
-	    SimpleLine nextLine = lines.get(index);
+	if (index >= 0 && index < lines.size() - 1) {
+	    ParserLine nextLine = lines.get(index);
 	    incFollowing(nextLine);
 	    lines.add(index, l);
 	} else if (index == lines.size() - 1) {
 	    add(text);
 	}
     }
+    
+
 
     public void remove(int index) {
-	if (index > 0 && index < lines.size()) {
-	    SimpleLine l = lines.get(index);
+	if (index >= 0 && index < lines.size()) {
+	    ParserLine l = lines.get(index);
 	    decFollowing(l);
 	    lines.remove(index);
 	}
     }
 
-    private void decFollowing(SimpleLine l) {
+    private void decFollowing(ParserLine l) {
 	int start = l.getLineNr();
 	int end = getLineCount();
 	for (int i = start; i < end; i++) {
@@ -126,12 +129,36 @@ public class DynamicLines implements ParserLines {
 	}
     }
 
-    private void incFollowing(SimpleLine l) {
-	int start = l.getLineNr();
+    private void incFollowing(ParserLine nextLine) {
+	int start = nextLine.getLineNr();
 	int end = getLineCount();
 	for (int i = start; i < end; i++) {
 	    lines.get(i).incLineNr();
 	}
+    }
+
+    @Override
+    public boolean hasNext(ParserLine l) {
+	return getNext(l) != null;
+    }
+
+    @Override
+    public void remove(ParserLine l) {
+	remove(l.getLineNr());	
+    }
+
+    @Override
+    public void add(TitlePage tp, int i) {
+	lines.add(i,tp);
+	
+    }
+
+    public TitlePage getTitlepage() {
+	return tp;
+    }
+
+    public void setTitlepage(TitlePage tp) {
+	this.tp = tp;
     }
 
 

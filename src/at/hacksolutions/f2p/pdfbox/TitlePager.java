@@ -3,20 +3,22 @@ package at.hacksolutions.f2p.pdfbox;
 import java.awt.Color;
 import java.io.IOException;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-
 import at.hacksolutions.f2p.parser.types.TitleLineType;
 
 public class TitlePager extends AbstractPager {
     private float centerOffset;
     private float lowerLeftOffset;
 
-    public TitlePager(PDDocument doc, float top, float left, float right,
-	    float bottom) throws IOException {
-	super(doc, top, left, right, bottom);
-	centerOffset = getPageHeight() / 2;
-	lowerLeftOffset = (getPageHeight() / 4) * 3;
+    public TitlePager(StandardPager p) throws IOException {
+	super(p.getDoc(), p.getMarginTop(), p.getMarginLeft(), p.getMarginRight(), p.getMarginBottom());
+	super.page = p.page;
+	super.stream = p.stream;
+	super.fontSize = p.fontSize;
+	super.writtenAreaY = page.getMediaBox().getHeight();
+	centerOffset = (getPageHeight()-100);
+	lowerLeftOffset = (getPageHeight() / 4);
     }
+    
 
     @Override
     public void drawParagraph(Paragraph p) throws IOException {
@@ -31,11 +33,11 @@ public class TitlePager extends AbstractPager {
 			+ ((p.getPageWidthRespectingMargins()
 				- text.stringWidth(this)) / 2);
 		y = centerOffset;
-		centerOffset += getLineHeight();
+		centerOffset -= getLineHeight();
 	    } else if (p.getLinetype() == TitleLineType.LEFT) {
 		x = getMarginLeft() + p.getMarginLeft();
 		y = lowerLeftOffset;
-		lowerLeftOffset += getLineHeight();
+		lowerLeftOffset -= getLineHeight();
 	    } else {
 		x = getMarginLeft() + p.getMarginLeft();
 		y = page.getMediaBox().getHeight() - getMarginTop()
@@ -69,8 +71,8 @@ public class TitlePager extends AbstractPager {
 			x + text.stringWidth(this),
 			y + getUnderLineDifference());
 	    }
-	    centerOffset += getLineHeight();
-	    lowerLeftOffset += getLineHeight();
+	    centerOffset -= getLineHeight();
+	    lowerLeftOffset -= getLineHeight();
 
 	    stream.stroke();
 

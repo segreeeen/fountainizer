@@ -74,4 +74,18 @@ public class TitlePage implements ParserLine {
 	
     }
 
+
+    @Override
+    public void decLineNr() {
+	// TODO Auto-generated method stub
+	
+    }
+
+
+    @Override
+    public void incLineNr() {
+	// TODO Auto-generated method stub
+	
+    }
+
 }
