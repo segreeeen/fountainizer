@@ -12,13 +12,12 @@ Contact:
 
 EXT. BRICK'S PATIO - DAY
 
-/* this should not be in the pdf... :D :D Nice hahah... */
-*The sun is shining.*  ***But BRICK BRADDOCK, retired police detective, is sitting quietly, contemplating -- something.***
-**Yep, that's how it goes!**
-_The SCREEN DOOR slides open and DICK STEEL, his former partner and fellow retiree, emerges with two cold beers._
+A gorgeous day.  The sun is shining.  But BRICK BRADDOCK, retired police detective, is sitting quietly, contemplating -- something.
+
+The SCREEN DOOR slides open and DICK STEEL, his former partner and fellow retiree, emerges with two cold beers.
 
 STEEL
-Beer's ready! öäüß
+Beer's ready!
 
 BRICK
 Are they cold?
@@ -160,3 +159,6 @@ Beer flies.
 > BURN TO PINK.
 
 > THE END <
+
+@Marty McFly
+Niemand ... nennt mich eine FEIGE SAU!

@@ -76,5 +76,10 @@ public class TitlePager extends AbstractPager {
 	centerOffset += p.getMarginBottom();
 	lowerLeftOffset += p.getMarginBottom();
     }
+    
+    @Override
+    public void finalize(String filename) throws IOException {
+	stream.close();
+    }
 
 }

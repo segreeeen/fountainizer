@@ -81,7 +81,9 @@ public class SimpleLine implements ParserLine {
 	    paragraphs.add(p);
 	    return paragraphs;
 	} else {
-	    return null;
+	    LinkedList<Paragraph> paragraphs = new LinkedList<>();
+	    paragraphs.add(Paragraph.getEmptyParagraph());
+	    return paragraphs;
 	}
     }
 

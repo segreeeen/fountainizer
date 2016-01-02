@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import at.hacksolutions.f2p.parser.interfaces.ParserType;
+import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.pdfbox.interfaces.Margins;
 import at.hacksolutions.f2p.pdfbox.pager.AbstractPager;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichString;
@@ -21,14 +22,18 @@ public class Paragraph implements Margins {
     private float marginRight;
     private float marginBottom = 10.0f;
 
-    private boolean uppercase = false; 
+    private boolean uppercase = false;
     private boolean centered = false;
     private boolean underlined = false;
-    
+
     public Paragraph(RichString richString) {
 	this.richText = richString;
     }
     
+    public Paragraph(LineType type) {
+	this.linetype = type;
+    }
+
     public Paragraph(String text) {
 	this(new RichString(text, new RichFormat()));
     }
@@ -41,7 +46,12 @@ public class Paragraph implements Margins {
 	if (pager == null) {
 	    return null;
 	}
+	
 	List<RichString> lines = new LinkedList<RichString>();
+	if (linetype == LineType.TRANSITION) {
+	    lines.add(richText);
+	    return lines;
+	}
 	String text = this.richText.toString();
 
 	if (isUppercase()) {
@@ -53,13 +63,10 @@ public class Paragraph implements Margins {
 
 	while (start < text.length()) {
 	    int end = start;
-	    while (richText.substring(start, end)
-		    .stringWidth(pager) < getPageWidthRespectingMargins()
-		    && end < text.length()) {
+	    while (richText.substring(start, end).stringWidth(pager) < getPageWidthRespectingMargins() && end < text.length()) {
 		end++;
 	    }
-	    int lastSpace = richText.substring(start, end).toString()
-		    .lastIndexOf(" ");
+	    int lastSpace = richText.substring(start, end).toString().lastIndexOf(" ");
 	    if (end < text.length() && lastSpace > 0) {
 		end = start + lastSpace + 1;
 	    }
@@ -147,6 +154,10 @@ public class Paragraph implements Margins {
 
     public void setLinetype(ParserType linetype) {
 	this.linetype = linetype;
+    }
+    
+    public static Paragraph getEmptyParagraph() {
+	return new Paragraph(LineType.EMPTY);
     }
 
 }

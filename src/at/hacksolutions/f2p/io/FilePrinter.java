@@ -16,8 +16,7 @@ import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 
 public class FilePrinter {
 
-    public static void writePDFBox(ParserLines dLines, String filename)
-	    throws IOException {
+    public static void writePDFBox(ParserLines dLines, String filename) throws IOException {
 	PDDocument doc = new PDDocument();
 	StandardPager standardPage = new StandardPager(doc, 60, 40, 40, 60);
 	TitlePager titlePage = new TitlePager(standardPage);
@@ -35,6 +34,7 @@ public class FilePrinter {
 	}
 
 	standardPage.initNextPage();
+
 	LinkedList<Paragraph> firstDialogue = null;
 	LinkedList<Paragraph> secondDialogue = null;
 	for (ParserLine line : dLines) {
@@ -46,8 +46,7 @@ public class FilePrinter {
 		    firstDialogue = line.getParagraphForPDF();
 		} else if (firstDialogue != null && secondDialogue == null) {
 		    if (line.getLineType() != LineType.CHARACTER) {
-			LinkedList<Paragraph> paragraphs = line
-				.getParagraphForPDF();
+			LinkedList<Paragraph> paragraphs = line.getParagraphForPDF();
 			if (paragraphs != null) {
 			    firstDialogue.addAll(line.getParagraphForPDF());
 			}
@@ -56,8 +55,7 @@ public class FilePrinter {
 		    }
 		} else if (firstDialogue != null && secondDialogue != null) {
 		    if (line.getLineType() != LineType.EMPTY) {
-			LinkedList<Paragraph> paragraphs = line
-				.getParagraphForPDF();
+			LinkedList<Paragraph> paragraphs = line.getParagraphForPDF();
 			if (paragraphs != null) {
 			    secondDialogue.addAll(line.getParagraphForPDF());
 			}
@@ -78,7 +76,7 @@ public class FilePrinter {
 		}
 	    }
 	}
+	titlePage.finalize(filename);
 	standardPage.finalize(filename);
-
     }
 }

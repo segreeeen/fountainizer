@@ -2,9 +2,11 @@ package at.hacksolutions.f2p.pdfbox.pager;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 
+import at.hacksolutions.f2p.parser.interfaces.ParserType;
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichFormat;
@@ -14,24 +16,38 @@ public class StandardPager extends AbstractPager {
 
     private static final int FIRST = 1;
     private static final int SECOND = 2;
+    private ParserType prevType;
 
     public StandardPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException {
 	super(doc, top, left, right, bottom);
+	prevType = LineType.EMPTY;
 	initNextPage();
     }
 
     public void drawParagraph(Paragraph p) throws IOException {
+	if (prevType == LineType.ACTION && p.getLinetype() == LineType.EMPTY) {
+	    prevType = p.getLinetype();
+	    return;
+	} else if (prevType == LineType.EMPTY && p.getLinetype() == LineType.ACTION) {
+	    writtenAreaY = (writtenAreaY + getLineHeight());
+	    prevType = p.getLinetype();
+	} else if (p.getLinetype() == LineType.EMPTY) {
+	    prevType = p.getLinetype();
+	    return;
+	} 
+	
 	p.initForPager(this);
-	writtenAreaY = writtenAreaY + p.getMarginTop();
+	writtenAreaY = (writtenAreaY + p.getMarginTop()) - 2;
 	for (RichString text : p.getLines()) {
-
-	    if (writtenAreaY + getLineHeight() > getPageHeight()) {
+	    if (writtenAreaY + (getLineHeight() * 2) > getPageHeight()) {
 		initNextPage();
 	    }
 
 	    float x;
 	    if (p.isCentered()) {
 		x = getMarginLeft() + p.getMarginLeft() + ((p.getPageWidthRespectingMargins() - text.stringWidth(this)) / 2);
+	    } else if (p.getLinetype() == LineType.TRANSITION) {
+		x = getMarginRight();
 	    } else {
 		x = getMarginLeft() + p.getMarginLeft();
 	    }
@@ -39,20 +55,27 @@ public class StandardPager extends AbstractPager {
 	    float y = page.getMediaBox().getHeight() - getMarginTop() - writtenAreaY;
 
 	    float currentLineWidth = 0.0f;
+	    if (p.getLinetype() == LineType.TRANSITION) {
+		LinkedList<RichFormat> trformats = text.getFormattings();
+		ListIterator<RichFormat> li = trformats.listIterator(trformats.size());
 
-	    for (RichFormat rowPart : text.getFormattings()) {
-		if (p.getLinetype() == LineType.TRANSITION) {
-		    printRightAligned(rowPart, x, y, currentLineWidth);
-		} else {
+		// Iterate in reverse.
+		while (li.hasPrevious()) {
+		    RichFormat f = li.previous();
+		    printRightAligned(f, this.getPageWidth() - x, y, currentLineWidth);
+		}
+
+	    } else {
+		for (RichFormat rowPart : text.getFormattings()) {
 		    printLeftAligned(rowPart, x, y, currentLineWidth);
+		    if (rowPart.isUnderline()) {
+			stream.setLineWidth(0.1f);
+			stream.moveTo(x + currentLineWidth, y + getUnderLineDifference());
+			stream.lineTo(x + currentLineWidth + rowPart.stringWidth(this), y + getUnderLineDifference());
+			stream.stroke();
+		    }
+		    currentLineWidth = currentLineWidth + rowPart.stringWidth(this);
 		}
-		if (rowPart.isUnderline()) {
-		    System.out.println("it's underlined.");
-		    stream.moveTo(x + currentLineWidth, y + getUnderLineDifference());
-		    stream.lineTo(x + currentLineWidth + rowPart.stringWidth(this), y + getUnderLineDifference());
-		    stream.stroke();
-		}
-		currentLineWidth = currentLineWidth + rowPart.stringWidth(this);
 	    }
 	    if (p.isUnderlined()) {
 		System.out.println("it's underlined.");
@@ -63,7 +86,10 @@ public class StandardPager extends AbstractPager {
 	    writtenAreaY = writtenAreaY + getLineHeight();
 	    stream.stroke();
 	}
-	writtenAreaY = writtenAreaY + p.getMarginBottom();
+	writtenAreaY = (writtenAreaY + p.getMarginBottom()) - 2;
+	if (p.getLinetype() != null) {
+	    prevType = p.getLinetype();
+	}
     }
 
     public void drawDualDialogue(LinkedList<Paragraph> d1, LinkedList<Paragraph> d2) throws IOException {

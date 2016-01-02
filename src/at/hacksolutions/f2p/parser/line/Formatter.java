@@ -28,6 +28,9 @@ public class Formatter {
 		return s;
 	    }
 	} else if (type == LineType.CHARACTER) {
+	    if (s.contains("@")) {
+		return s.replaceFirst("@", "");
+	    }
 	    return s;
 	} else if (type == LineType.DIALOGUE) {
 	    return s;
