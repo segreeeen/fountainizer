@@ -10,7 +10,7 @@ public final class ParserConstants {
     /**
      * Matches "text ^"  
      */
-    public static final String L_DUAL_DIALOGUE = "(.*?)\\^";
+    public static final String L_DUAL_DIALOGUE = "(.*?)\\s+\\^";
     
     /**
      * Matches "@text"

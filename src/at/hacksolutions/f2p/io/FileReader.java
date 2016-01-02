@@ -21,6 +21,8 @@ public class FileReader {
 
 	while (readLine.ready()) {
 	    String text = readLine.readLine();
+	    text = text.replaceAll("[\\t\\n\\r]","");
+	    text = text.replaceAll("[\uFFFD\uFEFF]","");
 	    if (text.trim().isEmpty()) {
 		linesList.add(null);
 	    } else {

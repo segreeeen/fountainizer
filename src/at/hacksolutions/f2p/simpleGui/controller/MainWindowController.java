@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.apache.pdfbox.exceptions.COSVisitorException;
-
 import at.hacksolutions.f2p.io.FilePrinter;
 import at.hacksolutions.f2p.io.FileReader;
 import at.hacksolutions.f2p.parser.Parser;
@@ -123,7 +121,7 @@ public class MainWindowController {
 
 		try {
 			FilePrinter.writePDFBox(lines, dest);
-		} catch (COSVisitorException | IOException e) {
+		} catch (IOException e) {
 			infobox.setText("Error writing File!");
 			e.printStackTrace();
 			return;

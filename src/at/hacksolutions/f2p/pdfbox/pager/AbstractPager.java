@@ -1,24 +1,21 @@
 package at.hacksolutions.f2p.pdfbox.pager;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
 
-import org.apache.pdfbox.cos.COSName;
-import org.apache.pdfbox.encoding.Encoding;
-import org.apache.pdfbox.encoding.EncodingManager;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 import at.hacksolutions.f2p.pdfbox.interfaces.Pager;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichFormat;
 
 public abstract class AbstractPager implements Pager {
 
- // DocSpec
+    // DocSpec
     private PDDocument doc;
     protected PDPage page;
     protected PDPageContentStream stream;
@@ -30,7 +27,7 @@ public abstract class AbstractPager implements Pager {
     private PDFont boldItalicFont;
 
     // Page Layout
-    protected int fontSize = 11;
+    protected int fontSize = 12;
     protected float writtenAreaY = 0;
     private float lineHeightFactor = 1.2f;
     private float underLineFactor = 1.1f;
@@ -41,25 +38,13 @@ public abstract class AbstractPager implements Pager {
     private float marginRight;
     private float marginBottom;
 
-    public AbstractPager(PDDocument doc, float top, float left, float right,
-	    float bottom) throws IOException {
+    public AbstractPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException {
 	setMargin(top, left, right, bottom);
 	this.doc = doc;
-
-	font = PDType1Font.COURIER;
-	boldFont = PDType1Font.COURIER_BOLD;
-	italicFont = PDType1Font.COURIER_OBLIQUE;
-	boldItalicFont = PDType1Font.COURIER_BOLD_OBLIQUE;
-
-	Encoding enc = new EncodingManager()
-		.getEncoding(COSName.WIN_ANSI_ENCODING);
-
-	font.setFontEncoding(enc);
-	boldFont.setFontEncoding(enc);
-	italicFont.setFontEncoding(enc);
-	boldItalicFont.setFontEncoding(enc);
-
-	initNextPage();
+	font = PDType0Font.load(doc, new File(getClass().getResource("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrime.TTF").getFile()));
+	boldFont = PDType0Font.load(doc, new File(getClass().getResource("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeBold.TTF").getFile()));
+	italicFont = PDType0Font.load(doc, new File(getClass().getResource("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeItalic.TTF").getFile()));
+	boldItalicFont = PDType0Font.load(doc, new File(getClass().getResource("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeBoldItalic.TTF").getFile()));
     }
 
     public void initNextPage() throws IOException {
@@ -74,26 +59,22 @@ public abstract class AbstractPager implements Pager {
 	writtenAreaY = 0;
     }
 
-    public void finalize(String filename)
-	    throws IOException, COSVisitorException {
+    public void finalize(String filename) throws IOException {
 	stream.close();
 	doc.save(filename);
 	doc.close();
     }
-    
+
     public float getLineHeight() {
-	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000
-		* fontSize * lineHeightFactor;
+	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * lineHeightFactor;
     }
 
     public float getPageWidth() {
-	return page.getMediaBox().getWidth() - getMarginLeft()
-		- getMarginRight();
+	return page.getMediaBox().getWidth() - getMarginLeft() - getMarginRight();
     }
 
     public float getPageHeight() {
-	return page.getMediaBox().getHeight() - getMarginTop()
-		- getMarginBottom();
+	return page.getMediaBox().getHeight() - getMarginTop() - getMarginBottom();
     }
 
     public float getMarginTop() {
@@ -147,9 +128,9 @@ public abstract class AbstractPager implements Pager {
     public int getFontSize() {
 	return fontSize;
     }
-    
+
     public PDDocument getDoc() {
-        return doc;
+	return doc;
     }
 
     public void setMargin(float top, float left, float right, float bottom) {
@@ -158,26 +139,27 @@ public abstract class AbstractPager implements Pager {
 	setMarginRight(right);
 	setMarginBottom(bottom);
     }
-    
-    protected float getUnderLineDifference() { 
-	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000
-		* fontSize * underLineFactor - getLineHeight();
+
+    protected float getUnderLineDifference() {
+	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * underLineFactor - getLineHeight();
     }
-    
+
     protected void printLeftAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
+	
 	stream.beginText();
+	stream.newLineAtOffset(x + currentLineWidth, y);
 	stream.setNonStrokingColor(Color.BLACK);
 	stream.setFont(rowPart.selectFont(this), fontSize);
-	stream.moveTextPositionByAmount(x + currentLineWidth, y);
-	stream.drawString(rowPart.getText());
+	stream.showText(rowPart.getText());
 	stream.endText();
     }
-    
+
     protected void printRightAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
 	float text_width = (font.getStringWidth(rowPart.getText()) / 1000.0f) * fontSize;
 	stream.beginText();
-	stream.moveTextPositionByAmount(x-text_width, y);
-	stream.drawString(rowPart.getText());
+	stream.newLineAtOffset(x - text_width, y);
+	stream.setFont(rowPart.selectFont(this), fontSize);
+	stream.showText(rowPart.getText());
 	stream.endText();
     }
 

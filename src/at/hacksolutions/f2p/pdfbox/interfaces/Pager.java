@@ -2,7 +2,6 @@ package at.hacksolutions.f2p.pdfbox.interfaces;
 
 import java.io.IOException;
 
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
@@ -13,7 +12,7 @@ public interface Pager extends Margins {
     public void drawParagraph(Paragraph p) throws IOException;
 
     public void finalize(String filename)
-	    throws IOException, COSVisitorException;
+	    throws IOException;
 
     public float getLineHeight();
 

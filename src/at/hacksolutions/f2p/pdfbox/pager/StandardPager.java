@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup;
 
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
@@ -17,6 +18,7 @@ public class StandardPager extends AbstractPager {
 
     public StandardPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException {
 	super(doc, top, left, right, bottom);
+	initNextPage();
     }
 
     public void drawParagraph(Paragraph p) throws IOException {
@@ -34,7 +36,7 @@ public class StandardPager extends AbstractPager {
 	    } else {
 		x = getMarginLeft() + p.getMarginLeft();
 	    }
-	    
+
 	    float y = page.getMediaBox().getHeight() - getMarginTop() - writtenAreaY;
 
 	    float currentLineWidth = 0.0f;
@@ -46,12 +48,18 @@ public class StandardPager extends AbstractPager {
 		    printLeftAligned(rowPart, x, y, currentLineWidth);
 		}
 		if (rowPart.isUnderline()) {
-		    stream.addLine(x + currentLineWidth, y + getUnderLineDifference(), x + currentLineWidth + rowPart.stringWidth(this), y + getUnderLineDifference());
+		    System.out.println("it's underlined.");
+		    stream.moveTo(x + currentLineWidth, y + getUnderLineDifference());
+		    stream.lineTo(x + currentLineWidth + rowPart.stringWidth(this), y + getUnderLineDifference());
+		    stream.stroke();
 		}
 		currentLineWidth = currentLineWidth + rowPart.stringWidth(this);
 	    }
 	    if (p.isUnderlined()) {
-		stream.addLine(x, y + getUnderLineDifference(), x + text.stringWidth(this), y + getUnderLineDifference());
+		System.out.println("it's underlined.");
+		stream.moveTo(x, y + getUnderLineDifference());
+		stream.lineTo(x + text.stringWidth(this), y + getUnderLineDifference());
+		stream.stroke();
 	    }
 	    writtenAreaY = writtenAreaY + getLineHeight();
 	    stream.stroke();

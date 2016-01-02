@@ -15,10 +15,6 @@ public class DynamicLines implements ParserLines {
 	lines = new ArrayList<>(100);
     }
 
-    DynamicLines(ParserLine[] array) {
-	lines = new ArrayList<ParserLine>(Arrays.asList(array));
-    }
-
     @Override
     public Iterator<ParserLine> iterator() {
 	return lines.iterator();

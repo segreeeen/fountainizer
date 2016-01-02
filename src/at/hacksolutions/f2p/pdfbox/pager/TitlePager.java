@@ -18,10 +18,9 @@ public class TitlePager extends AbstractPager {
 	super.stream = p.stream;
 	super.fontSize = p.fontSize;
 	super.writtenAreaY = page.getMediaBox().getHeight();
-	centerOffset = (getPageHeight()-100);
+	centerOffset = (getPageHeight() - 100);
 	lowerLeftOffset = (getPageHeight() / 4);
     }
-    
 
     @Override
     public void drawParagraph(Paragraph p) throws IOException {
@@ -32,19 +31,16 @@ public class TitlePager extends AbstractPager {
 	    float x;
 	    float y;
 	    if (p.getLinetype() == TitleLineType.CENTERED) {
-		x = getMarginLeft() + p.getMarginLeft()
-			+ ((p.getPageWidthRespectingMargins()
-				- text.stringWidth(this)) / 2);
+		x = getMarginLeft() + p.getMarginLeft() + ((p.getPageWidthRespectingMargins() - text.stringWidth(this)) / 2);
 		y = centerOffset;
 		centerOffset -= getLineHeight();
 	    } else if (p.getLinetype() == TitleLineType.LEFT) {
 		x = getMarginLeft() + p.getMarginLeft();
 		y = lowerLeftOffset;
-		lowerLeftOffset -= getLineHeight();
+		lowerLeftOffset -= getLineHeight() + 3f;
 	    } else {
 		x = getMarginLeft() + p.getMarginLeft();
-		y = page.getMediaBox().getHeight() - getMarginTop()
-			- writtenAreaY;
+		y = page.getMediaBox().getHeight() - getMarginTop() - writtenAreaY;
 	    }
 
 	    float xOfRow = 0.0f;
@@ -52,17 +48,16 @@ public class TitlePager extends AbstractPager {
 	    for (RichFormat rowPart : text.getFormattings()) {
 
 		stream.beginText();
+		stream.newLineAtOffset(x + xOfRow, y);
 		stream.setNonStrokingColor(Color.BLACK);
-
 		stream.setFont(rowPart.selectFont(this), fontSize);
-
-		stream.moveTextPositionByAmount(x + xOfRow, y);
-		stream.drawString(rowPart.getText());
+		stream.showText(rowPart.getText());
 		stream.endText();
+
 		if (rowPart.isUnderline()) {
-		    stream.addLine(x + xOfRow, y + getUnderLineDifference(),
-			    x + xOfRow + rowPart.stringWidth(this),
-			    y + getUnderLineDifference());
+		    stream.moveTo(x + xOfRow, y + getUnderLineDifference());
+		    stream.lineTo(x + xOfRow + rowPart.stringWidth(this), y + getUnderLineDifference());
+		    stream.stroke();
 		}
 
 		xOfRow = xOfRow + rowPart.stringWidth(this);
@@ -70,12 +65,10 @@ public class TitlePager extends AbstractPager {
 	    }
 
 	    if (p.isUnderlined()) {
-		stream.addLine(x, y + getUnderLineDifference(),
-			x + text.stringWidth(this),
-			y + getUnderLineDifference());
+		stream.moveTo(x, y + getUnderLineDifference());
+		stream.lineTo(x + text.stringWidth(this), y + getUnderLineDifference());
+		stream.stroke();
 	    }
-	    centerOffset -= getLineHeight();
-	    lowerLeftOffset -= getLineHeight();
 
 	    stream.stroke();
 

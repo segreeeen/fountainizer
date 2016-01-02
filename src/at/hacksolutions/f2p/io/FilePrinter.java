@@ -3,7 +3,6 @@ package at.hacksolutions.f2p.io;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import at.hacksolutions.f2p.parser.interfaces.ParserLine;
@@ -18,7 +17,7 @@ import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 public class FilePrinter {
 
     public static void writePDFBox(ParserLines dLines, String filename)
-	    throws IOException, COSVisitorException {
+	    throws IOException {
 	PDDocument doc = new PDDocument();
 	StandardPager standardPage = new StandardPager(doc, 60, 40, 40, 60);
 	TitlePager titlePage = new TitlePager(standardPage);

@@ -42,6 +42,7 @@ public class Parser {
 
     private static void setDualDialogue(SimpleLine l, ParserLines outputLines) {
 	l.setDualDialogue(true);
+	l.setText(l.getText().replaceAll("\\^", ""));
 
 	// set dualdialogue backwards
 	ParserLine bIterator = outputLines.getPrev(l);
