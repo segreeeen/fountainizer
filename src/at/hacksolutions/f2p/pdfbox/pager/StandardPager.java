@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup;
 
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;

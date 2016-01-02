@@ -21,6 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -35,7 +36,7 @@ import javafx.stage.Stage;
  */
 public class MainWindowController {
 
-	private final String BUILD = "Build 2427ba2 31.12.2015 01:30";
+	private final String BUILD = "v0.5 beta build 7b72ddb 02.01.2016 13:00";
 	private final Stage stage;
 	private AnchorPane root;
 	private File exportFile;
@@ -48,9 +49,10 @@ public class MainWindowController {
 		versionInfo.setText(BUILD);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
-		stage.setTitle("Fountainizer - SimpleGui v0.2");
-		stage.show();
+		stage.setTitle("Fountainizer - SimpleGui v0.5beta b7b72ddb");
 		stage.setResizable(false);
+		loadIconInto(stage);
+		stage.show();
 	}
 
 	private void initialize() {
@@ -64,6 +66,10 @@ public class MainWindowController {
 			e.printStackTrace();
 			System.exit(0);
 		}
+	}
+	
+	private void loadIconInto(Stage stage) {
+		stage.getIcons().add(new Image(Fountainizer.class.getResourceAsStream(File.separator + "img" + File.separator + "icon.jpg")));
 	}
 	
 	//***************************************************************************//

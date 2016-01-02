@@ -36,7 +36,7 @@
       </Label>
       <TextArea fx:id="infobox" editable="false" layoutX="50.0" layoutY="266.0" prefHeight="84.0" prefWidth="358.0" promptText="Thx for using Fountainizer! This displays info regarding progress, warnings or errors!" />
       <Label layoutX="50.0" layoutY="242.0" text="Infobox:" />
-      <Label fx:id="versionInfo" disable="true" layoutX="425.0" layoutY="378.0" prefHeight="17.0" prefWidth="170.0" text="Version Info" />
+      <Label fx:id="versionInfo" disable="true" layoutX="353.0" layoutY="378.0" prefHeight="17.0" prefWidth="240.0" text="Version Info" />
       <Button fx:id="show" defaultButton="true" disable="true" layoutX="444.0" layoutY="314.0" mnemonicParsing="false" onAction="#showPdf" prefHeight="39.0" prefWidth="112.0" text="Show PDF">
          <font>
             <Font size="18.0" />

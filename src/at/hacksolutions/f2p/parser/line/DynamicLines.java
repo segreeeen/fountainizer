@@ -1,7 +1,6 @@
 package at.hacksolutions.f2p.parser.line;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import at.hacksolutions.f2p.parser.interfaces.ParserLine;
