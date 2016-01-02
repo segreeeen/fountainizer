@@ -1,6 +1,7 @@
 package at.hacksolutions.f2p.io;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -16,7 +17,7 @@ import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 
 public class FilePrinter {
 
-    public static void writePDFBox(ParserLines dLines, String filename) throws IOException {
+    public static void writePDFBox(ParserLines dLines, String filename) throws IOException, URISyntaxException {
 	PDDocument doc = new PDDocument();
 	StandardPager standardPage = new StandardPager(doc, 60, 40, 40, 60);
 	TitlePager titlePage = new TitlePager(standardPage);

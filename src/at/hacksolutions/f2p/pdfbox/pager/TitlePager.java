@@ -2,6 +2,7 @@ package at.hacksolutions.f2p.pdfbox.pager;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import at.hacksolutions.f2p.parser.types.TitleLineType;
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
@@ -12,7 +13,7 @@ public class TitlePager extends AbstractPager {
     private float centerOffset;
     private float lowerLeftOffset;
 
-    public TitlePager(StandardPager p) throws IOException {
+    public TitlePager(StandardPager p) throws IOException, URISyntaxException {
 	super(p.getDoc(), p.getMarginTop(), p.getMarginLeft(), p.getMarginRight(), p.getMarginBottom());
 	super.page = p.page;
 	super.stream = p.stream;

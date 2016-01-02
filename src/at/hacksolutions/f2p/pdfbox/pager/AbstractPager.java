@@ -1,8 +1,8 @@
 package at.hacksolutions.f2p.pdfbox.pager;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -38,13 +38,13 @@ public abstract class AbstractPager implements Pager {
     private float marginRight;
     private float marginBottom;
 
-    public AbstractPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException {
+    public AbstractPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException, URISyntaxException {
 	setMargin(top, left, right, bottom);
 	this.doc = doc;
-	font = PDType0Font.load(doc, new File(getClass().getResource("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrime.TTF").getFile()));
-	boldFont = PDType0Font.load(doc, new File(getClass().getResource("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeBold.TTF").getFile()));
-	italicFont = PDType0Font.load(doc, new File(getClass().getResource("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeItalic.TTF").getFile()));
-	boldItalicFont = PDType0Font.load(doc, new File(getClass().getResource("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeBoldItalic.TTF").getFile()));
+	font = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrime.ttf"));
+	boldFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeBold.ttf"));
+	italicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeItalic.ttf"));
+	boldItalicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeBoldItalic.ttf"));
     }
 
     public void initNextPage() throws IOException {

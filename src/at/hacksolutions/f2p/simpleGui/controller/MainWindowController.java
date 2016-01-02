@@ -3,6 +3,7 @@ package at.hacksolutions.f2p.simpleGui.controller;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 import at.hacksolutions.f2p.io.FilePrinter;
@@ -96,7 +97,7 @@ public class MainWindowController {
 	private Button btnChooseDest;
 	
 	@FXML
-	void createPDF(ActionEvent event) {
+	void createPDF(ActionEvent event) throws URISyntaxException {
 		infobox.setText("Creating pdf...");
 		if(exportFile == null) {
 			infobox.setText("ERROR!   You have to set source and destination!");

@@ -1,6 +1,7 @@
 package at.hacksolutions.f2p.pdfbox.pager;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -18,7 +19,7 @@ public class StandardPager extends AbstractPager {
     private static final int SECOND = 2;
     private ParserType prevType;
 
-    public StandardPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException {
+    public StandardPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException, URISyntaxException {
 	super(doc, top, left, right, bottom);
 	prevType = LineType.EMPTY;
 	initNextPage();
