@@ -69,7 +69,8 @@ public class MainWindowController {
 	}
 	
 	private void loadIconInto(Stage stage) {
-		stage.getIcons().add(new Image(Fountainizer.class.getResourceAsStream(File.separator + "img" + File.separator + "icon.jpg")));
+		Image img = new Image(Fountainizer.class.getResourceAsStream("img" + File.separator + "icon.png"));
+		stage.getIcons().add(img);
 	}
 	
 	//***************************************************************************//
