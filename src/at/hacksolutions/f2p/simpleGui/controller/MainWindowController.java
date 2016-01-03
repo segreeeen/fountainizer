@@ -102,7 +102,7 @@ public class MainWindowController {
 
 	@FXML
 	void createPDF(ActionEvent event) throws URISyntaxException {
-		long begin = System.currentTimeMillis();
+		
 		long time;
 		infobox.setText("Creating pdf...");
 		if (exportFile == null) {
@@ -124,7 +124,7 @@ public class MainWindowController {
 		String source = txtResourcePath.getText();
 		String dest = txtTargetPath.getText();
 		DynamicLines lines = null;
-
+		long parserTime = System.currentTimeMillis();
 		try {
 			lines = FileReader.getLines(source);
 		} catch (IOException e) {
@@ -133,9 +133,10 @@ public class MainWindowController {
 			e.printStackTrace();
 			return;
 		}
-
+		
 		Parser.parse(lines);
-
+		long parserEnd = System.currentTimeMillis() - parserTime;
+		long begin = System.currentTimeMillis();
 		try {
 			FilePrinter.writePDFBox(lines, dest);
 		} catch (IOException e) {
@@ -145,9 +146,11 @@ public class MainWindowController {
 			return;
 		}
 		time = System.currentTimeMillis() - begin;
+		double pPrint = parserEnd/1000d;
 		double tPrint = time/1000d;
 		infobox.setText("!!!   Document successfully created   !!!");
-		infobox.appendText("\nParsed and printed " + lines.getLineCount()
+		infobox.appendText("\nParsed your document in " + pPrint + "seconds\n"
+				+ " and printed " + lines.getLineCount()
 				+ " lines in only " + tPrint + " seconds :D!");
 		show.setDisable(false);
 
