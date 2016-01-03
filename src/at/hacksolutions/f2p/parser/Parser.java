@@ -1,5 +1,8 @@
 package at.hacksolutions.f2p.parser;
 
+import java.util.LinkedList;
+import java.util.function.Function;
+
 import at.hacksolutions.f2p.parser.interfaces.ParserLine;
 import at.hacksolutions.f2p.parser.interfaces.ParserLines;
 import at.hacksolutions.f2p.parser.line.Formatter;
@@ -13,7 +16,7 @@ import at.hacksolutions.f2p.parser.types.TypeHelper;
 
 public class Parser {
 
-    public static ParserLines parse(ParserLines outputLines) {
+    public static ParserLines parse(ParserLines outputLines, LinkedList<Function<SimpleLine, SimpleLine>> handlers) {
 	TitlePage tp = parseTitles(outputLines);
 	outputLines.setTitlepage(tp);
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
@@ -22,12 +25,16 @@ public class Parser {
 		l.setLineType(LineType.EMPTY);
 		continue;
 	    }
-	    setAttributes(l, outputLines);
+	    setAttributes(l, outputLines, handlers);
 	}
 	return outputLines;
     }
+    
+    public static ParserLines parse(ParserLines outputLines) {
+	return parse(outputLines, null);
+    }
 
-    private static void setAttributes(SimpleLine l, ParserLines outputLines) {
+    private static void setAttributes(SimpleLine l, ParserLines outputLines, LinkedList<Function<SimpleLine, SimpleLine>> handlers) {
 	LineType type = TypeHelper.getType(l, outputLines);
 	l.setLineType(type);
 	String fText = Formatter.format(l.getText(), type);
@@ -37,6 +44,10 @@ public class Parser {
 	String text = l.getText();
 	if (type == LineType.CHARACTER && text.matches(ParserConstants.L_DUAL_DIALOGUE)) {
 	    setDualDialogue(l, outputLines);
+	} else {
+	    if (handlers != null && !handlers.isEmpty()) {
+		l = callParserHandlers(l, handlers);
+	    }
 	}
     }
 
@@ -148,6 +159,15 @@ public class Parser {
 	    }
 	}
 	return null;
+    }
+    
+    private static SimpleLine callParserHandlers(SimpleLine line, LinkedList<Function<SimpleLine, SimpleLine>> handler) {
+	if (!handler.isEmpty()) {
+	    for (Function<SimpleLine, SimpleLine> c: handler) {
+		c.apply(line);
+	    }
+	    return line;
+	} else throw new IllegalArgumentException("handlers can't be empty or null");
     }
 
 }

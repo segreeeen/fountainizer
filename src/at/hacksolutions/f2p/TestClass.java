@@ -11,16 +11,17 @@ import at.hacksolutions.f2p.parser.line.DynamicLines;
 public class TestClass {
     public static void main(String[] args) throws URISyntaxException {
 	try {
-	    Long time = System.currentTimeMillis();
+
 	    DynamicLines lines = FileReader.getLines(
-		    "D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\sample.txt");
+		    "D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\bigfish.txt");
 	    
-	    
+	    Long time = System.currentTimeMillis();
 	    Parser.parse(lines);
-	    
+	    time = (System.currentTimeMillis() - time);
+	    System.out.println(time);
 
 	    FilePrinter.writePDFBox(lines, "testfile2.pdf");
-	    time = (System.currentTimeMillis() - time);
+	    
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
