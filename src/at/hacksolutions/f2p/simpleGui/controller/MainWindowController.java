@@ -241,7 +241,17 @@ public class MainWindowController {
 	@FXML
 	void showPdf(ActionEvent event) throws IOException {
 		if (exportFile.exists()) {
-			Desktop.getDesktop().open(exportFile);
+			try {
+				Desktop.getDesktop().open(exportFile);
+			} catch (Exception e) {
+				Dump.thatShit("Open not supported!", e);
+				infobox.setText("Sry... There is no pdf-viewer or opening is not supported!");
+				Alert a = new Alert(AlertType.ERROR);
+				a.setContentText("Sry. There is no pdf-viewer installed or the opening is not supported!");
+				a.setTitle("Could not open document!");
+				a.showAndWait();
+				return;
+			}
 			infobox.setText("File opened!");
 		} else {
 			infobox.setText("File does not exist!");
