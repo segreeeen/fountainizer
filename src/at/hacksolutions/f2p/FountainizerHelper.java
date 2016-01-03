@@ -27,12 +27,22 @@ public class FountainizerHelper {
 	}
     }
 
+    /**
+     * 
+     * @return measured time in ms
+     * @throws IOException
+     */
     public long read() throws IOException {
 	long time = System.currentTimeMillis();
 	FileReader.getLines(fileIn);
 	return System.currentTimeMillis() - time;
     }
 
+    /**
+     * 
+     * @return measured time in ms
+     * @throws IOException
+     */
     public long parse() {
 	if (textlines != null) {
 	    long time = System.currentTimeMillis();
@@ -43,6 +53,11 @@ public class FountainizerHelper {
 	}
     }
 
+    /**
+     * 
+     * @return measured time in ms
+     * @throws IOException
+     */
     public long printPdf() throws IOException, URISyntaxException {
 	long time = System.currentTimeMillis();
 	FilePrinter.writePDFBox(textlines, fileOut);
