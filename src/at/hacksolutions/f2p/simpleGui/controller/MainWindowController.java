@@ -11,6 +11,7 @@ import at.hacksolutions.f2p.io.FileReader;
 import at.hacksolutions.f2p.parser.Parser;
 import at.hacksolutions.f2p.parser.line.DynamicLines;
 import at.hacksolutions.f2p.simpleGui.Fountainizer;
+import at.hacksolutions.f2p.simpleGui.log.Dump;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,7 @@ import javafx.stage.Stage;
  */
 public class MainWindowController {
 
-	private final String BUILD = "v0.5 beta build 7b72ddb 02.01.2016 16:15";
+	private final String BUILD = "v0.5 beta build 7544d61 03.01.2016 12:00";
 	private final Stage stage;
 	private AnchorPane root;
 	private File exportFile;
@@ -50,34 +51,37 @@ public class MainWindowController {
 		versionInfo.setText(BUILD);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
-		stage.setTitle("Fountainizer - SimpleGui v0.5beta adcad9e");
+		stage.setTitle("Fountainizer - SimpleGui v0.5 beta");
 		stage.setResizable(false);
 		loadIconInto(stage);
 		stage.show();
 	}
 
 	private void initialize() {
-		FXMLLoader loader = new FXMLLoader(Fountainizer.class.getResource("/at/hacksolutions/f2p/simpleGui/view/MainWindow.fxml"));
-		
+		FXMLLoader loader = new FXMLLoader(
+				Fountainizer.class.getResource("/at/hacksolutions/f2p/simpleGui/view/MainWindow.fxml"));
+
 		try {
 			loader.setController(this);
 			root = loader.load();
 		} catch (IOException e) {
 			System.err.println("Something terrible happened! also ficken SIE sich!");
+			Dump.thatShit(e);
 			e.printStackTrace();
 			System.exit(0);
 		}
 	}
-	
+
 	private void loadIconInto(Stage stage) {
 		Image img = new Image(Fountainizer.class.getResourceAsStream("/at/hacksolutions/f2p/simpleGui/img/icon.png"));
-		if(img != null) stage.getIcons().add(img);
+		if (img != null)
+			stage.getIcons().add(img);
 	}
-	
-	//***************************************************************************//
-	//							FXML Specific Section							 //
-	//***************************************************************************//
-	
+
+	// ***************************************************************************//
+	// FXML Specific Section //
+	// ***************************************************************************//
+
 	@FXML
 	private Label versionInfo;
 
@@ -95,18 +99,22 @@ public class MainWindowController {
 
 	@FXML
 	private Button btnChooseDest;
-	
+
 	@FXML
 	void createPDF(ActionEvent event) throws URISyntaxException {
+		long begin = System.currentTimeMillis();
+		long time;
 		infobox.setText("Creating pdf...");
-		if(exportFile == null) {
+		if (exportFile == null) {
 			infobox.setText("ERROR!   You have to set source and destination!");
+			Dump.thatShit("Function Create PDF ERROR!   You have to set source and destination!");
 			return;
 		}
 		if (exportFile.exists()) {
 			Alert a = new Alert(AlertType.CONFIRMATION);
 			a.setTitle("Overwrite?");
-			a.setContentText("File at \"" + exportFile.getPath() + "\" already exists. Are you sure you want to overwrite the existing file?");
+			a.setContentText("File at \"" + exportFile.getPath()
+					+ "\" already exists. Are you sure you want to overwrite the existing file?");
 			Optional<ButtonType> o = a.showAndWait();
 			if (o.get().getText().contains(ButtonType.CANCEL.getText())) {
 				infobox.setText(infobox.getText() + "   User aborted...");
@@ -116,11 +124,12 @@ public class MainWindowController {
 		String source = txtResourcePath.getText();
 		String dest = txtTargetPath.getText();
 		DynamicLines lines = null;
-		
+
 		try {
 			lines = FileReader.getLines(source);
 		} catch (IOException e) {
 			infobox.setText("Error opening File!");
+			Dump.thatShit("Error opening File!", e);
 			e.printStackTrace();
 			return;
 		}
@@ -131,11 +140,15 @@ public class MainWindowController {
 			FilePrinter.writePDFBox(lines, dest);
 		} catch (IOException e) {
 			infobox.setText("Error writing File!");
+			Dump.thatShit("Error writing File!", e);
 			e.printStackTrace();
 			return;
 		}
-
+		time = System.currentTimeMillis() - begin;
+		double tPrint = time/1000d;
 		infobox.setText("!!!   Document successfully created   !!!");
+		infobox.appendText("\nParsed and printed " + lines.getLineCount()
+				+ " lines in only " + tPrint + " seconds :D!");
 		show.setDisable(false);
 
 	}
@@ -195,11 +208,11 @@ public class MainWindowController {
 			infobox.setText("File does not exist!");
 		}
 	}
-	
+
 	@FXML
 	void changeDestPath(ActionEvent event) {
 		pressed = !pressed;
-		if(pressed) {
+		if (pressed) {
 			txtTargetPath.setDisable(false);
 			btnChooseDest.setDisable(false);
 		} else {
