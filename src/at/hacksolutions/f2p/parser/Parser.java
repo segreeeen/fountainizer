@@ -8,16 +8,19 @@ import at.hacksolutions.f2p.parser.interfaces.ParserLines;
 import at.hacksolutions.f2p.parser.line.Formatter;
 import at.hacksolutions.f2p.parser.line.SimpleLine;
 import at.hacksolutions.f2p.parser.line.TitlePage;
-import at.hacksolutions.f2p.parser.line.TitlePageLine;
 import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserConstants;
-import at.hacksolutions.f2p.parser.types.TitleLineType;
 import at.hacksolutions.f2p.parser.types.TypeHelper;
 
 public class Parser {
 
-    public static ParserLines parse(ParserLines outputLines, LinkedList<Function<SimpleLine, SimpleLine>> handlers) {
-	TitlePage tp = parseTitles(outputLines);
+    public static ParserLines parse(ParserLines outputLines, LinkedList<Function<SimpleLine, SimpleLine>> parserHandlers, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
+	TitlePage tp;
+	if (titleHandlers != null && !titleHandlers.isEmpty()){
+	    tp = TitleParser.parse(outputLines, titleHandlers);
+	} else {
+	    tp = TitleParser.parse(outputLines);
+	}
 	outputLines.setTitlepage(tp);
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
 	    SimpleLine l = (SimpleLine) outputLines.get(i);
@@ -25,16 +28,23 @@ public class Parser {
 		l.setLineType(LineType.EMPTY);
 		continue;
 	    }
-	    setAttributes(l, outputLines, handlers);
+	    setAttributes(l, outputLines);
+	}
+
+	if (parserHandlers != null && !parserHandlers.isEmpty()) {
+	    for (int i = 0; i < outputLines.getLineCount(); i++) {
+		SimpleLine l = (SimpleLine) outputLines.get(i);
+		l = callParserHandlers(l, parserHandlers);
+	    }
 	}
 	return outputLines;
     }
-    
+
     public static ParserLines parse(ParserLines outputLines) {
-	return parse(outputLines, null);
+	return parse(outputLines, null, null);
     }
 
-    private static void setAttributes(SimpleLine l, ParserLines outputLines, LinkedList<Function<SimpleLine, SimpleLine>> handlers) {
+    private static void setAttributes(SimpleLine l, ParserLines outputLines) {
 	LineType type = TypeHelper.getType(l, outputLines);
 	l.setLineType(type);
 	String fText = Formatter.format(l.getText(), type);
@@ -44,10 +54,6 @@ public class Parser {
 	String text = l.getText();
 	if (type == LineType.CHARACTER && text.matches(ParserConstants.L_DUAL_DIALOGUE)) {
 	    setDualDialogue(l, outputLines);
-	} else {
-	    if (handlers != null && !handlers.isEmpty()) {
-		l = callParserHandlers(l, handlers);
-	    }
 	}
     }
 
@@ -85,89 +91,17 @@ public class Parser {
 	    fIterator.setDualDialogue(true);
 	}
     }
-    /*
-     * Parses the titlepage
-     */
-    private static TitlePage parseTitles(ParserLines outputLines) {
-	TitlePage titlePage = new TitlePage();
-	for (int i = 0; i < outputLines.getLineCount(); i++) {
-	    ParserLine l = outputLines.get(i);
-	    TitlePageLine tpl;
-	    if (!l.emptyText()) {
-		((SimpleLine) l).setText(l.getText());
-		if (isTitle(l) == TitleLineType.CENTERED) {
-		    // find text that is going to be centered on the page
-		    l.setLineType(TitleLineType.CENTERED);
-		    tpl = new TitlePageLine(TitleLineType.CENTERED);
-		    String fText = Formatter.format(l.getText(), TitleLineType.CENTERED);
-		    if (fText != null) {
-			SimpleLine newLine = new SimpleLine(fText, l.getLineNr());
-			newLine.setLineType(TitleLineType.CENTERED);
-			tpl.addLine(newLine);
-		    }
-		    i = setFollowingTitles(i, l, outputLines, tpl);
-		    outputLines.remove(l);
-		    titlePage.addLine(tpl);
 
-		} else if (isTitle(l) == TitleLineType.LEFT) {
-		    // find text that is going to be centered on the page
-		    l.setLineType(TitleLineType.LEFT);
-		    tpl = new TitlePageLine(TitleLineType.LEFT);
-		    String fText = Formatter.format(l.getText(), TitleLineType.LEFT);
-		    if (fText != null) {
-			SimpleLine newLine = new SimpleLine(fText, l.getLineNr());
-			newLine.setLineType(TitleLineType.LEFT);
-			tpl.addLine(newLine);
-		    }
-
-		    i = setFollowingTitles(i, l, outputLines, tpl);
-		    outputLines.remove(l);
-		    titlePage.addLine(tpl);
-		}
-	    }
-	}
-	return titlePage;
-    }
-
-    private static int setFollowingTitles(int i, ParserLine l, ParserLines outputLines, TitlePageLine tpl) {
-	SimpleLine iterator = (SimpleLine) outputLines.getNext(l);
-	if (iterator != null) {
-	    while (outputLines.hasNext(iterator)) {
-		if (iterator.emptyText() || isTitle(iterator) != null) {
-		    return iterator.getLineNr() - 2;
-		}
-		iterator.setLineType(tpl.getLineType());
-		tpl.addLine(iterator);
-		outputLines.remove(iterator);
-		String fText = Formatter.format(iterator.getText(), iterator.getLineType());
-		if (fText != null) {
-		    iterator.setText(fText);
-		}
-		iterator = (SimpleLine) outputLines.getNext(iterator);
-	    }
-	    return iterator.getLineNr();
-	}
-	return i;
-    }
-
-    private static TitleLineType isTitle(ParserLine l) {
-	if (!l.emptyText()) {
-	    if (l.getText().matches(ParserConstants.TP_CENTERED)) {
-		return TitleLineType.CENTERED;
-	    } else if (l.getText().matches(ParserConstants.TP_LEFT)) {
-		return TitleLineType.LEFT;
-	    }
-	}
-	return null;
-    }
     
+
     private static SimpleLine callParserHandlers(SimpleLine line, LinkedList<Function<SimpleLine, SimpleLine>> handler) {
 	if (!handler.isEmpty()) {
-	    for (Function<SimpleLine, SimpleLine> c: handler) {
+	    for (Function<SimpleLine, SimpleLine> c : handler) {
 		c.apply(line);
 	    }
 	    return line;
-	} else throw new IllegalArgumentException("handlers can't be empty or null");
+	} else
+	    throw new IllegalArgumentException("handlers can't be empty or null");
     }
 
 }
