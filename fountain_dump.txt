@@ -75,6 +75,3 @@ Error opening File!java.io.FileNotFoundException:
 	at com.sun.glass.ui.win.WinApplication.lambda$null$148(Unknown Source)
 	at java.lang.Thread.run(Unknown Source)
 
-
-03.01.2016 - 16:25:33
-Function Create PDF ERROR!   You have to set source and destination!
