@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import at.hacksolutions.f2p.FountainizerHelper;
 import at.hacksolutions.f2p.io.FilePrinter;
 import at.hacksolutions.f2p.io.FileReader;
 import at.hacksolutions.f2p.parser.Parser;
@@ -133,8 +134,8 @@ public class MainWindowController {
 	@FXML
 	void createPDF(ActionEvent event) throws URISyntaxException {
 
-		long time;
 		infobox.setText("Creating pdf...");
+		
 		if (exportFile == null) {
 			infobox.setText("ERROR!   You have to set source and destination!");
 			Dump.thatShit("Function Create PDF ERROR!   You have to set source and destination!");
@@ -151,36 +152,46 @@ public class MainWindowController {
 				return;
 			}
 		}
+		
 		String source = txtResourcePath.getText();
 		String dest = txtTargetPath.getText();
-		DynamicLines lines = null;
-		long parserTime = System.currentTimeMillis();
+		
+		FountainizerHelper api = new FountainizerHelper(source, dest);
+		double readTime = 0, parseTime = 0, printTime = 0;
+		
+		//****************** READ *********************
 		try {
-			lines = FileReader.getLines(source);
+			readTime = api.read();
 		} catch (IOException e) {
 			infobox.setText("Error opening File!");
 			Dump.thatShit("Error opening File!", e);
 			e.printStackTrace();
 			return;
 		}
-
-		Parser.parse(lines);
-		long parserEnd = System.currentTimeMillis() - parserTime;
-		long begin = System.currentTimeMillis();
+		//****************** PARSE ********************
 		try {
-			FilePrinter.writePDFBox(lines, dest);
-		} catch (IOException e) {
+			parseTime = api.parse();
+		} catch(IllegalStateException e) {
+			infobox.setText("Error parsing file!");
+			Dump.thatShit("Error parsing File!", e);
+			e.printStackTrace();
+			return;
+		}
+
+		//****************** PRINT ********************
+		try {
+			printTime = api.printPdf();
+		} catch (IOException | URISyntaxException e) {
 			infobox.setText("Error writing File!");
 			Dump.thatShit("Error writing File!", e);
 			e.printStackTrace();
 			return;
 		}
-		time = System.currentTimeMillis() - begin;
-		double pPrint = parserEnd / 1000d;
-		double tPrint = time / 1000d;
+		double rP = readTime + parseTime;
 		infobox.setText("!!!   Document successfully created   !!!");
-		infobox.appendText("\nParsed your document in " + pPrint + "seconds\n" + " and printed " + lines.getLineCount()
-				+ " lines in only " + tPrint + " seconds :D!");
+		infobox.appendText("\nRead and parsed your document in " + rP + "seconds\n" 
+							+ " and printed " + api.numOfLines()
+				+ " lines in only " + printTime + " seconds :D!");
 		show.setDisable(false);
 
 	}

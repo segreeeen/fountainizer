@@ -6,18 +6,19 @@ import javafx.stage.Stage;
 
 /**
  * This class starts the SimpleGui Version for Fountainizer
+ * 
  * @author Thomas Sulzbacher
  *
  */
-public class Fountainizer extends Application{
+public class Fountainizer extends Application {
 
 	public static void main(String[] args) {
 		Fountainizer.launch(args);
 	}
-	
+
 	@Override
 	public void start(Stage arg0) throws Exception {
 		new MainWindowController(arg0);
 	}
-	
+
 }

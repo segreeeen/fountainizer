@@ -8,9 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * This class is intended to quickly and dirty dump information to
- * a file. Used only in beta phase... Implementation of Java-Logger
- * class pending...
+ * This class is intended to quickly and dirty dump information to a file. Used
+ * only in beta phase... Implementation of Java-Logger class pending...
+ * 
  * @author Thomas Sulzbacher
  *
  */
@@ -22,6 +22,7 @@ public class Dump {
 
 	/**
 	 * Logs the input parameter to a txt file.
+	 * 
 	 * @param s
 	 */
 	public static void thatShit(String s) {
@@ -33,24 +34,23 @@ public class Dump {
 				e.printStackTrace();
 			}
 			logSysInfo(f);
-		} else {
-			try {
-				log(s,f);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		}
+
+		try {
+			log(s, f);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * @see thatShit(String s)
-	 * Logs an exception to a file!
+	 * @see thatShit(String s) Logs an exception to a file!
 	 * @param e
 	 */
 	public static void thatShit(Exception e) {
 		thatShit(e.toString());
 	}
-	
+
 	public static void thatShit(String s, Exception e) {
 		thatShit(s + e.toString());
 	}
