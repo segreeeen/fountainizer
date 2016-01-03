@@ -4,6 +4,8 @@ import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
@@ -83,9 +85,26 @@ public class MainWindowController {
 	private void loadIconInto(Stage stage) throws IOException {
 		Image img = new Image(Fountainizer.class.getResourceAsStream("/at/hacksolutions/f2p/simpleGui/img/icon.png"));
 		stage.getIcons().add(img);
-		if(System.getProperty("os.name").contains("Mac")) {
-			java.awt.Image image = ImageIO.read(Fountainizer.class.getResourceAsStream("/at/hacksolutions/f2p/simpleGui/img/icon.png"));
-			com.apple.eawt.Application.getApplication().setDockIconImage(image);
+
+		if (System.getProperty("os.name").contains("Mac")) {
+			java.awt.Image image = ImageIO
+					.read(Fountainizer.class.getResourceAsStream("/at/hacksolutions/f2p/simpleGui/img/icon.png"));
+
+			try {
+				@SuppressWarnings("rawtypes")
+				Class c = Class.forName("com.apple.eawt.Application");
+				@SuppressWarnings("unchecked")
+				Method m = c.getMethod("getApplication");
+				Object applicationInstance = m.invoke(null);
+				m = applicationInstance.getClass().getMethod("setDockIconImage", java.awt.Image.class);
+
+				m.invoke(applicationInstance, image);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+					| ClassNotFoundException | NoSuchMethodException | SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				Dump.thatShit("mac dock image error :D", e);
+			}
 		}
 	}
 
@@ -113,7 +132,7 @@ public class MainWindowController {
 
 	@FXML
 	void createPDF(ActionEvent event) throws URISyntaxException {
-		
+
 		long time;
 		infobox.setText("Creating pdf...");
 		if (exportFile == null) {
@@ -144,7 +163,7 @@ public class MainWindowController {
 			e.printStackTrace();
 			return;
 		}
-		
+
 		Parser.parse(lines);
 		long parserEnd = System.currentTimeMillis() - parserTime;
 		long begin = System.currentTimeMillis();
@@ -157,11 +176,10 @@ public class MainWindowController {
 			return;
 		}
 		time = System.currentTimeMillis() - begin;
-		double pPrint = parserEnd/1000d;
-		double tPrint = time/1000d;
+		double pPrint = parserEnd / 1000d;
+		double tPrint = time / 1000d;
 		infobox.setText("!!!   Document successfully created   !!!");
-		infobox.appendText("\nParsed your document in " + pPrint + "seconds\n"
-				+ " and printed " + lines.getLineCount()
+		infobox.appendText("\nParsed your document in " + pPrint + "seconds\n" + " and printed " + lines.getLineCount()
 				+ " lines in only " + tPrint + " seconds :D!");
 		show.setDisable(false);
 
