@@ -1,10 +1,13 @@
 package at.hacksolutions.f2p.simpleGui.controller;
 
 import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import at.hacksolutions.f2p.io.FilePrinter;
 import at.hacksolutions.f2p.io.FileReader;
@@ -53,7 +56,12 @@ public class MainWindowController {
 		stage.setScene(scene);
 		stage.setTitle("Fountainizer - SimpleGui v0.5 beta");
 		stage.setResizable(false);
-		loadIconInto(stage);
+		try {
+			loadIconInto(stage);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		stage.show();
 	}
 
@@ -72,10 +80,13 @@ public class MainWindowController {
 		}
 	}
 
-	private void loadIconInto(Stage stage) {
+	private void loadIconInto(Stage stage) throws IOException {
 		Image img = new Image(Fountainizer.class.getResourceAsStream("/at/hacksolutions/f2p/simpleGui/img/icon.png"));
-		if (img != null)
-			stage.getIcons().add(img);
+		stage.getIcons().add(img);
+		if(System.getProperty("os.name").contains("Mac")) {
+			java.awt.Image image = ImageIO.read(Fountainizer.class.getResourceAsStream("/at/hacksolutions/f2p/simpleGui/img/icon.png"));
+			com.apple.eawt.Application.getApplication().setDockIconImage(image);
+		}
 	}
 
 	// ***************************************************************************//
@@ -165,7 +176,7 @@ public class MainWindowController {
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(".fountain", "*.fountain"));
 		File selectedFile = fc.showOpenDialog(stage);
 		if (selectedFile == null) {
-			infobox.setText("Please select a valid *.txt-file!");
+			infobox.setText("Please select a valid *.txt or *.fountain-file!");
 			return;
 		}
 		txtResourcePath.setText(selectedFile.getAbsolutePath());
