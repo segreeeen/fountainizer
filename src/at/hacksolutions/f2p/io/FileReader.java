@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.function.Consumer;
@@ -17,7 +16,6 @@ public class FileReader {
 	DynamicLines linesList = new DynamicLines();
 	InputStreamReader reader = new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8);
 	BufferedReader readLine = new BufferedReader(reader);
-	CharsetEncoder enc = StandardCharsets.UTF_8.newEncoder();
 	while (readLine.ready()) {
 	    String text = readLine.readLine();
 	    if (handlers != null && !handlers.isEmpty()) {

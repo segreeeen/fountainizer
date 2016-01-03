@@ -1,21 +1,17 @@
 package at.hacksolutions.f2p.simpleGui.controller;
 
 import java.awt.Desktop;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
+import java.text.DecimalFormat;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
 import at.hacksolutions.f2p.FountainizerHelper;
-import at.hacksolutions.f2p.io.FilePrinter;
-import at.hacksolutions.f2p.io.FileReader;
-import at.hacksolutions.f2p.parser.Parser;
-import at.hacksolutions.f2p.parser.line.DynamicLines;
 import at.hacksolutions.f2p.simpleGui.Fountainizer;
 import at.hacksolutions.f2p.simpleGui.log.Dump;
 import javafx.event.ActionEvent;
@@ -44,7 +40,7 @@ import javafx.stage.Stage;
  */
 public class MainWindowController {
 
-	private final String BUILD = "v0.5 beta build 7544d61 03.01.2016 12:00";
+	private final String BUILD = "v0.5 beta build ee52ea5 03.01.2016 15:00";
 	private final Stage stage;
 	private AnchorPane root;
 	private File exportFile;
@@ -135,7 +131,7 @@ public class MainWindowController {
 	void createPDF(ActionEvent event) throws URISyntaxException {
 
 		infobox.setText("Creating pdf...");
-		
+
 		if (exportFile == null) {
 			infobox.setText("ERROR!   You have to set source and destination!");
 			Dump.thatShit("Function Create PDF ERROR!   You have to set source and destination!");
@@ -152,14 +148,14 @@ public class MainWindowController {
 				return;
 			}
 		}
-		
+
 		String source = txtResourcePath.getText();
 		String dest = txtTargetPath.getText();
-		
+
 		FountainizerHelper api = new FountainizerHelper(source, dest);
 		double readTime = 0, parseTime = 0, printTime = 0;
-		
-		//****************** READ *********************
+
+		// ****************** READ *********************
 		try {
 			readTime = api.read();
 		} catch (IOException e) {
@@ -168,17 +164,17 @@ public class MainWindowController {
 			e.printStackTrace();
 			return;
 		}
-		//****************** PARSE ********************
+		// ****************** PARSE ********************
 		try {
 			parseTime = api.parse();
-		} catch(IllegalStateException e) {
+		} catch (IllegalStateException e) {
 			infobox.setText("Error parsing file!");
 			Dump.thatShit("Error parsing File!", e);
 			e.printStackTrace();
 			return;
 		}
 
-		//****************** PRINT ********************
+		// ****************** PRINT ********************
 		try {
 			printTime = api.printPdf();
 		} catch (IOException | URISyntaxException e) {
@@ -188,10 +184,10 @@ public class MainWindowController {
 			return;
 		}
 		double rP = readTime + parseTime;
+		DecimalFormat df = new DecimalFormat("#.##");
 		infobox.setText("!!!   Document successfully created   !!!");
-		infobox.appendText("\nRead and parsed your document in " + rP + "seconds\n" 
-							+ " and printed " + api.numOfLines()
-				+ " lines in only " + printTime + " seconds :D!");
+		infobox.appendText("\nRead and parsed your document in " + df.format(rP) + "seconds\n" + " and printed "
+				+ api.numOfLines() + " lines in only " + df.format(printTime) + " seconds :D!");
 		show.setDisable(false);
 
 	}

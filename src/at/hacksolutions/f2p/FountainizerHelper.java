@@ -19,6 +19,7 @@ public class FountainizerHelper {
 	private String fileIn;
 	private String fileOut;
 	private DynamicLines textlines = null;
+	
 
 	public FountainizerHelper(String fileIn, String fileOut) {
 		if (fileIn != null && fileOut != null) {

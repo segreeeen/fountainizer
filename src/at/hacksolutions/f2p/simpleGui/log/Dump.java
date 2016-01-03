@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -52,7 +54,10 @@ public class Dump {
 	}
 
 	public static void thatShit(String s, Exception e) {
-		thatShit(s + e.toString());
+		StringWriter sw = new StringWriter();
+		e.printStackTrace(new PrintWriter(sw));
+		String exceptionAsString = sw.toString();
+		thatShit(s + exceptionAsString);
 	}
 
 	private static void log(String s, File f) throws IOException {
