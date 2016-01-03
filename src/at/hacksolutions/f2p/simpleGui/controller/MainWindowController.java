@@ -58,7 +58,6 @@ public class MainWindowController {
 		try {
 			loadIconInto(stage);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		stage.show();
@@ -98,7 +97,6 @@ public class MainWindowController {
 				m.invoke(applicationInstance, image);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 					| ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				Dump.thatShit("mac dock image error :D", e);
 			}
@@ -240,18 +238,13 @@ public class MainWindowController {
 
 	@FXML
 	void showPdf(ActionEvent event) throws IOException {
+		if (!System.getProperty("os.name").contains("Mac") && !System.getProperty("os.name").contains("Windows")) {
+			Alert b = new Alert(AlertType.INFORMATION, "Not supported on your os!", ButtonType.OK);
+			b.showAndWait();
+			return;
+		}
 		if (exportFile.exists()) {
-			try {
-				Desktop.getDesktop().open(exportFile);
-			} catch (Exception e) {
-				Dump.thatShit("Open not supported!", e);
-				infobox.setText("Sry... There is no pdf-viewer or opening is not supported!");
-				Alert a = new Alert(AlertType.ERROR);
-				a.setContentText("Sry. There is no pdf-viewer installed or the opening is not supported!");
-				a.setTitle("Could not open document!");
-				a.showAndWait();
-				return;
-			}
+			Desktop.getDesktop().open(exportFile);
 			infobox.setText("File opened!");
 		} else {
 			infobox.setText("File does not exist!");
