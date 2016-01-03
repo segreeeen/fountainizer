@@ -28,7 +28,7 @@ public class Dump {
 	 * @param s
 	 */
 	public static void thatShit(String s) {
-		File f = new File(filePath + fileName);
+		File f = new File(filePath + File.separator + fileName);
 		if (!f.exists()) {
 			try {
 				f.createNewFile();
