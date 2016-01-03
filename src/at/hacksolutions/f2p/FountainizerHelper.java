@@ -36,7 +36,7 @@ public class FountainizerHelper {
 	 */
 	public double read() throws IOException {
 		long time = System.currentTimeMillis();
-		FileReader.getLines(fileIn);
+		textlines = FileReader.getLines(fileIn);
 		return (System.currentTimeMillis() - time)/1000d;
 	}
 

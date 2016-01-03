@@ -12,15 +12,13 @@ public class TestClass {
     public static void main(String[] args) throws URISyntaxException {
 	try {
 
-	    DynamicLines lines = FileReader.getLines(
-		    "D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\bigfish.txt");
+	    FountainizerHelper helper = new FountainizerHelper("D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\bigfish.txt", 
+		    "D:\\git\\fountain2pdf\\src\\at\\hacksolutions\\f2p\\bigfish.pdf");
 	    
 	    Long time = System.currentTimeMillis();
-	    Parser.parse(lines);
-	    time = (System.currentTimeMillis() - time);
-	    System.out.println(time);
-
-	    FilePrinter.writePDFBox(lines, "testfile2.pdf");
+	    helper.read();
+	    helper.parse();
+	    helper.printPdf();
 	    
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
