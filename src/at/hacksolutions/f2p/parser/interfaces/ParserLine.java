@@ -4,6 +4,9 @@ import java.util.LinkedList;
 
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 
+/**
+ * @author Felix Batusic
+ */
 public interface ParserLine {
 
     /**

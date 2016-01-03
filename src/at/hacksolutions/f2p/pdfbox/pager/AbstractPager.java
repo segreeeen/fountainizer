@@ -13,6 +13,10 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import at.hacksolutions.f2p.pdfbox.interfaces.Pager;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichFormat;
 
+/**
+ * @author Lukas Theis
+ * @author Felix Batusic
+ */
 public abstract class AbstractPager implements Pager {
 
     // DocSpec

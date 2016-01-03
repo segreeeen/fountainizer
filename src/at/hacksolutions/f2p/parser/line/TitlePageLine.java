@@ -6,6 +6,9 @@ import at.hacksolutions.f2p.parser.interfaces.ParserLine;
 import at.hacksolutions.f2p.parser.interfaces.ParserType;
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 
+/**
+ * @author Felix Batusic
+ */
 public class TitlePageLine implements ParserLine {
     private ParserType type;
     private LinkedList<ParserLine> lines;

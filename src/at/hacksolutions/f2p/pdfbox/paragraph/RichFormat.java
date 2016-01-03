@@ -6,6 +6,9 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 
 import at.hacksolutions.f2p.pdfbox.interfaces.Pager;
 
+/**
+ * @author Lukas Theis
+ */
 public class RichFormat {
 
     private boolean underline = false;

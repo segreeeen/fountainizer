@@ -9,6 +9,10 @@ import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichFormat;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichString;
 
+/**
+ * @author Lukas Theis
+ * @author Felix Batusic
+ */
 public class TitlePager extends AbstractPager {
     private float centerOffset;
     private float lowerLeftOffset;

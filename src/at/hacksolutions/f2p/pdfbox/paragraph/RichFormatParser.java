@@ -2,6 +2,9 @@ package at.hacksolutions.f2p.pdfbox.paragraph;
 
 import java.util.LinkedList;
 
+/**
+ * @author Felix Batusic
+ */
 public class RichFormatParser {
 
     private LinkedList<RichFormat> formats = new LinkedList<RichFormat>();

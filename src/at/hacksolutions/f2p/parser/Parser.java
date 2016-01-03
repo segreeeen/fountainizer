@@ -1,3 +1,7 @@
+/*  Copyright (C) 2015  Felix Batusic
+    You should have received a copy of the GNU General Public License along
+    with this program	*/
+
 package at.hacksolutions.f2p.parser;
 
 import java.util.LinkedList;
@@ -12,6 +16,10 @@ import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserConstants;
 import at.hacksolutions.f2p.parser.types.TypeHelper;
 
+
+/**
+ * @author Felix Batusic
+ */
 public class Parser {
 
     public static ParserLines parse(ParserLines outputLines, LinkedList<Function<SimpleLine, SimpleLine>> parserHandlers, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {

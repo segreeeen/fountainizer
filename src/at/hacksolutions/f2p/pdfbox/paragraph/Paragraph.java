@@ -10,6 +10,9 @@ import at.hacksolutions.f2p.pdfbox.interfaces.Margins;
 import at.hacksolutions.f2p.pdfbox.pager.AbstractPager;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichString;
 
+/**
+ * @author Lukas Theis
+ */
 public class Paragraph implements Margins {
 
     // private String text;

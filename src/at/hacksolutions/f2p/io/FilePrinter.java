@@ -15,6 +15,9 @@ import at.hacksolutions.f2p.pdfbox.pager.StandardPager;
 import at.hacksolutions.f2p.pdfbox.pager.TitlePager;
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 
+/**
+ * @author Felix Batusic
+ */
 public class FilePrinter {
 
     public static void writePDFBox(ParserLines dLines, String filename) throws IOException, URISyntaxException {

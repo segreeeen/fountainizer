@@ -1,5 +1,8 @@
 package at.hacksolutions.f2p.parser.types;
 
+/**
+ * @author Felix Batusic
+ */
 public final class ParserConstants {
     
     /**

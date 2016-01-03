@@ -2,6 +2,9 @@ package at.hacksolutions.f2p.parser.types;
 
 import at.hacksolutions.f2p.parser.interfaces.ParserType;
 
+/**
+ * @author Felix Batusic
+ */
 public enum TitleLineType implements ParserType {
     CENTERED(false, true, false, 0F, 0F, 0F, 0.0F), LEFT(false, false, false,
 	    0.0F, 0F, 0.0F, 10.0F);

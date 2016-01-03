@@ -7,6 +7,10 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 
+/**
+ * @author Lukas Theis
+ * @author Felix Batusic
+ */
 public interface Pager extends Margins {
 
     public void drawParagraph(Paragraph p) throws IOException;

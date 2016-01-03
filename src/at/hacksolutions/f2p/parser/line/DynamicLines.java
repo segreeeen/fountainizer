@@ -6,6 +6,9 @@ import java.util.Iterator;
 import at.hacksolutions.f2p.parser.interfaces.ParserLine;
 import at.hacksolutions.f2p.parser.interfaces.ParserLines;
 
+/**
+ * @author Felix Batusic
+ */
 public class DynamicLines implements ParserLines {
     private TitlePage tp;
     private ArrayList<ParserLine> lines;

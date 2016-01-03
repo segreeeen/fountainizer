@@ -7,6 +7,9 @@ import at.hacksolutions.f2p.parser.interfaces.ParserType;
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichString;
 
+/**
+ * @author Felix Batusic
+ */
 public class SimpleLine implements ParserLine {
     private String text;
     private int lineNr;

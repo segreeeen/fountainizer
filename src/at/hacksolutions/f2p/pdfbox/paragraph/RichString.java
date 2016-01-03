@@ -5,6 +5,9 @@ import java.util.LinkedList;
 
 import at.hacksolutions.f2p.pdfbox.interfaces.Pager;
 
+/**
+ * @author Lukas Theis
+ */
 public class RichString {
 
     private LinkedList<RichFormat> formattings;

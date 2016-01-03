@@ -14,6 +14,9 @@ import at.hacksolutions.f2p.parser.interfaces.ParserLines;
 import at.hacksolutions.f2p.parser.interfaces.ParserType;
 import at.hacksolutions.f2p.parser.line.SimpleLine;
 
+/**
+ * @author Felix Batusic
+ */
 public class TypeHelper {
 
     public static LineType getType(SimpleLine l, ParserLines outputLines) {

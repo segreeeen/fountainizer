@@ -3,6 +3,9 @@ package at.hacksolutions.f2p.parser.interfaces;
 import at.hacksolutions.f2p.parser.line.SimpleLine;
 import at.hacksolutions.f2p.parser.line.TitlePage;
 
+/**
+ * @author Felix Batusic
+ */
 public interface ParserLines extends Iterable<ParserLine> {
     public ParserLine get(int index);
 

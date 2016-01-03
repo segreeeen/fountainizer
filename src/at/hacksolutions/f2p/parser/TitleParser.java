@@ -12,6 +12,9 @@ import at.hacksolutions.f2p.parser.line.TitlePageLine;
 import at.hacksolutions.f2p.parser.types.ParserConstants;
 import at.hacksolutions.f2p.parser.types.TitleLineType;
 
+/**
+ * @author Felix Batusic
+ */
 class TitleParser {
     /*
      * Parses the titlepage

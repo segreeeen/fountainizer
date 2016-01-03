@@ -1,5 +1,9 @@
 package at.hacksolutions.f2p.pdfbox.interfaces;
 
+/**
+ * @author Lukas Theis
+ * @author Felix Batusic
+ */
 public interface Margins {
 	public float getMarginTop();
 	public float getMarginLeft();

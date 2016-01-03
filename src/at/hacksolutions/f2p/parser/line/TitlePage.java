@@ -8,10 +8,13 @@ import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 
 /**
- * @author SeGreeeen This Line is used as a substitute for all the title Lines
- *         and in the end is printed as a Title Page. It consists of a List of
- *         TitleLines that are found in the first run of parsing. It does not
- *         contain any actual text.
+ * This Line is used as a substitute for all the title Lines
+ * and in the end is printed as a Title Page. It consists of a List of
+ * TitleLines that are found in the first run of parsing. It does not
+ * contain any actual text.
+ * 
+ * @author SeGreeeen 
+ * 
  */
 public class TitlePage implements ParserLine {
     private LinkedList<TitlePageLine> titlePageLines;

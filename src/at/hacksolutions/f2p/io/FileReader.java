@@ -10,6 +10,9 @@ import java.util.function.Consumer;
 
 import at.hacksolutions.f2p.parser.line.DynamicLines;
 
+/**
+ * @author Felix Batusic
+ */
 public class FileReader {
     public static DynamicLines getLines(String fileName, LinkedList<Consumer<String>> handlers) throws IOException {
 

@@ -8,6 +8,9 @@ import at.hacksolutions.f2p.parser.types.LineType;
 import at.hacksolutions.f2p.parser.types.ParserConstants;
 import at.hacksolutions.f2p.parser.types.TitleLineType;
 
+/**
+ * @author Felix Batusic
+ */
 public class Formatter {
     public static String format(String s, ParserType type) {
 	if (s != null) {

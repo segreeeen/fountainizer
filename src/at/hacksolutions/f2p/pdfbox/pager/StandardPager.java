@@ -13,6 +13,10 @@ import at.hacksolutions.f2p.pdfbox.paragraph.Paragraph;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichFormat;
 import at.hacksolutions.f2p.pdfbox.paragraph.RichString;
 
+/**
+ * @author Lukas Theis
+ * @author Felix Batusic
+ */
 public class StandardPager extends AbstractPager {
 
     private static final int FIRST = 1;
