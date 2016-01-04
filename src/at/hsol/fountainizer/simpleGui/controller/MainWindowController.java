@@ -65,7 +65,7 @@ public class MainWindowController {
 
 	private void initialize() {
 		FXMLLoader loader = new FXMLLoader(
-				Fountainizer.class.getResource("/at/hacksolutions/f2p/simpleGui/view/MainWindow.fxml"));
+				Fountainizer.class.getResource("/at/hsol/fountainizer/simpleGui/view/MainWindow.fxml"));
 
 		try {
 			loader.setController(this);
@@ -79,12 +79,12 @@ public class MainWindowController {
 	}
 
 	private void loadIconInto(Stage stage) throws IOException {
-		Image img = new Image(Fountainizer.class.getResourceAsStream("/at/hacksolutions/f2p/simpleGui/img/icon.png"));
+		Image img = new Image(Fountainizer.class.getResourceAsStream("/at/hsol/fountainizer/simpleGui/img/icon.png"));
 		stage.getIcons().add(img);
 
 		if (System.getProperty("os.name").contains("Mac")) {
 			java.awt.Image image = ImageIO
-					.read(Fountainizer.class.getResourceAsStream("/at/hacksolutions/f2p/simpleGui/img/icon.png"));
+					.read(Fountainizer.class.getResourceAsStream("/at/hsol/fountainizer/simpleGui/img/icon.png"));
 
 			try {
 				@SuppressWarnings("rawtypes")
@@ -181,6 +181,7 @@ public class MainWindowController {
 			e.printStackTrace();
 			return;
 		}
+		
 		double rP = readTime + parseTime;
 		DecimalFormat df = new DecimalFormat("#.##");
 		infobox.setText("!!!   Document successfully created   !!!");
