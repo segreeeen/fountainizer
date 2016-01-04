@@ -26,6 +26,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -60,6 +62,7 @@ public class MainWindowController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		activateDragDropListener();
 		stage.show();
 	}
 
@@ -101,6 +104,41 @@ public class MainWindowController {
 				Dump.thatShit("mac dock image error :D", e);
 			}
 		}
+	}
+	
+	private void activateDragDropListener() {
+		txtResourcePath.setOnDragOver(event -> {
+			Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                event.acceptTransferModes(TransferMode.LINK);
+            } else {
+                event.consume();
+            }
+		});
+		
+		txtResourcePath.setOnDragDropped(event -> {
+			Dragboard db = event.getDragboard();
+			
+			if(db.hasFiles()) {
+				System.out.println("test");
+				File f = db.getFiles().stream()
+				.filter(a -> a.getAbsolutePath().endsWith(".txt") || a.getAbsolutePath().endsWith(".fountain"))
+				.findAny().get();
+				System.out.println("test");
+				if(f != null && f.exists()) {
+					txtResourcePath.setText(f.getAbsolutePath());
+					String path = createNewPath(f);
+					exportFile = new File(path);
+					txtTargetPath.setText(path);
+					show.setDisable(true);
+					infobox.setText("");
+
+				} else {
+					infobox.setText("Please put in valid files! Supported formats are: .txt and .fountain!");
+				}
+				
+			}
+		});
 	}
 
 	// ***************************************************************************//
