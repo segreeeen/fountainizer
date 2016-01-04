@@ -35,9 +35,8 @@ public class FilePrinter {
 		    titlePage.drawParagraph(p);
 		}
 	    }
+	    standardPage.initNextPage();
 	}
-
-	standardPage.initNextPage();
 
 	LinkedList<Paragraph> firstDialogue = null;
 	LinkedList<Paragraph> secondDialogue = null;

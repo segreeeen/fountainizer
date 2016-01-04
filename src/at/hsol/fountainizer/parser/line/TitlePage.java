@@ -56,7 +56,7 @@ public class TitlePage implements ParserLine {
 
     @Override
     public boolean emptyText() {
-	return false;
+	return titlePageLines.isEmpty();
     }
 
     @Override
@@ -82,5 +82,6 @@ public class TitlePage implements ParserLine {
 	// TODO Auto-generated method stub
 
     }
+
 
 }
