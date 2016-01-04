@@ -6,3 +6,6 @@ src/at/hacksolutions/f2p/sample.pdf
 icon.ico
 /testfile2.pdf
 /fountain_dump.txt
+
+/bin
+/target
