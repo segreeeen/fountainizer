@@ -4,6 +4,9 @@ Fountainizer is a free Fountain parser with a PDF printer.
 ### What is Fountain?
 "Fountain is a simple markup syntax for writing, editing and sharing screenplays in plain, human-readable text. Fountain allows you to work on your screenplay anywhere, on any computer or tablet, using any software that edits text files."
 
+### Where can I get it? 
+Always the latest commit right here: https://github.com/segreeeen/fountainizer/tree/master/export
+
 Source: http://fountain.io/
 
 ### Who needs Fountainizer?
