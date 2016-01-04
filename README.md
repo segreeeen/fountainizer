@@ -6,6 +6,11 @@ Fountainizer is a free Fountain parser with a PDF printer.
 
 Source: http://fountain.io/
 
+### Where can I get it? 
+Always the latest commit right here: https://github.com/segreeeen/fountainizer/tree/master/export
+
+
+
 ### Who needs Fountainizer?
 Everybody who want to write screenplays in plain text without using an extra editor. 
 
