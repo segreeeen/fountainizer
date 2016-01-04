@@ -42,7 +42,7 @@ import javafx.stage.Stage;
  */
 public class MainWindowController {
 
-	private final String BUILD = "v0.5 beta build b78a36f 04.01.2016 22:20";
+	private final String BUILD = "v0.5 beta build fb1b9d3 04.01.2016 23:40";
 	private final Stage stage;
 	private AnchorPane root;
 	private File exportFile;
@@ -120,19 +120,18 @@ public class MainWindowController {
 			Dragboard db = event.getDragboard();
 			
 			if(db.hasFiles()) {
-				System.out.println("test");
-				File f = db.getFiles().stream()
+				Optional<File> o = db.getFiles().stream()
 				.filter(a -> a.getAbsolutePath().endsWith(".txt") || a.getAbsolutePath().endsWith(".fountain"))
-				.findAny().get();
-				System.out.println("test");
-				if(f != null && f.exists()) {
+				.findFirst();
+				
+				if(o.isPresent()) {
+					File f = o.get();
 					txtResourcePath.setText(f.getAbsolutePath());
 					String path = createNewPath(f);
 					exportFile = new File(path);
 					txtTargetPath.setText(path);
 					show.setDisable(true);
 					infobox.setText("");
-
 				} else {
 					infobox.setText("Please put in valid files! Supported formats are: .txt and .fountain!");
 				}

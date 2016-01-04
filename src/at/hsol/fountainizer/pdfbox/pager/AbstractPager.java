@@ -45,10 +45,10 @@ public abstract class AbstractPager implements Pager {
     public AbstractPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException, URISyntaxException {
 	setMargin(top, left, right, bottom);
 	this.doc = doc;
-	font = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrime.ttf"));
-	boldFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeBold.ttf"));
-	italicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeItalic.ttf"));
-	boldItalicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hacksolutions/f2p/pdfbox/fonts/CourierPrimeBoldItalic.ttf"));
+	font = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hsol/fountainizer/pdfbox/fonts/CourierPrime.ttf"));
+	boldFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hsol/fountainizer/pdfbox/fonts/CourierPrimeBold.ttf"));
+	italicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hsol/fountainizer/pdfbox/fonts/CourierPrimeItalic.ttf"));
+	boldItalicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hsol/fountainizer/pdfbox/fonts/CourierPrimeBoldItalic.ttf"));
     }
 
     public void initNextPage() throws IOException {
