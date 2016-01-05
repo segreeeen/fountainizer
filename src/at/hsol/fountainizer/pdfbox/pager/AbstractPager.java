@@ -20,12 +20,12 @@ import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 public abstract class AbstractPager implements Pager {
 
     // DocSpec
-    private PDDocument doc;
+    protected PDDocument doc;
     protected PDPage page;
     protected PDPageContentStream stream;
 
     // Fonts
-    private PDFont font;
+    protected PDFont font;
     private PDFont boldFont;
     private PDFont italicFont;
     private PDFont boldItalicFont;
@@ -35,6 +35,10 @@ public abstract class AbstractPager implements Pager {
     protected float writtenAreaY = 0;
     private float lineHeightFactor = 1.2f;
     private float underLineFactor = 1.1f;
+    private float lineHeight;
+    private float pageWidth = 0f;
+    private float pageHeight = 0f;
+    private float underLineDifference;
 
     // Margins
     private float marginTop;
@@ -45,10 +49,15 @@ public abstract class AbstractPager implements Pager {
     public AbstractPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException, URISyntaxException {
 	setMargin(top, left, right, bottom);
 	this.doc = doc;
+
 	font = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hsol/fountainizer/pdfbox/fonts/CourierPrime.ttf"));
 	boldFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hsol/fountainizer/pdfbox/fonts/CourierPrimeBold.ttf"));
 	italicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hsol/fountainizer/pdfbox/fonts/CourierPrimeItalic.ttf"));
 	boldItalicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("/at/hsol/fountainizer/pdfbox/fonts/CourierPrimeBoldItalic.ttf"));
+
+	lineHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * lineHeightFactor;
+	underLineDifference = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * underLineFactor - getLineHeight();
+	
     }
 
     public void initNextPage() throws IOException {
@@ -70,7 +79,7 @@ public abstract class AbstractPager implements Pager {
     }
 
     public float getLineHeight() {
-	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * lineHeightFactor;
+	return lineHeight;
     }
 
     public float getPageWidth() {
@@ -145,11 +154,11 @@ public abstract class AbstractPager implements Pager {
     }
 
     protected float getUnderLineDifference() {
-	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * underLineFactor - getLineHeight();
+	return underLineDifference;
     }
 
     protected void printLeftAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
-	
+
 	stream.beginText();
 	stream.newLineAtOffset(x + currentLineWidth, y);
 	stream.setNonStrokingColor(Color.BLACK);

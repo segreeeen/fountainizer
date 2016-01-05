@@ -18,18 +18,18 @@ public class Formatter {
 	}
 
 	if (type == LineType.HEADING) {
-	    Pattern p = Pattern.compile("\\.(.*?)");
-	    Matcher m = p.matcher(s);
-	    if (m.find()) {
-		String rets = s.substring(m.end(), s.length()).trim();
-		if (rets.isEmpty()) {
-		    return s;
-		} else {
-		    return rets.trim();
-		}
-	    } else {
-		return s;
-	    }
+	    if (s.startsWith(".")) {
+		Pattern p = Pattern.compile("\\.(.*?)");
+		Matcher m = p.matcher(s);
+		if (m.find()) {
+		    String rets = s.substring(m.end(), s.length()).trim();
+		    if (rets.isEmpty()) {
+			return s;
+		    } else {
+			return rets.trim();
+		    }
+		} else return s;
+	    } else return s;
 	} else if (type == LineType.CHARACTER) {
 	    if (s.contains("@")) {
 		return s.replaceFirst("@", "");

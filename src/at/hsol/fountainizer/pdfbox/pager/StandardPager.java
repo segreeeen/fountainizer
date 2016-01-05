@@ -3,6 +3,7 @@ package at.hsol.fountainizer.pdfbox.pager;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -29,22 +30,25 @@ public class StandardPager extends AbstractPager {
 	initNextPage();
     }
 
+    @Override
+    public void initNextPage() throws IOException {
+	super.initNextPage();
+	printPageNr();
+    }
+
     public void drawParagraph(Paragraph p) throws IOException {
-	if (prevType == LineType.ACTION && p.getLinetype() == LineType.EMPTY) {
-	    prevType = p.getLinetype();
-	    return;
-	} else if (prevType == LineType.EMPTY && p.getLinetype() == LineType.ACTION) {
+	if (p.getLinetype() == LineType.EMPTY) {
 	    writtenAreaY = (writtenAreaY + getLineHeight());
-	    prevType = p.getLinetype();
-	} else if (p.getLinetype() == LineType.EMPTY) {
-	    prevType = p.getLinetype();
 	    return;
-	} 
-	
+	    //prevType = p.getLinetype();
+	}
+
 	p.initForPager(this);
 	writtenAreaY = (writtenAreaY + p.getMarginTop()) - 2;
-	for (RichString text : p.getLines()) {
-	    if (writtenAreaY + (getLineHeight() * 2) > getPageHeight()) {
+	List<RichString> lines = p.getLines();
+	//float linesHeight = getLineHeight()*(p.getLines().size());
+	for (RichString text : lines) {
+	    if (writtenAreaY + getLineHeight() > getPageHeight()) {
 		initNextPage();
 	    }
 
@@ -114,6 +118,7 @@ public class StandardPager extends AbstractPager {
 	if (order == FIRST) {
 	    for (Paragraph p : paras) {
 		p.setMarginLeft(getDualValue(p.getMarginLeft(), FIRST));
+		p.setMarginRight((getPageWidth() / 2) + p.getMarginRight());
 	    }
 	} else if (order == SECOND) {
 	    for (Paragraph p : paras) {
@@ -132,5 +137,13 @@ public class StandardPager extends AbstractPager {
 
 	// not allowed to happen. just don't let that happen.
 	return 0f;
+    }
+
+    private void printPageNr() throws IOException {
+	stream.beginText();
+	stream.newLineAtOffset(getMarginLeft() + getPageWidth() / 2, getMarginBottom() / 2);
+	stream.setFont(font, fontSize);
+	stream.showText(String.valueOf(doc.getNumberOfPages()));
+	stream.endText();
     }
 }

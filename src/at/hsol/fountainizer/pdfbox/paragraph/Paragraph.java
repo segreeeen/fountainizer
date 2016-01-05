@@ -19,6 +19,7 @@ public class Paragraph implements Margins {
     private RichString richText;
     private AbstractPager pager;
     private ParserType linetype;
+    private List<RichString> lines;
 
     private float marginTop;
     private float marginLeft;
@@ -41,11 +42,16 @@ public class Paragraph implements Margins {
 	this(new RichString(text, new RichFormat()));
     }
 
-    public void initForPager(AbstractPager abstractPager) {
+    public void initForPager(AbstractPager abstractPager) throws IOException {
 	this.pager = abstractPager;
+	this.lines = initLines();
     }
 
-    public List<RichString> getLines() throws IOException {
+    public  List<RichString> getLines() {
+	return lines;
+    }
+    
+    private List<RichString> initLines() throws IOException {
 	if (pager == null) {
 	    return null;
 	}
