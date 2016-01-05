@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
+import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.interfaces.Pager;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 
@@ -36,8 +37,6 @@ public abstract class AbstractPager implements Pager {
     private float lineHeightFactor = 1.2f;
     private float underLineFactor = 1.1f;
     private float lineHeight;
-    private float pageWidth = 0f;
-    private float pageHeight = 0f;
     private float underLineDifference;
 
     // Margins
@@ -158,7 +157,6 @@ public abstract class AbstractPager implements Pager {
     }
 
     protected void printLeftAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
-
 	stream.beginText();
 	stream.newLineAtOffset(x + currentLineWidth, y);
 	stream.setNonStrokingColor(Color.BLACK);
@@ -173,6 +171,13 @@ public abstract class AbstractPager implements Pager {
 	stream.newLineAtOffset(x - text_width, y);
 	stream.setFont(rowPart.selectFont(this), fontSize);
 	stream.showText(rowPart.getText());
+	stream.endText();
+    }
+
+    protected void printLineTypeNumber(float y, Integer ltn) throws IOException {
+	stream.beginText();
+	stream.newLineAtOffset(getMarginLeft() + LineType.LINENUMBER.getMarginLeft(), y);
+	stream.showText(ltn.toString());
 	stream.endText();
     }
 

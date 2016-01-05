@@ -43,18 +43,6 @@ public class TitlePage implements ParserLine {
     }
 
     @Override
-    public int getLineNr() {
-	// TODO Auto-generated method stub
-	return 0;
-    }
-
-    @Override
-    public void setDualDialogue(boolean b) {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
     public boolean emptyText() {
 	return titlePageLines.isEmpty();
     }
@@ -65,23 +53,6 @@ public class TitlePage implements ParserLine {
 	return null;
     }
 
-    @Override
-    public void setLineType(ParserType type) {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void decLineNr() {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void incLineNr() {
-	// TODO Auto-generated method stub
-
-    }
 
 
 }

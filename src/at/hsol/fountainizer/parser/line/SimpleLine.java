@@ -15,7 +15,7 @@ public class SimpleLine implements ParserLine {
     private int lineNr;
     private ParserType type;
     private boolean dualDialogue;
-    private int takeNumber;
+    private int lineTypeNumber;
 
     public SimpleLine(String text, int lineNr) {
 	this.text = text;
@@ -39,12 +39,12 @@ public class SimpleLine implements ParserLine {
 	this.dualDialogue = dualDialogue;
     }
 
-    public int getTakeNumber() {
-	return takeNumber;
+    public int getLineTypeNumber() {
+	return lineTypeNumber;
     }
 
-    public void setTakeNumber(int takeNumber) {
-	this.takeNumber = takeNumber;
+    public void setLineTypeNumber(int takeNumber) {
+	this.lineTypeNumber = takeNumber;
     }
 
     public String getText() {
@@ -81,6 +81,7 @@ public class SimpleLine implements ParserLine {
 	    p.setCentered(type.isCentered());
 	    p.setMargin(type.getMarginTop(), type.getMarginLeft(), type.getMarginRight(), type.getMarginBottom());
 	    LinkedList<Paragraph> paragraphs = new LinkedList<>();
+	    p.setLineTypeNumber(lineTypeNumber);
 	    paragraphs.add(p);
 	    return paragraphs;
 	} else {
@@ -89,5 +90,6 @@ public class SimpleLine implements ParserLine {
 	    return paragraphs;
 	}
     }
+
 
 }

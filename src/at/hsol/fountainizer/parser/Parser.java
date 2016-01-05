@@ -16,18 +16,25 @@ import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.parser.types.ParserConstants;
 import at.hsol.fountainizer.parser.types.TypeHelper;
 
-
 /**
  * @author Felix Batusic
  */
 public class Parser {
+    private Statistic stats; 
+    private TypeHelper typeHelper;
+    
+    public Parser() {
+	this.stats = new Statistic();
+	this.typeHelper = new TypeHelper(stats);
+    }
 
-    public static ParserLines parse(ParserLines outputLines, LinkedList<Function<SimpleLine, SimpleLine>> parserHandlers, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
+    public ParserLines parse(ParserLines outputLines, LinkedList<Function<SimpleLine, SimpleLine>> parserHandlers, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
 	TitlePage tp;
-	if (titleHandlers != null && !titleHandlers.isEmpty()){
-	    tp = TitleParser.parse(outputLines, titleHandlers);
+	TitleParser tParser = new TitleParser();
+	if (titleHandlers != null && !titleHandlers.isEmpty()) {
+	    tp = tParser.parse(outputLines, titleHandlers);
 	} else {
-	    tp = TitleParser.parse(outputLines);
+	    tp = tParser.parse(outputLines);
 	}
 	outputLines.setTitlepage(tp);
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
@@ -48,12 +55,16 @@ public class Parser {
 	return outputLines;
     }
 
-    public static ParserLines parse(ParserLines outputLines) {
+    public ParserLines parse(ParserLines outputLines) {
 	return parse(outputLines, null, null);
     }
+    
+    public Statistic getStats() {
+        return stats;
+    }
 
-    private static void setAttributes(SimpleLine l, ParserLines outputLines) {
-	LineType type = TypeHelper.getType(l, outputLines);
+    private void setAttributes(SimpleLine l, ParserLines outputLines) {
+	LineType type = typeHelper.getType(l, outputLines);
 	l.setLineType(type);
 	String fText = Formatter.format(l.getText(), type);
 	if (fText != null) {
@@ -65,12 +76,12 @@ public class Parser {
 	}
     }
 
-    private static void setDualDialogue(SimpleLine l, ParserLines outputLines) {
+    private void setDualDialogue(SimpleLine l, ParserLines outputLines) {
 	l.setDualDialogue(true);
 	l.setText(l.getText().replaceAll("\\^", ""));
 
 	// set dualdialogue backwards
-	ParserLine bIterator = outputLines.getPrev(l);
+	SimpleLine bIterator = outputLines.getPrev(l);
 	if (bIterator != null) {
 	    while (bIterator.getLineType() != LineType.CHARACTER) {
 		if (l.getLineNr() - bIterator.getLineNr() > 6) {
@@ -83,7 +94,7 @@ public class Parser {
 	}
 
 	// set dualdialogue forward
-	ParserLine fIterator = outputLines.getNext(l);
+	SimpleLine fIterator = outputLines.getNext(l);
 	if (fIterator != null) {
 	    while (fIterator != null && fIterator.getLineType() != LineType.EMPTY) {
 		if (fIterator.emptyText()) {
@@ -100,9 +111,7 @@ public class Parser {
 	}
     }
 
-    
-
-    private static SimpleLine callParserHandlers(SimpleLine line, LinkedList<Function<SimpleLine, SimpleLine>> handler) {
+    private SimpleLine callParserHandlers(SimpleLine line, LinkedList<Function<SimpleLine, SimpleLine>> handler) {
 	if (!handler.isEmpty()) {
 	    for (Function<SimpleLine, SimpleLine> c : handler) {
 		c.apply(line);

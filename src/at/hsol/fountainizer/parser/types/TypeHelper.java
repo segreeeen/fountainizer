@@ -9,6 +9,7 @@ import static at.hsol.fountainizer.parser.types.ParserConstants.L_PARENTHETICAL;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_1;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_2;
 
+import at.hsol.fountainizer.parser.Statistic;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserLines;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
@@ -18,30 +19,71 @@ import at.hsol.fountainizer.parser.line.SimpleLine;
  * @author Felix Batusic
  */
 public class TypeHelper {
+    Statistic stats;
+    
+    public TypeHelper(Statistic stats) {
+	this.stats = stats;
+    }
+    
+    public TypeHelper() {
+	this(null);
+    }
 
-    public static LineType getType(SimpleLine l, ParserLines outputLines) {
+    public LineType getType(SimpleLine l, ParserLines outputLines) {
 	if (isHeading(l, outputLines)) {
+	    if (stats != null) {
+		stats.incHeading();
+		l.setLineTypeNumber(stats.getHeading());
+	    }
 	    return LineType.HEADING;
 	} else if (isParenthetical(l)) {
+	    if (stats != null) {
+		stats.incParenthetical();
+		l.setLineTypeNumber(stats.getParenthetical());
+	    }
 	    return LineType.PARENTHETICAL;
 	} else if (isLyrics(l)) {
+	    if (stats != null) {
+		stats.incLyrics();
+		l.setLineTypeNumber(stats.getLyrics());
+	    }
 	    return LineType.LYRICS;
 	} else if (isCentered(l)) {
+	    if (stats != null) {
+		stats.incCentered();
+		l.setLineTypeNumber(stats.getCentered());
+	    }
 	    return LineType.CENTERED;
 	} else if (isPagebreak(l)) {
 	    return LineType.PAGEBREAK;
 	} else if (isTransition(l, outputLines)) {
+	    if (stats != null) {
+		stats.incTransition();
+		l.setLineTypeNumber(stats.getTransition());
+	    }
 	    return LineType.TRANSITION;
 	} else if (isCharacter(l, outputLines)) {
+	    if (stats != null) {
+		stats.incCharacter();
+		l.setLineTypeNumber(stats.getCharacter());
+	    }
 	    return LineType.CHARACTER;
 	} else if (isDialogue(l, outputLines)) {
+	    if (stats != null) {
+		stats.incDialogue();
+		l.setLineTypeNumber(stats.getDialogue());
+	    }
 	    return LineType.DIALOGUE;
 	} else {
+	    if (stats != null) {
+		stats.incAction();
+		l.setLineTypeNumber(stats.getAction());
+	    }
 	    return LineType.ACTION;
 	}
     }
 
-    private static boolean isHeading(SimpleLine l, ParserLines outputLines) {
+    private boolean isHeading(SimpleLine l, ParserLines outputLines) {
 	String text = l.getText();
 	if (text != null && outputLines.pEmptyText(l)) {
 	    return text.matches(L_HEADING);
@@ -49,7 +91,7 @@ public class TypeHelper {
 	return false;
     }
 
-    private static boolean isCharacter(SimpleLine l, ParserLines outputLines) {
+    private boolean isCharacter(SimpleLine l, ParserLines outputLines) {
 	String text = l.getText();
 
 	if (text.matches(L_CHARACTER)) {
@@ -72,7 +114,7 @@ public class TypeHelper {
 	}
     }
 
-    private static boolean isDialogue(SimpleLine l, ParserLines outputLines) {
+    private boolean isDialogue(SimpleLine l, ParserLines outputLines) {
 	ParserLine prevLine = outputLines.get(l.getLineNr() - 1);
 	if (prevLine != null) {
 	    ParserType prevType = prevLine.getLineType();
@@ -88,7 +130,7 @@ public class TypeHelper {
 	return false;
     }
 
-    private static boolean isParenthetical(SimpleLine l) {
+    private boolean isParenthetical(SimpleLine l) {
 	String text = l.getText();
 	if (text != null && text.matches(L_PARENTHETICAL)) {
 	    return true;
@@ -97,7 +139,7 @@ public class TypeHelper {
 
     }
 
-    private static boolean isTransition(SimpleLine l, ParserLines outputLines) {
+    private boolean isTransition(SimpleLine l, ParserLines outputLines) {
 	String text = l.getText();
 	if (outputLines.pEmptyText(l) && outputLines.nEmptyText(l)) {
 	    if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
@@ -112,7 +154,7 @@ public class TypeHelper {
 	return false;
     }
 
-    private static boolean isLyrics(SimpleLine l) {
+    private boolean isLyrics(SimpleLine l) {
 	String text = l.getText();
 	if (text != null) {
 	    return text.startsWith(L_LYRICS);
@@ -121,7 +163,7 @@ public class TypeHelper {
 	}
     }
 
-    private static boolean isCentered(SimpleLine l) {
+    private boolean isCentered(SimpleLine l) {
 	String text = l.getText();
 	if (text != null && text.matches(L_CENTERED)) {
 	    return true;
@@ -130,7 +172,7 @@ public class TypeHelper {
 	}
     }
 
-    private static boolean isPagebreak(SimpleLine l) {
+    private boolean isPagebreak(SimpleLine l) {
 	String text = l.getText();
 	if (text != null) {
 	    return text.matches(L_PAGEBREAK);

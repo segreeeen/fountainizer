@@ -8,7 +8,6 @@ import java.util.ListIterator;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 
-import at.hsol.fountainizer.parser.interfaces.ParserType;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
@@ -22,11 +21,9 @@ public class StandardPager extends AbstractPager {
 
     private static final int FIRST = 1;
     private static final int SECOND = 2;
-    private ParserType prevType;
 
     public StandardPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException, URISyntaxException {
 	super(doc, top, left, right, bottom);
-	prevType = LineType.EMPTY;
 	initNextPage();
     }
 
@@ -40,13 +37,12 @@ public class StandardPager extends AbstractPager {
 	if (p.getLinetype() == LineType.EMPTY) {
 	    writtenAreaY = (writtenAreaY + getLineHeight());
 	    return;
-	    //prevType = p.getLinetype();
 	}
 
 	p.initForPager(this);
 	writtenAreaY = (writtenAreaY + p.getMarginTop()) - 2;
 	List<RichString> lines = p.getLines();
-	//float linesHeight = getLineHeight()*(p.getLines().size());
+	// float linesHeight = getLineHeight()*(p.getLines().size());
 	for (RichString text : lines) {
 	    if (writtenAreaY + getLineHeight() > getPageHeight()) {
 		initNextPage();
@@ -76,6 +72,10 @@ public class StandardPager extends AbstractPager {
 
 	    } else {
 		for (RichFormat rowPart : text.getFormattings()) {
+		    Integer ltn = p.getLineTypeNumber();
+		    if (ltn != null && p.getLinetype() == LineType.CHARACTER) {
+			super.printLineTypeNumber(y, ltn);
+		    }
 		    printLeftAligned(rowPart, x, y, currentLineWidth);
 		    if (rowPart.isUnderline()) {
 			stream.setLineWidth(0.1f);
@@ -87,7 +87,6 @@ public class StandardPager extends AbstractPager {
 		}
 	    }
 	    if (p.isUnderlined()) {
-		System.out.println("it's underlined.");
 		stream.moveTo(x, y + getUnderLineDifference());
 		stream.lineTo(x + text.stringWidth(this), y + getUnderLineDifference());
 		stream.stroke();
@@ -96,9 +95,7 @@ public class StandardPager extends AbstractPager {
 	    stream.stroke();
 	}
 	writtenAreaY = (writtenAreaY + p.getMarginBottom()) - 2;
-	if (p.getLinetype() != null) {
-	    prevType = p.getLinetype();
-	}
+
     }
 
     public void drawDualDialogue(LinkedList<Paragraph> d1, LinkedList<Paragraph> d2) throws IOException {

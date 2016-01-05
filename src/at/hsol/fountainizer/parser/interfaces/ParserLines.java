@@ -6,14 +6,14 @@ import at.hsol.fountainizer.parser.line.TitlePage;
 /**
  * @author Felix Batusic
  */
-public interface ParserLines extends Iterable<ParserLine> {
-    public ParserLine get(int index);
+public interface ParserLines extends Iterable<SimpleLine> {
+    public SimpleLine get(int index);
 
-    public ParserLine getNext(ParserLine l);
+    public SimpleLine getNext(SimpleLine l);
 
-    public ParserLine getPrev(ParserLine iterator);
+    public SimpleLine getPrev(SimpleLine l);
 
-    public boolean hasNext(ParserLine l);
+    public boolean hasNext(SimpleLine l);
 
     public int getLineCount();
 
@@ -21,9 +21,7 @@ public interface ParserLines extends Iterable<ParserLine> {
 
     public boolean nEmptyText(SimpleLine l);
 
-    public void remove(ParserLine l);
-
-    public void add(TitlePage tp, int i);
+    public void remove(SimpleLine l);
 
     public TitlePage getTitlepage();
 

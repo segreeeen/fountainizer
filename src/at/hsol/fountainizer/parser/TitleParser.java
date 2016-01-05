@@ -19,16 +19,16 @@ class TitleParser {
     /*
      * Parses the titlepage
      */
-    static TitlePage parse(ParserLines outputLines, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
+    TitlePage parse(ParserLines outputLines, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
 	TitlePage titlePage = new TitlePage();
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
-	    ParserLine l = outputLines.get(i);
+	    SimpleLine l = outputLines.get(i);
 	    if (titleHandlers != null && !titleHandlers.isEmpty()) {
 		l = callTitleHandlers(l, titleHandlers);
 	    }
 	    TitlePageLine tpl;
 	    if (!l.emptyText()) {
-		((SimpleLine) l).setText(l.getText());
+		l.setText(l.getText());
 		if (isTitle(l) == TitleLineType.CENTERED) {
 		    // find text that is going to be centered on the page
 		    l.setLineType(TitleLineType.CENTERED);
@@ -63,12 +63,12 @@ class TitleParser {
 	return titlePage;
     }
 
-    static TitlePage parse(ParserLines outputLines) {
+    TitlePage parse(ParserLines outputLines) {
 	return parse(outputLines, null);
     }
 
-    private static int setFollowingTitles(int i, ParserLine l, ParserLines outputLines, TitlePageLine tpl) {
-	SimpleLine iterator = (SimpleLine) outputLines.getNext(l);
+    private int setFollowingTitles(int i, SimpleLine l, ParserLines outputLines, TitlePageLine tpl) {
+	SimpleLine iterator = outputLines.getNext(l);
 	if (iterator != null) {
 	    while (outputLines.hasNext(iterator)) {
 		if (iterator.emptyText() || isTitle(iterator) != null) {
@@ -81,14 +81,14 @@ class TitleParser {
 		if (fText != null) {
 		    iterator.setText(fText);
 		}
-		iterator = (SimpleLine) outputLines.getNext(iterator);
+		iterator = outputLines.getNext(iterator);
 	    }
 	    return iterator.getLineNr();
 	}
 	return i;
     }
 
-    private static TitleLineType isTitle(ParserLine l) {
+    private TitleLineType isTitle(ParserLine l) {
 	if (!l.emptyText()) {
 	    if (l.getText().matches(ParserConstants.TP_CENTERED)) {
 		return TitleLineType.CENTERED;
@@ -99,7 +99,7 @@ class TitleParser {
 	return null;
     }
 
-    private static ParserLine callTitleHandlers(ParserLine l, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
+    private SimpleLine callTitleHandlers(SimpleLine l, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
 	if (!titleHandlers.isEmpty()) {
 	    for (Function<ParserLine, ParserLine> c : titleHandlers) {
 		c.apply(l);

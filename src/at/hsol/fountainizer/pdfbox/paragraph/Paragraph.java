@@ -29,6 +29,7 @@ public class Paragraph implements Margins {
     private boolean uppercase = false;
     private boolean centered = false;
     private boolean underlined = false;
+    private Integer lineTypeNumber;
 
     public Paragraph(RichString richString) {
 	this.richText = richString;
@@ -167,6 +168,14 @@ public class Paragraph implements Margins {
     
     public static Paragraph getEmptyParagraph() {
 	return new Paragraph(LineType.EMPTY);
+    }
+
+    public void setLineTypeNumber(int lineTypeNumber) {
+	this.lineTypeNumber = lineTypeNumber;	
+    }
+    
+    public Integer getLineTypeNumber() {
+	return lineTypeNumber;
     }
 
 }

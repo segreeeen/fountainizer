@@ -41,16 +41,6 @@ public class TitlePageLine implements ParserLine {
     }
 
     @Override
-    public int getLineNr() {
-	return 0;
-    }
-
-    @Override
-    public void setDualDialogue(boolean b) {
-
-    }
-
-    @Override
     public boolean emptyText() {
 	return false;
     }
@@ -60,18 +50,4 @@ public class TitlePageLine implements ParserLine {
 	return null;
     }
 
-    @Override
-    public void setLineType(ParserType type) {
-
-    }
-
-    @Override
-    public void decLineNr() {
-
-    }
-
-    @Override
-    public void incLineNr() {
-
-    }
 }
