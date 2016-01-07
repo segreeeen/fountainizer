@@ -1,4 +1,4 @@
-package at.hsol.fountainizer.parser;
+package at.hsol.fountainizer.parser.data;
 
 /**
  * This class is used to count... Everything. 

@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import at.hsol.fountainizer.io.FilePrinter;
 import at.hsol.fountainizer.io.FileReader;
 import at.hsol.fountainizer.parser.Parser;
-import at.hsol.fountainizer.parser.Statistic;
+import at.hsol.fountainizer.parser.data.Statistic;
 import at.hsol.fountainizer.parser.line.DynamicLines;
 
 /**

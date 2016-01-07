@@ -120,4 +120,5 @@ public final class ParserConstants {
      */
     public static final String TP_LEFT = "^(\\s+)?[Dd]raft [Dd]ate:(.*?)|^(\\s+)?[Cc]ontact:(.*?)|^(\\s+)?[Nn]otes:(.*?)|^(\\s+)?[Cc]opyright:(.*?)";
     
+    public static final String CHARACTER_ASSIGNMENT = "=";
 }

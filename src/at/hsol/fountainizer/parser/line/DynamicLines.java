@@ -3,17 +3,20 @@ package at.hsol.fountainizer.parser.line;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import at.hsol.fountainizer.parser.interfaces.ParserLines;
+import at.hsol.fountainizer.parser.data.Characters;
+import at.hsol.fountainizer.parser.interfaces.ParserList;
 
 /**
  * @author Felix Batusic
  */
-public class DynamicLines implements ParserLines {
+public class DynamicLines implements ParserList {
     private TitlePage tp;
     private ArrayList<SimpleLine> lines;
+    private Characters characters;
 
     public DynamicLines() {
 	lines = new ArrayList<>(100);
+	setCharacters(new Characters());
     }
 
     @Override
@@ -151,6 +154,14 @@ public class DynamicLines implements ParserLines {
 
     public void setTitlepage(TitlePage tp) {
 	this.tp = tp;
+    }
+
+    public Characters getCharacters() {
+	return characters;
+    }
+
+    public void setCharacters(Characters characters) {
+	this.characters = characters;
     }
 
 }

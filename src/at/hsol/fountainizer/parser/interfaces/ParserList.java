@@ -1,12 +1,13 @@
 package at.hsol.fountainizer.parser.interfaces;
 
+import at.hsol.fountainizer.parser.data.Characters;
 import at.hsol.fountainizer.parser.line.SimpleLine;
 import at.hsol.fountainizer.parser.line.TitlePage;
 
 /**
  * @author Felix Batusic
  */
-public interface ParserLines extends Iterable<SimpleLine> {
+public interface ParserList extends Iterable<SimpleLine> {
     public SimpleLine get(int index);
 
     public SimpleLine getNext(SimpleLine l);
@@ -26,5 +27,9 @@ public interface ParserLines extends Iterable<SimpleLine> {
     public TitlePage getTitlepage();
 
     public void setTitlepage(TitlePage tp);
+    
+    public Characters getCharacters();
+    
+    public void setCharacters(Characters characters);
 
 }

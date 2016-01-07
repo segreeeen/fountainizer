@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
-import at.hsol.fountainizer.parser.interfaces.ParserLines;
+import at.hsol.fountainizer.parser.interfaces.ParserList;
 import at.hsol.fountainizer.parser.line.SimpleLine;
 import at.hsol.fountainizer.parser.line.TitlePage;
 import at.hsol.fountainizer.parser.types.LineType;
@@ -20,7 +20,7 @@ import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
  */
 public class FilePrinter {
 
-    public static void writePDFBox(ParserLines dLines, String filename) throws IOException, URISyntaxException {
+    public static void writePDFBox(ParserList dLines, String filename) throws IOException, URISyntaxException {
 	PDDocument doc = new PDDocument();
 	StandardPager standardPage = new StandardPager(doc, 60, 40, 40, 60);
 	TitlePager titlePage = new TitlePager(standardPage);

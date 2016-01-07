@@ -9,9 +9,9 @@ import static at.hsol.fountainizer.parser.types.ParserConstants.L_PARENTHETICAL;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_1;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_2;
 
-import at.hsol.fountainizer.parser.Statistic;
+import at.hsol.fountainizer.parser.data.Statistic;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
-import at.hsol.fountainizer.parser.interfaces.ParserLines;
+import at.hsol.fountainizer.parser.interfaces.ParserList;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
 import at.hsol.fountainizer.parser.line.SimpleLine;
 
@@ -29,7 +29,7 @@ public class TypeHelper {
 	this(null);
     }
 
-    public LineType getType(SimpleLine l, ParserLines outputLines) {
+    public LineType getType(SimpleLine l, ParserList outputLines) {
 	if (isHeading(l, outputLines)) {
 	    if (stats != null) {
 		stats.incHeading();
@@ -83,7 +83,7 @@ public class TypeHelper {
 	}
     }
 
-    private boolean isHeading(SimpleLine l, ParserLines outputLines) {
+    private boolean isHeading(SimpleLine l, ParserList outputLines) {
 	String text = l.getText();
 	if (text != null && outputLines.pEmptyText(l)) {
 	    return text.matches(L_HEADING);
@@ -91,10 +91,11 @@ public class TypeHelper {
 	return false;
     }
 
-    private boolean isCharacter(SimpleLine l, ParserLines outputLines) {
+    private boolean isCharacter(SimpleLine l, ParserList outputLines) {
 	String text = l.getText();
-
-	if (text.matches(L_CHARACTER)) {
+	if (outputLines.getCharacters().lookup(text) != null) {
+	    return true;
+	} if (text.matches(L_CHARACTER)) {
 	    return true;
 	} else {
 	    boolean isUpper = true;
@@ -114,7 +115,7 @@ public class TypeHelper {
 	}
     }
 
-    private boolean isDialogue(SimpleLine l, ParserLines outputLines) {
+    private boolean isDialogue(SimpleLine l, ParserList outputLines) {
 	ParserLine prevLine = outputLines.get(l.getLineNr() - 1);
 	if (prevLine != null) {
 	    ParserType prevType = prevLine.getLineType();
@@ -139,7 +140,7 @@ public class TypeHelper {
 
     }
 
-    private boolean isTransition(SimpleLine l, ParserLines outputLines) {
+    private boolean isTransition(SimpleLine l, ParserList outputLines) {
 	String text = l.getText();
 	if (outputLines.pEmptyText(l) && outputLines.nEmptyText(l)) {
 	    if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {

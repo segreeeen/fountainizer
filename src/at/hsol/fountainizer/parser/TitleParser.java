@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.function.Function;
 
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
-import at.hsol.fountainizer.parser.interfaces.ParserLines;
+import at.hsol.fountainizer.parser.interfaces.ParserList;
 import at.hsol.fountainizer.parser.line.Formatter;
 import at.hsol.fountainizer.parser.line.SimpleLine;
 import at.hsol.fountainizer.parser.line.TitlePage;
@@ -19,7 +19,7 @@ class TitleParser {
     /*
      * Parses the titlepage
      */
-    TitlePage parse(ParserLines outputLines, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
+    TitlePage parse(ParserList outputLines, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
 	TitlePage titlePage = new TitlePage();
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
 	    SimpleLine l = outputLines.get(i);
@@ -63,11 +63,11 @@ class TitleParser {
 	return titlePage;
     }
 
-    TitlePage parse(ParserLines outputLines) {
+    TitlePage parse(ParserList outputLines) {
 	return parse(outputLines, null);
     }
 
-    private int setFollowingTitles(int i, SimpleLine l, ParserLines outputLines, TitlePageLine tpl) {
+    private int setFollowingTitles(int i, SimpleLine l, ParserList outputLines, TitlePageLine tpl) {
 	SimpleLine iterator = outputLines.getNext(l);
 	if (iterator != null) {
 	    while (outputLines.hasNext(iterator)) {
