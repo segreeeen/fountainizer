@@ -17,4 +17,6 @@ Everybody who want to write screenplays in plain text without using an extra edi
 ### Authors and Credits
 Fountainizer is the work of Thomas Sulzbacher (GUI) and Felix Batusic (parser).
 
+The Icon was designed by Boris Baumann, thank you!
+
 The printing is done with PDFBox, and a huge part of the printing is based on code by Lukas Theis, which he contributed to an old project.
