@@ -1,4 +1,4 @@
-package at.hsol.fountainizer.simpleGui.log;
+package at.hsol.fountainizer.gui.simpleGuiv1.log;
 
 import java.io.BufferedWriter;
 import java.io.File;

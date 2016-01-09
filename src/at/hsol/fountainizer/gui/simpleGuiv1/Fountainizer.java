@@ -1,6 +1,6 @@
-package at.hsol.fountainizer.simpleGui;
+package at.hsol.fountainizer.gui.simpleGuiv1;
 
-import at.hsol.fountainizer.simpleGui.controller.MainWindowController;
+import at.hsol.fountainizer.gui.simpleGuiv1.controller.MainWindowController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

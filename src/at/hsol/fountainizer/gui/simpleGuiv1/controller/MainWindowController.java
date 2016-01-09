@@ -1,4 +1,4 @@
-package at.hsol.fountainizer.simpleGui.controller;
+package at.hsol.fountainizer.gui.simpleGuiv1.controller;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -12,8 +12,8 @@ import java.util.Optional;
 import javax.imageio.ImageIO;
 
 import at.hsol.fountainizer.FountainizerHelper;
-import at.hsol.fountainizer.simpleGui.Fountainizer;
-import at.hsol.fountainizer.simpleGui.log.Dump;
+import at.hsol.fountainizer.gui.simpleGuiv1.Fountainizer;
+import at.hsol.fountainizer.gui.simpleGuiv1.log.Dump;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,7 +68,7 @@ public class MainWindowController {
 
 	private void initialize() {
 		FXMLLoader loader = new FXMLLoader(
-				Fountainizer.class.getResource("/at/hsol/fountainizer/simpleGui/view/MainWindow.fxml"));
+				Fountainizer.class.getResource("view/MainWindow.fxml"));
 
 		try {
 			loader.setController(this);
@@ -82,12 +82,12 @@ public class MainWindowController {
 	}
 
 	private void loadIconInto(Stage stage) throws IOException {
-		Image img = new Image(Fountainizer.class.getResourceAsStream("/at/hsol/fountainizer/simpleGui/img/icon.png"));
+		Image img = new Image(Fountainizer.class.getResourceAsStream("img/icon.png"));
 		stage.getIcons().add(img);
 
 		if (System.getProperty("os.name").contains("Mac")) {
 			java.awt.Image image = ImageIO
-					.read(Fountainizer.class.getResourceAsStream("/at/hsol/fountainizer/simpleGui/img/icon.png"));
+					.read(Fountainizer.class.getResourceAsStream("img/icon.png"));
 
 			try {
 				@SuppressWarnings("rawtypes")
