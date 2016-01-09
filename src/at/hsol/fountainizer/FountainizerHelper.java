@@ -50,10 +50,10 @@ public class FountainizerHelper {
 	 * @throws IOException
 	 */
 	public double parse() throws IllegalStateException {
-	    	Parser parser = new Parser();
+	    	Parser parser = new Parser(textlines);
 		if (textlines != null) {
 			long time = System.currentTimeMillis();
-			parser.parse(textlines);
+			parser.parse();
 			time = (long) ((System.currentTimeMillis() - time)/1000d);
 			this.stats = parser.getStats();
 			return time;

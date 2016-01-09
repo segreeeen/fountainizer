@@ -16,6 +16,8 @@ public class SimpleLine implements ParserLine {
     private ParserType type;
     private boolean dualDialogue;
     private int lineTypeNumber;
+    private SimpleLine prev = null;
+    private SimpleLine next = null;
 
     public SimpleLine(String text, int lineNr) {
 	this.text = text;
@@ -70,6 +72,31 @@ public class SimpleLine implements ParserLine {
     public boolean emptyText() {
 	return this.text == null;
     }
+
+    public SimpleLine getPrev() {
+        return prev;
+    }
+
+    public void setPrev(SimpleLine prev) {
+        this.prev = prev;
+    }
+
+    public SimpleLine getNext() {
+        return next;
+    }
+
+    public void setNext(SimpleLine next) {
+        this.next = next;
+    }
+    
+    public boolean hasNext() {
+	return next != null;
+    }
+    
+    public boolean hasPrev() {
+	return prev != null;
+    }
+    
 
     public LinkedList<Paragraph> getParagraphForPDF() {
 	if (getText() != null) {

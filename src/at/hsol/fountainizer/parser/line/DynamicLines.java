@@ -76,7 +76,7 @@ public class DynamicLines implements ParserList {
 	}
     }
 
-    public void add(String text) {
+    public SimpleLine add(String text) {
 	if (!lines.isEmpty()) {
 	    SimpleLine lastLine = lines.get(lines.size() - 1);
 	    int lineNr = lastLine.getLineNr() + 1;
@@ -87,6 +87,7 @@ public class DynamicLines implements ParserList {
 		l = new SimpleLine(text, lineNr++);
 	    }
 	    lines.add(l);
+	    return l;
 	} else {
 	    SimpleLine l;
 	    if (text == null || text.isEmpty()) {
@@ -95,7 +96,9 @@ public class DynamicLines implements ParserList {
 		l = new SimpleLine(text, 0);
 	    }
 	    lines.add(l);
+	    return l;
 	}
+	
     }
 
     public void add(String text, int index) {

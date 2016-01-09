@@ -11,8 +11,8 @@ import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_2;
 
 import at.hsol.fountainizer.parser.data.Statistic;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
-import at.hsol.fountainizer.parser.interfaces.ParserList;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
+import at.hsol.fountainizer.parser.line.DynamicLines;
 import at.hsol.fountainizer.parser.line.SimpleLine;
 
 /**
@@ -20,17 +20,20 @@ import at.hsol.fountainizer.parser.line.SimpleLine;
  */
 public class TypeHelper {
     Statistic stats;
-    
-    public TypeHelper(Statistic stats) {
+    DynamicLines outputLines;
+
+    public TypeHelper(Statistic stats, DynamicLines outputLines) {
 	this.stats = stats;
-    }
-    
-    public TypeHelper() {
-	this(null);
+	this.outputLines = outputLines;
     }
 
-    public LineType getType(SimpleLine l, ParserList outputLines) {
-	if (isHeading(l, outputLines)) {
+    public TypeHelper(DynamicLines outputLines) {
+	this(null, outputLines);
+
+    }
+
+    public LineType getType(SimpleLine l) {
+	if (isHeading(l)) {
 	    if (stats != null) {
 		stats.incHeading();
 		l.setLineTypeNumber(stats.getHeading());
@@ -56,19 +59,19 @@ public class TypeHelper {
 	    return LineType.CENTERED;
 	} else if (isPagebreak(l)) {
 	    return LineType.PAGEBREAK;
-	} else if (isTransition(l, outputLines)) {
+	} else if (isTransition(l)) {
 	    if (stats != null) {
 		stats.incTransition();
 		l.setLineTypeNumber(stats.getTransition());
 	    }
 	    return LineType.TRANSITION;
-	} else if (isCharacter(l, outputLines)) {
+	} else if (isCharacter(l)) {
 	    if (stats != null) {
 		stats.incCharacter();
 		l.setLineTypeNumber(stats.getCharacter());
 	    }
 	    return LineType.CHARACTER;
-	} else if (isDialogue(l, outputLines)) {
+	} else if (isDialogue(l)) {
 	    if (stats != null) {
 		stats.incDialogue();
 		l.setLineTypeNumber(stats.getDialogue());
@@ -83,19 +86,20 @@ public class TypeHelper {
 	}
     }
 
-    private boolean isHeading(SimpleLine l, ParserList outputLines) {
+    private boolean isHeading(SimpleLine l) {
 	String text = l.getText();
-	if (text != null && outputLines.pEmptyText(l)) {
+	if (text != null && l.getPrev().emptyText()) {
 	    return text.matches(L_HEADING);
 	}
 	return false;
     }
 
-    private boolean isCharacter(SimpleLine l, ParserList outputLines) {
+    private boolean isCharacter(SimpleLine l) {
 	String text = l.getText();
 	if (outputLines.getCharacters().lookup(text) != null) {
 	    return true;
-	} if (text.matches(L_CHARACTER)) {
+	}
+	if (text.matches(L_CHARACTER)) {
 	    return true;
 	} else {
 	    boolean isUpper = true;
@@ -106,8 +110,7 @@ public class TypeHelper {
 		}
 	    }
 
-	    if (isUpper && (outputLines.pEmptyText(l)
-		    && !outputLines.nEmptyText(l))) {
+	    if (isUpper && (l.getPrev().emptyText() && !l.getNext().emptyText())) {
 		return true;
 	    } else {
 		return false;
@@ -115,16 +118,15 @@ public class TypeHelper {
 	}
     }
 
-    private boolean isDialogue(SimpleLine l, ParserList outputLines) {
-	ParserLine prevLine = outputLines.get(l.getLineNr() - 1);
+    private boolean isDialogue(SimpleLine l) {
+	ParserLine prevLine = l.getPrev();
 	if (prevLine != null) {
 	    ParserType prevType = prevLine.getLineType();
 	    if (l.getText() == null) {
 		if (prevType == LineType.DIALOGUE) {
 		    return true;
 		}
-	    } else if (prevType == LineType.CHARACTER
-		    || prevType == LineType.PARENTHETICAL) {
+	    } else if (prevType == LineType.CHARACTER || prevType == LineType.PARENTHETICAL) {
 		return true;
 	    }
 	}
@@ -140,9 +142,9 @@ public class TypeHelper {
 
     }
 
-    private boolean isTransition(SimpleLine l, ParserList outputLines) {
+    private boolean isTransition(SimpleLine l) {
 	String text = l.getText();
-	if (outputLines.pEmptyText(l) && outputLines.nEmptyText(l)) {
+	if (l.getPrev().emptyText() && l.getNext().emptyText()) {
 	    if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
 		for (int i = 0; i < text.length(); i++) {
 		    if (Character.isLowerCase(text.charAt(i))) {
@@ -180,6 +182,5 @@ public class TypeHelper {
 	}
 	return false;
     }
-    
-    
+
 }

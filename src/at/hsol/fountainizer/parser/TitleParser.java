@@ -68,9 +68,9 @@ class TitleParser {
     }
 
     private int setFollowingTitles(int i, SimpleLine l, ParserList outputLines, TitlePageLine tpl) {
-	SimpleLine iterator = outputLines.getNext(l);
+	SimpleLine iterator = l.getNext();
 	if (iterator != null) {
-	    while (outputLines.hasNext(iterator)) {
+	    while (iterator.hasNext()) {
 		if (iterator.emptyText() || isTitle(iterator) != null) {
 		    return iterator.getLineNr() - 2;
 		}
@@ -81,7 +81,7 @@ class TitleParser {
 		if (fText != null) {
 		    iterator.setText(fText);
 		}
-		iterator = outputLines.getNext(iterator);
+		iterator = iterator.getNext();
 	    }
 	    return iterator.getLineNr();
 	}
