@@ -11,6 +11,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 import at.hsol.fountainizer.parser.types.LineType;
+import at.hsol.fountainizer.pdfbox.fonts.Fonts;
 import at.hsol.fountainizer.pdfbox.interfaces.Pager;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 
@@ -49,10 +50,10 @@ public abstract class AbstractPager implements Pager {
 	setMargin(top, left, right, bottom);
 	this.doc = doc;
 
-	font = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("../fonts/CourierPrime.ttf"));
-	boldFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("../fonts/CourierPrimeBold.ttf"));
-	italicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("../fonts/CourierPrimeItalic.ttf"));
-	boldItalicFont = PDType0Font.load(doc, AbstractPager.class.getResourceAsStream("../fonts/CourierPrimeBoldItalic.ttf"));
+	font = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrime.ttf"));
+	boldFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeBold.ttf"));
+	italicFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeItalic.ttf"));
+	boldItalicFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeBoldItalic.ttf"));
 
 	lineHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * lineHeightFactor;
 	underLineDifference = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * underLineFactor - getLineHeight();
