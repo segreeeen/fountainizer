@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
+import at.hsol.fountainizer.pdfbox.PagerOptions;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.fonts.Fonts;
 import at.hsol.fountainizer.pdfbox.interfaces.Pager;
@@ -46,7 +47,10 @@ public abstract class AbstractPager implements Pager {
     private float marginRight;
     private float marginBottom;
 
-    public AbstractPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException, URISyntaxException {
+    // Options
+    protected final PagerOptions options;
+
+    public AbstractPager(PDDocument doc, float top, float left, float right, float bottom, PagerOptions options) throws IOException, URISyntaxException {
 	setMargin(top, left, right, bottom);
 	this.doc = doc;
 
@@ -57,7 +61,11 @@ public abstract class AbstractPager implements Pager {
 
 	lineHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * lineHeightFactor;
 	underLineDifference = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * underLineFactor - getLineHeight();
-	
+	this.options = options;
+    }
+
+    public AbstractPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException, URISyntaxException {
+	this(doc, top, left, right, bottom, null);
     }
 
     public void initNextPage() throws IOException {
@@ -176,10 +184,14 @@ public abstract class AbstractPager implements Pager {
     }
 
     protected void printLineTypeNumber(float y, Integer ltn) throws IOException {
-	stream.beginText();
-	stream.newLineAtOffset(getMarginLeft() + LineType.LINENUMBER.getMarginLeft(), y);
-	stream.showText(ltn.toString());
-	stream.endText();
+	if (options != null) {
+	    if (this.options.printTakeNumbers()) {
+		stream.beginText();
+	    	stream.newLineAtOffset(getMarginLeft() + LineType.LINENUMBER.getMarginLeft(), y);
+	    	stream.showText(ltn.toString());
+	    	stream.endText();
+	    }
+	}
     }
 
 }

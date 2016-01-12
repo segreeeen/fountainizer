@@ -8,6 +8,7 @@ import at.hsol.fountainizer.io.FileReader;
 import at.hsol.fountainizer.parser.Parser;
 import at.hsol.fountainizer.parser.data.Statistic;
 import at.hsol.fountainizer.parser.line.DynamicLines;
+import at.hsol.fountainizer.pdfbox.PagerOptions;
 
 /**
  * Use this class to read, parse and print.
@@ -21,16 +22,22 @@ public class FountainizerHelper {
 	private String fileOut;
 	private DynamicLines textlines = null;
 	private Statistic stats;
+	private PagerOptions options;
 	
 
-	public FountainizerHelper(String fileIn, String fileOut) {
+	public FountainizerHelper(String fileIn, String fileOut, PagerOptions options) {
 		if (fileIn != null && fileOut != null) {
 			this.fileIn = fileIn;
 			this.fileOut = fileOut;
 			this.stats = null;
+			this.options = options;
 		} else {
 			throw new IllegalArgumentException("input/output file can't be null");
 		}
+	}
+	
+	public FountainizerHelper(String fileIn, String fileOut) {
+	    this(fileIn, fileOut, null);
 	}
 
 	/**
@@ -69,7 +76,11 @@ public class FountainizerHelper {
 	 */
 	public double printPdf() throws IOException, URISyntaxException {
 		long time = System.currentTimeMillis();
-		FilePrinter.writePDFBox(textlines, fileOut);
+		if (options != null) {
+		    FilePrinter.writePDFBox(textlines, fileOut, options);
+		} else {
+		    FilePrinter.writePDFBox(textlines, fileOut, null);
+		}
 		return (System.currentTimeMillis() - time)/1000d;
 	}
 	

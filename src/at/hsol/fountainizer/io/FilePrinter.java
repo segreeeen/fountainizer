@@ -11,6 +11,7 @@ import at.hsol.fountainizer.parser.interfaces.ParserList;
 import at.hsol.fountainizer.parser.line.SimpleLine;
 import at.hsol.fountainizer.parser.line.TitlePage;
 import at.hsol.fountainizer.parser.types.LineType;
+import at.hsol.fountainizer.pdfbox.PagerOptions;
 import at.hsol.fountainizer.pdfbox.pager.StandardPager;
 import at.hsol.fountainizer.pdfbox.pager.TitlePager;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
@@ -20,9 +21,9 @@ import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
  */
 public class FilePrinter {
 
-    public static void writePDFBox(ParserList dLines, String filename) throws IOException, URISyntaxException {
+    public static void writePDFBox(ParserList dLines, String filename, PagerOptions options) throws IOException, URISyntaxException {
 	PDDocument doc = new PDDocument();
-	StandardPager standardPage = new StandardPager(doc, 60, 40, 40, 60);
+	StandardPager standardPage = new StandardPager(doc, 60, 40, 40, 60, options);
 	TitlePager titlePage = new TitlePager(standardPage);
 
 	TitlePage tp = dLines.getTitlepage();

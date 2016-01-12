@@ -9,6 +9,7 @@ import java.util.ListIterator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import at.hsol.fountainizer.parser.types.LineType;
+import at.hsol.fountainizer.pdfbox.PagerOptions;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 import at.hsol.fountainizer.pdfbox.paragraph.RichString;
@@ -22,15 +23,17 @@ public class StandardPager extends AbstractPager {
     private static final int FIRST = 1;
     private static final int SECOND = 2;
 
-    public StandardPager(PDDocument doc, float top, float left, float right, float bottom) throws IOException, URISyntaxException {
-	super(doc, top, left, right, bottom);
+    public StandardPager(PDDocument doc, float top, float left, float right, float bottom, PagerOptions options) throws IOException, URISyntaxException {
+	super(doc, top, left, right, bottom, options);
 	initNextPage();
     }
 
     @Override
     public void initNextPage() throws IOException {
 	super.initNextPage();
-	printPageNr();
+	if (options != null && super.options.printPageNumbers()) {
+	    printPageNr();
+	}
     }
 
     public void drawParagraph(Paragraph p) throws IOException {
