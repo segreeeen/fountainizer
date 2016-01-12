@@ -7,8 +7,8 @@ public class TestClass {
     public static void main(String[] args) throws URISyntaxException {
 	try {
 
-	    FountainizerHelper helper = new FountainizerHelper("D://git//fountain2pdf//samples//bigfish.txt", 
-		    "D://git//fountain2pdf//samples//bigfish.pdf");
+	    FountainizerHelper helper = new FountainizerHelper("D:\\Eigene Dateien\\Documents\\test.txt", 
+		    "D:\\Eigene Dateien\\Documents\\test.pdf");
 	    
 	    helper.read();
 	    helper.parse();

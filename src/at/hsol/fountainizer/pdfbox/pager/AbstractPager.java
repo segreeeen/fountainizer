@@ -49,6 +49,10 @@ public abstract class AbstractPager implements Pager {
 
     // Options
     protected final PagerOptions options;
+    
+    //Dual Constants
+    protected static final int FIRST = 1;
+    protected static final int SECOND = 2;
 
     public AbstractPager(PDDocument doc, float top, float left, float right, float bottom, PagerOptions options) throws IOException, URISyntaxException {
 	setMargin(top, left, right, bottom);
@@ -183,15 +187,30 @@ public abstract class AbstractPager implements Pager {
 	stream.endText();
     }
 
-    protected void printLineTypeNumber(float y, Integer ltn) throws IOException {
+    protected void printLineTypeNumber(float y, Integer ltn, boolean dual) throws IOException {
 	if (options != null) {
 	    if (this.options.printTakeNumbers()) {
 		stream.beginText();
-	    	stream.newLineAtOffset(getMarginLeft() + LineType.LINENUMBER.getMarginLeft(), y);
+		if (!dual) {
+		    stream.newLineAtOffset(getMarginLeft() + LineType.LINENUMBER.getMarginLeft(), y);
+		} else {
+		    stream.newLineAtOffset(getMarginLeft() + (getPageWidth() / 2) + LineType.LINENUMBER.getMarginLeft(), y);
+		}
 	    	stream.showText(ltn.toString());
 	    	stream.endText();
 	    }
 	}
+    }
+    
+    protected float getDualValue(Float f, int order) {
+	if (order == FIRST) {
+	    return (f / 2);
+	} else if (order == SECOND) {
+	    return (getPageWidth() / 2) + (f / 2);
+	}
+
+	// not allowed to happen. just don't let that happen.
+	return 0f;
     }
 
 }

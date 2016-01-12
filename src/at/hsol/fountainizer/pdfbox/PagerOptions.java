@@ -1,12 +1,16 @@
 package at.hsol.fountainizer.pdfbox;
 
 public class PagerOptions {
-    private final boolean printTakeNumbers;
-    private final boolean printPageNumbers;
-    
+    private boolean printTakeNumbers;
+    private boolean printPageNumbers;
+        
     public PagerOptions(boolean printTakeNumbers, boolean printPageNumbers) {
 	this.printPageNumbers = printPageNumbers;
 	this.printTakeNumbers = printTakeNumbers;
+    }
+    
+    public PagerOptions() {
+	this(true, true);
     }
 
     public boolean printTakeNumbers() {
@@ -16,5 +20,6 @@ public class PagerOptions {
     public boolean printPageNumbers() {
         return printPageNumbers;
     }
+    
     
 }

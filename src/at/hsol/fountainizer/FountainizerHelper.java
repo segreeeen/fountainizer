@@ -37,7 +37,7 @@ public class FountainizerHelper {
 	}
 	
 	public FountainizerHelper(String fileIn, String fileOut) {
-	    this(fileIn, fileOut, null);
+	    this(fileIn, fileOut, new PagerOptions());
 	}
 
 	/**

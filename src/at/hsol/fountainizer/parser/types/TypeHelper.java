@@ -88,8 +88,10 @@ public class TypeHelper {
 
     private boolean isHeading(SimpleLine l) {
 	String text = l.getText();
-	if (text != null && l.getPrev().emptyText()) {
-	    return text.matches(L_HEADING);
+	if (l.getPrev() != null) {
+	    if (text != null && l.getPrev().emptyText()) {
+		return text.matches(L_HEADING);
+	    }
 	}
 	return false;
     }
@@ -109,12 +111,14 @@ public class TypeHelper {
 		    break;
 		}
 	    }
-
-	    if (isUpper && (l.getPrev().emptyText() && !l.getNext().emptyText())) {
-		return true;
-	    } else {
-		return false;
+	    if (l.getPrev() != null && l.getNext() != null) {
+		if (isUpper && (l.getPrev().emptyText() && !l.getNext().emptyText())) {
+		    return true;
+		} else {
+		    return false;
+		}
 	    }
+	    return false;
 	}
     }
 
@@ -144,14 +148,16 @@ public class TypeHelper {
 
     private boolean isTransition(SimpleLine l) {
 	String text = l.getText();
-	if (l.getPrev().emptyText() && l.getNext().emptyText()) {
-	    if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
-		for (int i = 0; i < text.length(); i++) {
-		    if (Character.isLowerCase(text.charAt(i))) {
-			return false;
+	if (l.getPrev() != null && l.getNext() != null) {
+	    if (l.getPrev().emptyText() && l.getNext().emptyText()) {
+		if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
+		    for (int i = 0; i < text.length(); i++) {
+			if (Character.isLowerCase(text.charAt(i))) {
+			    return false;
+			}
 		    }
+		    return true;
 		}
-		return true;
 	    }
 	}
 	return false;

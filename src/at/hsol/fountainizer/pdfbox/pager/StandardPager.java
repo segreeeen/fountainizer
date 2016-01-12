@@ -20,8 +20,7 @@ import at.hsol.fountainizer.pdfbox.paragraph.RichString;
  */
 public class StandardPager extends AbstractPager {
 
-    private static final int FIRST = 1;
-    private static final int SECOND = 2;
+
 
     public StandardPager(PDDocument doc, float top, float left, float right, float bottom, PagerOptions options) throws IOException, URISyntaxException {
 	super(doc, top, left, right, bottom, options);
@@ -36,7 +35,7 @@ public class StandardPager extends AbstractPager {
 	}
     }
 
-    public void drawParagraph(Paragraph p) throws IOException {
+    public void drawParagraph(Paragraph p, boolean dual) throws IOException {
 	if (p.getLinetype() == LineType.EMPTY) {
 	    writtenAreaY = (writtenAreaY + getLineHeight());
 	    return;
@@ -77,7 +76,7 @@ public class StandardPager extends AbstractPager {
 		for (RichFormat rowPart : text.getFormattings()) {
 		    Integer ltn = p.getLineTypeNumber();
 		    if (ltn != null && p.getLinetype() == LineType.CHARACTER) {
-			super.printLineTypeNumber(y, ltn);
+			super.printLineTypeNumber(y, ltn, dual);
 		    }
 		    printLeftAligned(rowPart, x, y, currentLineWidth);
 		    if (rowPart.isUnderline()) {
@@ -100,44 +99,39 @@ public class StandardPager extends AbstractPager {
 	writtenAreaY = (writtenAreaY + p.getMarginBottom()) - 2;
 
     }
+    
+    public void drawParagraph(Paragraph p) throws IOException {
+	drawParagraph(p, false);
+    }
 
     public void drawDualDialogue(LinkedList<Paragraph> d1, LinkedList<Paragraph> d2) throws IOException {
 	remarginDialogue(d1, FIRST);
 	remarginDialogue(d2, SECOND);
 	float currentY = writtenAreaY;
 	for (Paragraph p : d1) {
-	    drawParagraph(p);
+	    drawParagraph(p, false);
 	}
 	writtenAreaY = currentY;
 	for (Paragraph p : d2) {
-	    drawParagraph(p);
+	    drawParagraph(p, true);
 	}
     }
 
     private LinkedList<Paragraph> remarginDialogue(LinkedList<Paragraph> paras, int order) {
 	if (order == FIRST) {
 	    for (Paragraph p : paras) {
-		p.setMarginLeft(getDualValue(p.getMarginLeft(), FIRST));
+		p.setMarginLeft(getDualValue(getMarginLeft()+p.getMarginLeft(), FIRST));
 		p.setMarginRight((getPageWidth() / 2) + p.getMarginRight());
 	    }
 	} else if (order == SECOND) {
 	    for (Paragraph p : paras) {
-		p.setMarginLeft(getDualValue(p.getMarginLeft(), SECOND));
+		p.setMarginLeft(getDualValue(getMarginLeft()+p.getMarginLeft(), SECOND));
 	    }
 	}
 	return paras;
     }
 
-    private float getDualValue(Float f, int order) {
-	if (order == FIRST) {
-	    return f / 2;
-	} else if (order == SECOND) {
-	    return (getPageWidth() / 2) + (f / 2);
-	}
 
-	// not allowed to happen. just don't let that happen.
-	return 0f;
-    }
 
     private void printPageNr() throws IOException {
 	stream.beginText();

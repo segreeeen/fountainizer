@@ -71,13 +71,14 @@ public class Parser {
     }
 
     private void setDualDialogue(SimpleLine l, ParserList outputLines) {
+	System.out.println("got here.");
 	l.setDualDialogue(true);
 	l.setText(l.getText().replaceAll("\\^", ""));
 
 	// set dualdialogue backwards
 	SimpleLine bIterator = l.getPrev();
 	if (bIterator != null) {
-	    while (bIterator.getLineType() != LineType.CHARACTER) {
+	    while (bIterator.getPrev() != null && bIterator.getLineType() != LineType.CHARACTER) {
 		if (l.getLineNr() - bIterator.getLineNr() > 6) {
 		    break;
 		}
@@ -90,7 +91,7 @@ public class Parser {
 	// set dualdialogue forward
 	SimpleLine fIterator = l.getNext();
 	if (fIterator != null) {
-	    while (fIterator != null && fIterator.getLineType() != LineType.EMPTY) {
+	    while (fIterator.getNext() != null && fIterator.getLineType() != LineType.EMPTY) {
 		if (fIterator.emptyText()) {
 		    break;
 		}
