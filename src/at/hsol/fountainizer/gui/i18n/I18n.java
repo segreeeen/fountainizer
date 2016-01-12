@@ -1,4 +1,4 @@
-package at.hsol.fountainizer.gui.simpleGuiv1.i18n;
+package at.hsol.fountainizer.gui.i18n;
 
 import java.util.LinkedList;
 import java.util.List;
