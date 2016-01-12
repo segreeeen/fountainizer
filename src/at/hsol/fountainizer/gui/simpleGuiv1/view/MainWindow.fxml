@@ -20,10 +20,10 @@
          </font>
       </Button>
       <Separator layoutY="75.0" prefHeight="5.0" prefWidth="600.0" />
-      <Button id="btnTargetFileChooser" layoutX="491.0" layoutY="119.0" mnemonicParsing="false" onAction="#chooseSource" prefHeight="25.0" prefWidth="50.0" text="..." />
+      <Button id="btnTargetFileChooser" layoutX="491.0" layoutY="120.0" mnemonicParsing="false" onAction="#chooseSource" prefHeight="25.0" prefWidth="50.0" text="..." />
       <TextField id="txtTargetPath" fx:id="txtResourcePath" layoutX="120.0" layoutY="120.0" prefHeight="26.0" prefWidth="358.0" promptText="Click on the button to open filebrowser...  --&gt;" />
       <TextField id="txtTargetPath" fx:id="txtTargetPath" disable="true" layoutX="120.0" layoutY="171.0" prefHeight="26.0" prefWidth="358.0" promptText="Click on the button to open filebrowser...  --&gt;" />
-      <Button id="btnTargetFileChooser" fx:id="btnChooseDest" disable="true" layoutX="491.0" layoutY="170.0" mnemonicParsing="false" onAction="#chooseDest" prefHeight="25.0" prefWidth="50.0" text="..." />
+      <Button id="btnTargetFileChooser" fx:id="btnChooseDest" disable="true" layoutX="491.0" layoutY="171.0" mnemonicParsing="false" onAction="#chooseDest" prefHeight="25.0" prefWidth="50.0" text="..." />
       <Label layoutX="50.0" layoutY="120.0" text="Source:">
          <font>
             <Font size="18.0" />
@@ -34,7 +34,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextArea fx:id="infobox" editable="false" layoutX="50.0" layoutY="266.0" prefHeight="84.0" prefWidth="358.0" promptText="Thx for using Fountainizer! This displays info regarding progress, warnings or errors!" />
+      <TextArea fx:id="infobox" editable="false" focusTraversable="false" layoutX="50.0" layoutY="266.0" prefHeight="84.0" prefWidth="358.0" promptText="Thx for using Fountainizer! This displays info regarding progress, warnings or errors!" />
       <Label layoutX="50.0" layoutY="242.0" text="Infobox:" />
       <Label fx:id="versionInfo" disable="true" layoutX="315.0" layoutY="378.0" prefHeight="17.0" prefWidth="278.0" text="Version Info" />
       <Button fx:id="show" defaultButton="true" disable="true" layoutX="444.0" layoutY="314.0" mnemonicParsing="false" onAction="#showPdf" prefHeight="39.0" prefWidth="112.0" text="Show PDF">
@@ -47,5 +47,10 @@
             <Font size="9.0" />
          </font>
       </ToggleButton>
+      <Button layoutX="469.0" layoutY="149.0" mnemonicParsing="false" onAction="#createPath" prefHeight="19.0" prefWidth="95.0" text="create export path...">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

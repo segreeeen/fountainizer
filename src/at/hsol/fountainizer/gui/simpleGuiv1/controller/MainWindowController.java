@@ -25,7 +25,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -42,52 +41,67 @@ import javafx.stage.Stage;
  */
 public class MainWindowController {
 
+	/**
+	 * Contains the latest date of the latest Build
+	 */
 	private final String BUILD = "v0.5 beta build 6fc8cc0 04.01.2016 23:40";
+
+	/**
+	 * Primary stage which is currently displayed
+	 */
 	private final Stage stage;
-	private AnchorPane root;
-	private File exportFile;
-	private boolean pressed;
+
+	private boolean lockPressed;
 
 	public MainWindowController(Stage stage) {
 		this.stage = stage;
-		pressed = false;
+		lockPressed = false;
+
 		initialize();
+
 		versionInfo.setText(BUILD);
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
 		stage.setTitle("Fountainizer - SimpleGui v0.5 beta");
 		stage.setResizable(false);
-		try {
-			loadIconInto(stage);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		activateDragDropListener();
 		stage.show();
 	}
 
 	private void initialize() {
-		FXMLLoader loader = new FXMLLoader(
-				Fountainizer.class.getResource("view/MainWindow.fxml"));
+		AnchorPane root = null;
 
+		// load layout
+		FXMLLoader loader = new FXMLLoader(Fountainizer.class.getResource("view/MainWindow.fxml"));
+		loader.setController(this);
 		try {
-			loader.setController(this);
 			root = loader.load();
 		} catch (IOException e) {
 			System.err.println("Something terrible happened! also ficken SIE sich!");
 			Dump.thatShit(e);
 			e.printStackTrace();
-			System.exit(0);
 		}
+
+		// load icons
+		try {
+			loadIconInto(stage);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// activate listeners
+		activateDragDropListener();
+
+		// set Scene
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+
 	}
 
 	private void loadIconInto(Stage stage) throws IOException {
-		Image img = new Image(Fountainizer.class.getResourceAsStream("img/icon.png"));
-		stage.getIcons().add(img);
+		// loads on windows machines
+		stage.getIcons().add(new javafx.scene.image.Image(Fountainizer.class.getResourceAsStream("img/icon.png")));
 
+		// loads icon on mac osx
 		if (System.getProperty("os.name").contains("Mac")) {
-			java.awt.Image image = ImageIO
-					.read(Fountainizer.class.getResourceAsStream("img/icon.png"));
+			java.awt.Image image = ImageIO.read(Fountainizer.class.getResourceAsStream("img/icon.png"));
 
 			try {
 				@SuppressWarnings("rawtypes")
@@ -96,7 +110,6 @@ public class MainWindowController {
 				Method m = c.getMethod("getApplication");
 				Object applicationInstance = m.invoke(null);
 				m = applicationInstance.getClass().getMethod("setDockIconImage", java.awt.Image.class);
-
 				m.invoke(applicationInstance, image);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 					| ClassNotFoundException | NoSuchMethodException | SecurityException e) {
@@ -105,37 +118,36 @@ public class MainWindowController {
 			}
 		}
 	}
-	
+
 	private void activateDragDropListener() {
 		txtResourcePath.setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
-            if (db.hasFiles()) {
-                event.acceptTransferModes(TransferMode.LINK);
-            } else {
-                event.consume();
-            }
+			if (db.hasFiles()) {
+				event.acceptTransferModes(TransferMode.LINK);
+			} else {
+				event.consume();
+			}
 		});
-		
+
 		txtResourcePath.setOnDragDropped(event -> {
 			Dragboard db = event.getDragboard();
-			
-			if(db.hasFiles()) {
+
+			if (db.hasFiles()) {
 				Optional<File> o = db.getFiles().stream()
-				.filter(a -> a.getAbsolutePath().endsWith(".txt") || a.getAbsolutePath().endsWith(".fountain"))
-				.findFirst();
-				
-				if(o.isPresent()) {
+						.filter(a -> a.getAbsolutePath().endsWith(".txt") || a.getAbsolutePath().endsWith(".fountain"))
+						.findFirst();
+
+				if (o.isPresent()) {
 					File f = o.get();
 					txtResourcePath.setText(f.getAbsolutePath());
 					String path = createNewPath(f);
-					exportFile = new File(path);
 					txtTargetPath.setText(path);
 					show.setDisable(true);
 					infobox.setText("");
 				} else {
 					infobox.setText("Please put in valid files! Supported formats are: .txt and .fountain!");
 				}
-				
+
 			}
 		});
 	}
@@ -164,14 +176,17 @@ public class MainWindowController {
 
 	@FXML
 	void createPDF(ActionEvent event) throws URISyntaxException {
-
 		infobox.setText("Creating pdf...");
-
-		if (exportFile == null) {
-			infobox.setText("ERROR!   You have to set source and destination!");
-			Dump.thatShit("Function Create PDF ERROR!   You have to set source and destination!");
+		String txt = txtTargetPath.getText();
+		if (txtTargetPath.getText().equals("")) {
+			String msg = "ERROR!   You have to set source and destination!";
+			infobox.setText(msg);
+			Dump.thatShit(msg);
 			return;
 		}
+
+		File exportFile = new File(txtTargetPath.getText());
+
 		if (exportFile.exists()) {
 			Alert a = new Alert(AlertType.CONFIRMATION);
 			a.setTitle("Overwrite?");
@@ -218,14 +233,13 @@ public class MainWindowController {
 			e.printStackTrace();
 			return;
 		}
-		
+
 		double rP = readTime + parseTime;
 		DecimalFormat df = new DecimalFormat("#.##");
 		infobox.setText("!!!   Document successfully created   !!!");
 		infobox.appendText("\nRead and parsed your document in " + df.format(rP) + "seconds\n" + " and printed "
 				+ api.numOfLines() + " lines in only " + df.format(printTime) + " seconds :D!");
 		show.setDisable(false);
-
 	}
 
 	@FXML
@@ -243,7 +257,6 @@ public class MainWindowController {
 		txtResourcePath.setText(selectedFile.getAbsolutePath());
 
 		String path = createNewPath(selectedFile);
-		exportFile = new File(path);
 		txtTargetPath.setText(path);
 		show.setDisable(true);
 		infobox.setText("");
@@ -269,7 +282,6 @@ public class MainWindowController {
 			return;
 		}
 		txtTargetPath.setText(selectedFile.getAbsolutePath());
-		exportFile = new File(txtTargetPath.getText());
 		show.setDisable(true);
 		infobox.setText("");
 	}
@@ -281,24 +293,38 @@ public class MainWindowController {
 			b.showAndWait();
 			return;
 		}
+		File exportFile = new File(txtTargetPath.getText());
 		if (exportFile.exists()) {
 			Desktop.getDesktop().open(exportFile);
 			infobox.setText("File opened!");
 		} else {
 			infobox.setText("File does not exist!");
+			show.setDisable(true);
 		}
 	}
 
 	@FXML
 	void changeDestPath(ActionEvent event) {
-		pressed = !pressed;
-		if (pressed) {
-			txtTargetPath.setDisable(false);
-			btnChooseDest.setDisable(false);
+		txtTargetPath.setDisable(lockPressed);
+		btnChooseDest.setDisable(lockPressed);
+		lockPressed = !lockPressed;
+	}
+
+	@FXML
+	void createPath(ActionEvent event) {
+		String path = txtResourcePath.getText();
+		if(path.equals("")) {
+			infobox.setText("Please set source-path before using this function!");
 		} else {
-			txtTargetPath.setDisable(true);
-			btnChooseDest.setDisable(true);
+			File f = new File(path);
+			if(f.exists()) {
+				txtTargetPath.setText(createNewPath(f));
+				infobox.setText("Path created!");
+			} else {
+				infobox.setText("File at specified path does not exist! Please check!");
+			}
 		}
+		
 	}
 
 }
