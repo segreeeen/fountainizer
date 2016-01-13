@@ -2,13 +2,14 @@ package at.hsol.fountainizer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import at.hsol.fountainizer.io.FilePrinter;
 import at.hsol.fountainizer.io.FileReader;
 import at.hsol.fountainizer.parser.Parser;
+import at.hsol.fountainizer.parser.data.FCharacter;
 import at.hsol.fountainizer.parser.line.DynamicLines;
 import at.hsol.fountainizer.parser.types.Statistic;
-import at.hsol.fountainizer.pdfbox.PagerOptions;
 
 /**
  * Use this class to read, parse and print.
@@ -22,10 +23,10 @@ public class FountainizerHelper {
 	private String fileOut;
 	private DynamicLines textlines = null;
 	private Statistic stats;
-	private PagerOptions options;
+	private Options options;
 	
 
-	public FountainizerHelper(String fileIn, String fileOut, PagerOptions options) {
+	public FountainizerHelper(String fileIn, String fileOut, Options options) {
 		if (fileIn != null && fileOut != null) {
 			this.fileIn = fileIn;
 			this.fileOut = fileOut;
@@ -37,7 +38,7 @@ public class FountainizerHelper {
 	}
 	
 	public FountainizerHelper(String fileIn, String fileOut) {
-	    this(fileIn, fileOut, new PagerOptions());
+	    this(fileIn, fileOut, new Options());
 	}
 
 	/**
@@ -94,5 +95,9 @@ public class FountainizerHelper {
 	
 	public Statistic getStats() {
 	    return stats;
+	}
+	
+	public List<FCharacter> getCharacterStats() {
+	    return stats.getCharacterStats(options);
 	}
 }

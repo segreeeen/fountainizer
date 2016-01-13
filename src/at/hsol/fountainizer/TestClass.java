@@ -2,8 +2,9 @@ package at.hsol.fountainizer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Map.Entry;
-import java.util.TreeMap;
+import java.util.List;
+
+import at.hsol.fountainizer.parser.data.FCharacter;
 
 public class TestClass {
     public static void main(String[] args) throws URISyntaxException {
@@ -15,9 +16,9 @@ public class TestClass {
 	    helper.read();
 	    helper.parse();
 	    helper.printPdf();
-	    TreeMap<String,Integer> characters = helper.getStats().getCharacterStats();
-	    for (Entry<String, Integer> e: characters.entrySet()) {
-		System.out.println(e.getKey()+": "+e.getValue() + " Lines");
+	    List<FCharacter> characters = helper.getCharacterStats();
+	    for (FCharacter e: characters) {
+		System.out.println(e.getName()+": "+e.getTakes() + " Lines");
 	    }
 	    
 	} catch (IOException e) {

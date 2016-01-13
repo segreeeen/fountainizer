@@ -1,11 +1,14 @@
 package at.hsol.fountainizer.parser.types;
 
-import java.util.TreeMap;
+import java.util.List;
 
+import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.data.Characters;
+import at.hsol.fountainizer.parser.data.FCharacter;
 
 /**
- * This class is used to count... Everything. 
+ * This class is used to count... Everything.
+ * 
  * @author Felix Batusic
  */
 public class Statistic {
@@ -19,71 +22,86 @@ public class Statistic {
     private int centered = 0;
     private int emtpy = 0;
     private Characters characters = new Characters();
-    
+
     public Statistic(Characters characters) {
 	this.characters = characters;
     }
-    
+
+    public List<FCharacter> getCharacterStats(Options options) {
+	return characters.getCharacters(options);
+    }
+
+    public int getCharacterLines() {
+	return character;
+    }
+
+    public int getHeading() {
+	return heading;
+    }
+
+    public int getDialogue() {
+	return dialogue;
+    }
+
+    public int getParenthetical() {
+	return parenthetical;
+    }
+
+    public int getTransition() {
+	return transition;
+    }
+
+    public int getAction() {
+	return action;
+    }
+
+    public int getLyrics() {
+	return lyrics;
+    }
+
+    public int getCentered() {
+	return centered;
+    }
+
+    public int getEmtpy() {
+	return emtpy;
+    }
+
     protected void incCharacter(String name) {
 	characters.incCharCount(name);
-        this.character++;
+	this.character++;
     }
+
     protected void incHeading() {
-        this.heading++;
+	this.heading++;
     }
+
     protected void incDialogue() {
-        this.dialogue++;
+	this.dialogue++;
     }
+
     protected void incParenthetical() {
-        this.parenthetical++;
+	this.parenthetical++;
     }
+
     protected void incTransition() {
-        this.transition++;
+	this.transition++;
     }
+
     protected void incAction() {
-        this.action++;
+	this.action++;
     }
+
     protected void incLyrics() {
-        this.lyrics++;
+	this.lyrics++;
     }
+
     protected void incCentered() {
-        this.centered++;
+	this.centered++;
     }
+
     protected void incEmtpy() {
-        this.emtpy++;
+	this.emtpy++;
     }
-    public TreeMap<String,Integer> getCharacterStats() {
-        return characters.getCharacters();
-    }
-    
-    public int getCharacterLines() {
-        return character;
-    }
-    
-    public int getHeading() {
-        return heading;
-    }
-    public int getDialogue() {
-        return dialogue;
-    }
-    public int getParenthetical() {
-        return parenthetical;
-    }
-    public int getTransition() {
-        return transition;
-    }
-    public int getAction() {
-        return action;
-    }
-    public int getLyrics() {
-        return lyrics;
-    }
-    public int getCentered() {
-        return centered;
-    }
-    public int getEmtpy() {
-        return emtpy;
-    }
-    
-    
+
 }

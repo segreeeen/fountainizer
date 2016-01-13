@@ -10,7 +10,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
-import at.hsol.fountainizer.pdfbox.PagerOptions;
+import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.fonts.Fonts;
 import at.hsol.fountainizer.pdfbox.interfaces.Pager;
@@ -48,13 +48,13 @@ public abstract class AbstractPager implements Pager {
     private float marginBottom;
 
     // Options
-    protected final PagerOptions options;
+    protected final Options options;
     
     //Dual Constants
     protected static final int FIRST = 1;
     protected static final int SECOND = 2;
 
-    public AbstractPager(PDDocument doc, float top, float left, float right, float bottom, PagerOptions options) throws IOException, URISyntaxException {
+    public AbstractPager(PDDocument doc, float top, float left, float right, float bottom, Options options) throws IOException, URISyntaxException {
 	setMargin(top, left, right, bottom);
 	this.doc = doc;
 
