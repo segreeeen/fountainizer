@@ -4,7 +4,6 @@
 
 package at.hsol.fountainizer.parser;
 
-import at.hsol.fountainizer.parser.data.Statistic;
 import at.hsol.fountainizer.parser.interfaces.ParserList;
 import at.hsol.fountainizer.parser.line.DynamicLines;
 import at.hsol.fountainizer.parser.line.Formatter;
@@ -12,6 +11,7 @@ import at.hsol.fountainizer.parser.line.SimpleLine;
 import at.hsol.fountainizer.parser.line.TitlePage;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.parser.types.ParserConstants;
+import at.hsol.fountainizer.parser.types.Statistic;
 import at.hsol.fountainizer.parser.types.TypeHelper;
 
 /**
@@ -23,7 +23,7 @@ public class Parser {
     private ParserList outputLines;
 
     public Parser(DynamicLines outputLines) {
-	this.stats = new Statistic();
+	this.stats = new Statistic(outputLines.getCharacters());
 	this.typeHelper = new TypeHelper(stats, outputLines);
 	this.outputLines = outputLines;
     }
@@ -65,13 +65,13 @@ public class Parser {
 	    setDualDialogue(l, outputLines);
 	}
 
-	if (type == LineType.CHARACTER) {
-	    outputLines.getCharacters().add(text);
-	}
+//	if (type == LineType.CHARACTER) {
+//	    outputLines.getCharacters().add(text);
+//	    outputLines.getCharacters().incCharCount(text);
+//	}
     }
 
     private void setDualDialogue(SimpleLine l, ParserList outputLines) {
-	System.out.println("got here.");
 	l.setDualDialogue(true);
 	l.setText(l.getText().replaceAll("\\^", ""));
 

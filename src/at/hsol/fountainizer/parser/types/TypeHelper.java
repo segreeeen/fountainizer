@@ -9,7 +9,6 @@ import static at.hsol.fountainizer.parser.types.ParserConstants.L_PARENTHETICAL;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_1;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_2;
 
-import at.hsol.fountainizer.parser.data.Statistic;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
 import at.hsol.fountainizer.parser.line.DynamicLines;
@@ -67,8 +66,9 @@ public class TypeHelper {
 	    return LineType.TRANSITION;
 	} else if (isCharacter(l)) {
 	    if (stats != null) {
-		stats.incCharacter();
-		l.setLineTypeNumber(stats.getCharacter());
+		outputLines.getCharacters().add(l.getText());
+		stats.incCharacter(l.getText());
+		l.setLineTypeNumber(stats.getCharacterLines());
 	    }
 	    return LineType.CHARACTER;
 	} else if (isDialogue(l)) {

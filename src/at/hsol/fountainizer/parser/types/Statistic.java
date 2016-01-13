@@ -1,9 +1,12 @@
-package at.hsol.fountainizer.parser.data;
+package at.hsol.fountainizer.parser.types;
+
+import java.util.TreeMap;
+
+import at.hsol.fountainizer.parser.data.Characters;
 
 /**
  * This class is used to count... Everything. 
  * @author Felix Batusic
- *
  */
 public class Statistic {
     private int character = 0;
@@ -15,37 +18,48 @@ public class Statistic {
     private int lyrics = 0;
     private int centered = 0;
     private int emtpy = 0;
+    private Characters characters = new Characters();
     
-    public void incCharacter() {
+    public Statistic(Characters characters) {
+	this.characters = characters;
+    }
+    
+    protected void incCharacter(String name) {
+	characters.incCharCount(name);
         this.character++;
     }
-    public void incHeading() {
+    protected void incHeading() {
         this.heading++;
     }
-    public void incDialogue() {
+    protected void incDialogue() {
         this.dialogue++;
     }
-    public void incParenthetical() {
+    protected void incParenthetical() {
         this.parenthetical++;
     }
-    public void incTransition() {
+    protected void incTransition() {
         this.transition++;
     }
-    public void incAction() {
+    protected void incAction() {
         this.action++;
     }
-    public void incLyrics() {
+    protected void incLyrics() {
         this.lyrics++;
     }
-    public void incCentered() {
+    protected void incCentered() {
         this.centered++;
     }
-    public void incEmtpy() {
+    protected void incEmtpy() {
         this.emtpy++;
     }
-    public int getCharacter() {
+    public TreeMap<String,Integer> getCharacterStats() {
+        return characters.getCharacters();
+    }
+    
+    public int getCharacterLines() {
         return character;
     }
+    
     public int getHeading() {
         return heading;
     }

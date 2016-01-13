@@ -6,8 +6,8 @@ import at.hsol.fountainizer.parser.interfaces.ParserType;
  * @author Felix Batusic
  */
 public enum TitleLineType implements ParserType {
-    CENTERED(false, true, false, 0F, 0F, 0F, 0.0F), LEFT(false, false, false,
-	    0.0F, 0F, 0.0F, 10.0F);
+    CENTERED(false, true, false, 0F, 0F, 0F, 0.0F), 
+    LEFT(false, false, false, 0.0F, 0F, 0.0F, 10.0F);
 
     private final boolean uppercase;
     private final boolean centered;

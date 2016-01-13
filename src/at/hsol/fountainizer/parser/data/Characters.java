@@ -1,14 +1,53 @@
 package at.hsol.fountainizer.parser.data;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.TreeMap;
 
 import at.hsol.fountainizer.parser.types.ParserConstants;
 
 public class Characters {
     private HashMap<String, CharRegisterNode> charRegister = new HashMap<>();
-
+    
+    public void incCharCount(String name) {
+	name = name.replaceAll("^", " ");
+	name = name.toLowerCase();
+	name = name.trim();
+	CharRegisterNode n = charRegister.get(name);
+	if (n != null) {
+	    n.incTakes();
+	}
+    }
+    
+    /**
+     * Returns a Map of the Characters and the number of their takes.
+     */
+    public TreeMap<String, Integer> getCharacters() {
+	if (charRegister.isEmpty()) {
+	    return null;
+	}
+	
+	TreeMap<String, Integer> characters = new TreeMap<>(new Comparator<String>(){
+	    @Override
+	    public int compare(String o1, String o2) {
+		o1 = o1.toLowerCase();
+		o2 = o2.toLowerCase();
+		int ret = o1.charAt(0) - o2.charAt(0);
+		if (ret == 0) {
+		    return 1;
+		} else {
+		    return ret;
+		}
+	    }
+	});
+	for (Map.Entry<String, CharRegisterNode> e : charRegister.entrySet()) {
+	    characters.put(e.getKey(), e.getValue().getTakes());
+	}
+	return characters;
+    }
+    
     /**
      * Returns the corresponding Charactername
      * 
@@ -17,6 +56,7 @@ public class Characters {
      * @return full character name
      */
     public String lookup(String charName) {
+	charName = charName.replaceAll("^", " ");
 	charName = charName.trim();
 	charName = charName.toLowerCase();
 	if (charName.contains(ParserConstants.CHARACTER_ASSIGNMENT)) {
@@ -44,6 +84,7 @@ public class Characters {
      * @return true if added, else false
      */
     public String add(String charName) {
+	charName = charName.replaceAll("^", " ");
 	charName = charName.trim();
 	charName = charName.toLowerCase();
 	if (charName.split(ParserConstants.CHARACTER_ASSIGNMENT).length <= 1) {
@@ -77,10 +118,20 @@ public class Characters {
     }
 
     private class CharRegisterNode {
-	HashSet<String> abbreviations = new HashSet<String>();
+	protected HashSet<String> abbreviations = new HashSet<String>();
+	private int takes = 0;
 
-	boolean isEmpty() {
+	protected boolean isEmpty() {
 	    return abbreviations.isEmpty();
 	}
+	
+	protected void incTakes() {
+	    takes++;
+	}
+	
+	protected int getTakes() {
+	    return takes;
+	}
+	
     }
 }
