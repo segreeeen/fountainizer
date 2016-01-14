@@ -3,10 +3,12 @@ package at.hsol.fountainizer.io;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import at.hsol.fountainizer.Options;
+import at.hsol.fountainizer.parser.data.FCharacter;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserList;
 import at.hsol.fountainizer.parser.line.SimpleLine;
@@ -15,6 +17,7 @@ import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.pager.StandardPager;
 import at.hsol.fountainizer.pdfbox.pager.TitlePager;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
+import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
 /**
  * @author Felix Batusic
@@ -33,10 +36,29 @@ public class FilePrinter {
 		for (Paragraph p : paragraphs) {
 		    if (p.getLinetype() != null) {
 		    }
-		    titlePage.drawParagraph(p);
+		    titlePage.printParagraph(p);
 		}
 	    }
 	    standardPage.initNextPage();
+	}
+	
+	if (options.printCharacterPage()) {
+	    List<FCharacter> characters = dLines.getCharacters().getCharacters(options);
+	    LinkedList<RichString> formattedCharacters = new LinkedList<>();
+	    LinkedList<Paragraph> paragraphs = new LinkedList<>();
+		for (FCharacter c: characters) {
+		    RichString s = new RichString(c.getName() + ":             " + c.getTakes());
+		    formattedCharacters.add(s);
+		}
+		for (RichString s: formattedCharacters) {
+		    Paragraph p = new Paragraph(s);
+		    paragraphs.add(p);
+		}
+		for(Paragraph p: paragraphs) {
+		    p.setCentered(true);
+		    standardPage.printParagraph(p);
+		}
+		standardPage.initNextPage();
 	}
 
 	LinkedList<Paragraph> firstDialogue = null;
@@ -75,7 +97,7 @@ public class FilePrinter {
 		LinkedList<Paragraph> paragraphs = line.getParagraphForPDF();
 		if (paragraphs != null) {
 		    for (Paragraph p : paragraphs) {
-			standardPage.drawParagraph(p);
+			standardPage.printParagraph(p);
 		    }
 		}
 	    }

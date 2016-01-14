@@ -3,6 +3,9 @@ package at.hsol.fountainizer.pdfbox.pager;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -14,7 +17,9 @@ import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.fonts.Fonts;
 import at.hsol.fountainizer.pdfbox.interfaces.Pager;
+import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
+import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
 /**
  * @author Lukas Theis
@@ -38,7 +43,6 @@ public abstract class AbstractPager implements Pager {
     protected float writtenAreaY = 0;
     private float lineHeightFactor = 1.2f;
     private float underLineFactor = 1.1f;
-    private float lineHeight;
     private float underLineDifference;
 
     // Margins
@@ -62,8 +66,6 @@ public abstract class AbstractPager implements Pager {
 	boldFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeBold.ttf"));
 	italicFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeItalic.ttf"));
 	boldItalicFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeBoldItalic.ttf"));
-
-	lineHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * lineHeightFactor;
 	underLineDifference = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * underLineFactor - getLineHeight();
 	this.options = options;
     }
@@ -91,7 +93,11 @@ public abstract class AbstractPager implements Pager {
     }
 
     public float getLineHeight() {
-	return lineHeight;
+	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * lineHeightFactor;
+    }
+    
+    public float getLineHeight(int fontSize) {
+	return font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * lineHeightFactor;
     }
 
     public float getPageWidth() {
@@ -168,16 +174,97 @@ public abstract class AbstractPager implements Pager {
     protected float getUnderLineDifference() {
 	return underLineDifference;
     }
+    
+    public void printParagraph(Paragraph p, boolean dual) throws IOException {
+	if (p.getLinetype() == LineType.EMPTY) {
+	    writtenAreaY = (writtenAreaY + getLineHeight());
+	    return;
+	}
 
-    protected void printLeftAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
+	p.initForPager(this);
+	writtenAreaY = (writtenAreaY + p.getMarginTop()) - 2;
+	List<RichString> lines = p.getLines();
+	// float linesHeight = getLineHeight()*(p.getLines().size());
+	for (RichString text : lines) {
+	    if (writtenAreaY + getLineHeight() > getPageHeight()) {
+		initNextPage();
+	    }
+
+	    float x;
+	    if (p.isCentered()) {
+		x = getMarginLeft() + p.getMarginLeft() + ((p.getPageWidthRespectingMargins() - text.stringWidth(this)) / 2);
+	    } else if (p.getLinetype() == LineType.TRANSITION) {
+		x = getMarginRight();
+	    } else {
+		x = getMarginLeft() + p.getMarginLeft();
+	    }
+
+	    float y = page.getMediaBox().getHeight() - getMarginTop() - writtenAreaY;
+
+	    float currentLineWidth = 0.0f;
+	    if (p.getLinetype() == LineType.TRANSITION) {
+		LinkedList<RichFormat> trformats = text.getFormattings();
+		ListIterator<RichFormat> li = trformats.listIterator(trformats.size());
+
+		// Print transition right aligned
+		while (li.hasPrevious()) {
+		    RichFormat f = li.previous();
+		    printRightAligned(f, this.getPageWidth() - x, y, currentLineWidth);
+		}
+
+	    } else {
+		for (RichFormat rowPart : text.getFormattings()) {
+		    Integer ltn = p.getLineTypeNumber();
+		    if (ltn != null && p.getLinetype() == LineType.CHARACTER) {
+			printLineTypeNumber(y, ltn, dual);
+		    }
+		    printLeftAligned(rowPart, x, y, currentLineWidth);
+		    if (rowPart.isUnderline()) {
+			stream.setLineWidth(0.1f);
+			stream.moveTo(x + currentLineWidth, y + getUnderLineDifference());
+			stream.lineTo(x + currentLineWidth + rowPart.stringWidth(this), y + getUnderLineDifference());
+			stream.stroke();
+		    }
+		    currentLineWidth = currentLineWidth + rowPart.stringWidth(this);
+		}
+	    }
+	    if (p.isUnderlined()) {
+		stream.moveTo(x, y + getUnderLineDifference());
+		stream.lineTo(x + text.stringWidth(this), y + getUnderLineDifference());
+		stream.stroke();
+	    }
+	    writtenAreaY = writtenAreaY + getLineHeight();
+	    stream.stroke();
+	}
+	writtenAreaY = (writtenAreaY + p.getMarginBottom()) - 2;
+
+    }
+    
+    public void printParagraph(Paragraph p) throws IOException {
+	printParagraph(p, false);
+    }
+
+    protected void printLeftAligned(RichFormat rowPart, float x, float y, float currentLineWidth, Integer fontSize) throws IOException {
+	int originalFontSize = this.fontSize;
+	if (fontSize != null) {
+	    this.fontSize = fontSize;
+	}
 	stream.beginText();
 	stream.newLineAtOffset(x + currentLineWidth, y);
 	stream.setNonStrokingColor(Color.BLACK);
-	stream.setFont(rowPart.selectFont(this), fontSize);
+	stream.setFont(rowPart.selectFont(this), this.fontSize);
 	stream.showText(rowPart.getText());
 	stream.endText();
+	stream.stroke();
+	if (fontSize != null) {
+	    this.fontSize = originalFontSize;
+	}
     }
-
+    
+    protected void printLeftAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
+	printLeftAligned(rowPart, x, y, currentLineWidth, null);
+    }
+    
     protected void printRightAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
 	float text_width = (font.getStringWidth(rowPart.getText()) / 1000.0f) * fontSize;
 	stream.beginText();
@@ -185,6 +272,7 @@ public abstract class AbstractPager implements Pager {
 	stream.setFont(rowPart.selectFont(this), fontSize);
 	stream.showText(rowPart.getText());
 	stream.endText();
+	stream.stroke();
     }
 
     protected void printLineTypeNumber(float y, Integer ltn, boolean dual) throws IOException {
@@ -198,6 +286,7 @@ public abstract class AbstractPager implements Pager {
 		}
 	    	stream.showText(ltn.toString());
 	    	stream.endText();
+	    	stream.stroke();
 	    }
 	}
     }

@@ -28,7 +28,7 @@ public class TitlePager extends AbstractPager {
     }
 
     @Override
-    public void drawParagraph(Paragraph p) throws IOException {
+    public void printParagraph(Paragraph p) throws IOException {
 	p.initForPager(this);
 	centerOffset += p.getMarginTop();
 	lowerLeftOffset += p.getMarginTop();

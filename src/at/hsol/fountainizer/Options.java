@@ -13,7 +13,8 @@ public class Options {
     public Options() {
 	this.printPageNumbers = true;
 	this.printTakeNumbers = true;
-	sortCharacters = SORT_BY_TAKES;
+	this.sortCharacters = SORT_BY_NAME;
+	this.printCharacterPage = true;
     }
 
     public boolean printTakeNumbers() {

@@ -13,7 +13,7 @@ import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
  */
 public interface Pager extends Margins {
 
-    public void drawParagraph(Paragraph p) throws IOException;
+    public void printParagraph(Paragraph p) throws IOException;
 
     public void finalize(String filename)
 	    throws IOException;
