@@ -23,11 +23,13 @@ public abstract class AbstractPager<T> implements Pager {
     protected PDPage currentPage;
     protected PDPageContentStream stream;
     
+    protected int fontSize;
     protected float yPos;    
     protected float xPos;  
     
     AbstractPager(PageController controller) {
 	this.controller = controller;
+	this.fontSize = PageController.STANDARD_FONT_SIZE;
     }
     
     PDPageTree getPages() {
@@ -45,10 +47,8 @@ public abstract class AbstractPager<T> implements Pager {
 	yPos = 0;
     }
     
-    
-    
     abstract void printContent(T t);
-    
+
     @Override
     public boolean equals(Object obj) {
 	if (this == obj)

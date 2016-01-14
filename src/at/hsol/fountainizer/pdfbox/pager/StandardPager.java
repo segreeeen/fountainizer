@@ -1,6 +1,10 @@
 package at.hsol.fountainizer.pdfbox.pager;
 
+import java.awt.Color;
+import java.io.IOException;
+
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
+import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 
 public class StandardPager extends AbstractPager<Paragraph> {
     Integer fontSize;
@@ -15,6 +19,26 @@ public class StandardPager extends AbstractPager<Paragraph> {
     void printContent(Paragraph t) {
 	// TODO Auto-generated method stub
 	
+    }
+    
+    protected void printLeftAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
+	stream.beginText();
+	stream.newLineAtOffset(x + currentLineWidth, y);
+	stream.setNonStrokingColor(Color.BLACK);
+	stream.setFont(rowPart.selectFont(this), this.fontSize);
+	stream.showText(rowPart.getText());
+	stream.endText();
+	stream.stroke();
+    }
+    
+    protected void printRightAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
+	float text_width = (controller.font.getStringWidth(rowPart.getText()) / 1000.0f) * fontSize;
+	stream.beginText();
+	stream.newLineAtOffset(x - text_width, y);
+	stream.setFont(rowPart.selectFont(this), fontSize);
+	stream.showText(rowPart.getText());
+	stream.endText();
+	stream.stroke();
     }
 
     @Override
