@@ -1,38 +1,23 @@
 package at.hsol.fountainizer.pdfbox.interfaces;
 
-import java.io.IOException;
-
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
-import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
+public interface Pager {
 
-/**
- * @author Lukas Theis
- * @author Felix Batusic
- */
-public interface Pager extends Margins {
+    float getLineHeight();
 
-    public void printParagraph(Paragraph p) throws IOException;
+    float getPageWidth();
 
-    public void finalize(String filename)
-	    throws IOException;
+    float getPageHeight();
 
-    public float getLineHeight();
+    PDFont getFont();
 
-    public float getPageWidth();
+    PDFont getBoldFont();
 
-    public float getPageHeight();
+    PDFont getItalicFont();
 
-    public PDFont getFont();
+    PDFont getBoldItalicFont();
 
-    public PDFont getBoldFont();
+    int getFontSize();
 
-    public PDFont getItalicFont();
-
-    public PDFont getBoldItalicFont();
-
-    public int getFontSize();
-    
-    public PDDocument getDoc();
 }

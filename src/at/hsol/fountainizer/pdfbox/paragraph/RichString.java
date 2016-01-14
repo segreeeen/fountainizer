@@ -3,7 +3,7 @@ package at.hsol.fountainizer.pdfbox.paragraph;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import at.hsol.fountainizer.pdfbox.interfaces.Pager;
+import at.hsol.fountainizer.pdfbox.pager.AbstractPager;
 
 /**
  * @author Lukas Theis
@@ -95,7 +95,7 @@ public class RichString {
 	}
     }
 
-    public float stringWidth(Pager page) throws IOException {
+    public float stringWidth(AbstractPager<?> page) throws IOException {
 	float width = 0.0f;
 	for (RichFormat text : formattings) {
 	    width = width + text.stringWidth(page);

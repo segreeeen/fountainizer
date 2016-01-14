@@ -1,19 +1,19 @@
 package at.hsol.fountainizer.pdfbox.pager;
+import java.util.List;
 
-import at.hsol.fountainizer.pdfbox.pager.PageController.PagerType;
-import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
+import at.hsol.fountainizer.parser.data.FCharacter;
 
-public class TitlePager extends AbstractPager<Paragraph> {
+public class CharacterPager extends AbstractPager<List<FCharacter>> {
     Integer fontSize;
-
-    TitlePager(PageController controller) {
+    
+    CharacterPager(PageController controller) {
 	super(controller);
-	super.type = PagerType.TITLE_PAGER;
+	super.type = PageController.PagerType.CHARACTER_PAGER;
 	this.fontSize = null;
     }
 
     @Override
-    void printContent(Paragraph t) {
+    void printContent(List<FCharacter> t) {
 	// TODO Auto-generated method stub
 	
     }
@@ -26,5 +26,6 @@ public class TitlePager extends AbstractPager<Paragraph> {
 	    return PageController.STANDARD_FONT_SIZE;
 	}
     }
+
 
 }

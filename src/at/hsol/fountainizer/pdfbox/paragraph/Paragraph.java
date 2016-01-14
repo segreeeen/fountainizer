@@ -8,7 +8,6 @@ import at.hsol.fountainizer.parser.interfaces.ParserType;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.interfaces.Margins;
 import at.hsol.fountainizer.pdfbox.pager.AbstractPager;
-import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
 /**
  * @author Lukas Theis
@@ -17,7 +16,6 @@ public class Paragraph implements Margins {
 
     // private String text;
     private RichString richText;
-    private AbstractPager pager;
     private ParserType linetype;
     private List<RichString> lines;
 
@@ -30,6 +28,7 @@ public class Paragraph implements Margins {
     private boolean centered = false;
     private boolean underlined = false;
     private Integer lineTypeNumber;
+    private AbstractPager<?> pager;
 
     public Paragraph(RichString richString) {
 	this.richText = richString;
@@ -43,7 +42,7 @@ public class Paragraph implements Margins {
 	this(new RichString(text, new RichFormat()));
     }
 
-    public void initForPager(AbstractPager abstractPager) throws IOException {
+    public void initForPager(AbstractPager<?> abstractPager) throws IOException {
 	this.pager = abstractPager;
 	this.lines = initLines();
     }
@@ -87,6 +86,7 @@ public class Paragraph implements Margins {
 
 	return lines;
     }
+    
 
     public float getPageWidthRespectingMargins() {
 	if (pager == null) {
