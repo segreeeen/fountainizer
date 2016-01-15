@@ -9,10 +9,10 @@ import static at.hsol.fountainizer.parser.types.ParserConstants.L_PARENTHETICAL;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_1;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_2;
 
+import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
-import at.hsol.fountainizer.parser.line.DynamicLines;
-import at.hsol.fountainizer.parser.line.SimpleLine;
 
 /**
  * @author Felix Batusic

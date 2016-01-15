@@ -1,4 +1,4 @@
-package at.hsol.fountainizer.parser.data;
+package at.hsol.fountainizer.parser.meta;
 
 import java.util.HashSet;
 

@@ -25,6 +25,15 @@ public class StandardPager extends AbstractPager<Paragraph> {
 
     @Override
     public void printContent(Paragraph p) throws IOException {
+	// go to next line, if this is a newline
+	if (p.getLinetype() == LineType.EMPTY) {
+	    super.nextLine();
+	    return;
+	}
+
+	// if this line is a character, we don't want the dialogue to be split
+	// over two pages, so we check if there is enough space for at least 3
+	// more lines. if there isn't we get next page
 	if (p.getLinetype() == LineType.CHARACTER) {
 	    if (super.yExceeded(getLineHeight() * 3)) {
 		nextPage();
@@ -35,36 +44,49 @@ public class StandardPager extends AbstractPager<Paragraph> {
 	    nextPage();
 	}
 
-	if (p.getLinetype() == LineType.EMPTY) {
-	    super.nextLine();
-	    return;
-	}
-
-	p.initForPager(this);
-
+	// take care of dual dialogues
 	if (p.isDualDialogue()) {
 	    setDualDialogue(p);
 	    remarginDual(p);
 	}
 
+	// initializes a list of lines with strings fitting the width of the
+	// actualPageWidth()
+	p.initForPager(this);
+
+	// this is a right-aligned line, so we let printRightAligned() print it
+	if (p.getLinetype() == LineType.TRANSITION) {
+
+	}
+
 	List<RichString> lines = p.getLines();
 	nextLine(p.getMarginTop()); // start paragraph
 	for (RichString rs : lines) {
-	    if (p.isCentered()) {
-		super.xPos = (getMarginLeft() + p.getMarginLeft() + ((p.getActualPageWidth() - rs.stringWidth(this)) / 2));
+
+	    if (p.isCentered()) { // print centered
+		super.xPos = (getMarginLeft() 
+			+ p.getMarginLeft() 
+			+ ((p.getActualPageWidth() 
+				- rs.stringWidth(this)) / 2));
 	    }
+
+	    if (p.getLinetype() == LineType.TRANSITION) {
+		super.xPos = (((p.getActualPageWidth() 
+			- rs.stringWidth(this) 
+			- p.getMarginRight()) / 2));
+	    }
+
 	    List<RichFormat> formats = rs.getFormattings();
+	    float currentLineWidth = 0f;
 	    for (RichFormat rf : formats) {
-		if (xExceeded(rf.stringWidth(this))) {
-		    if (p.isCentered()) {
-			nextLine(getMarginLeft() + p.getMarginLeft() + ((p.getActualPageWidth() - rs.stringWidth(this)) / 2));
-		    } else {
-			nextLine();
-		    }
+		if (rf.isUnderline()) { // underline line if underlined
+		    printLeftAligned(rf, super.xPos + currentLineWidth + p.getMarginLeft(), super.yPos, true);
+		} else {
+		    printLeftAligned(rf, super.xPos + currentLineWidth + p.getMarginLeft(), super.yPos);
 		}
-		printLeftAligned(rf, super.xPos + p.getMarginLeft(), super.yPos);
-		super.xPos += rf.stringWidth(this);
+		currentLineWidth += rf.stringWidth(this);
 	    }
+	    nextLine();
 	}
 	super.finishLine(p.getMarginBottom()); // finish paragraph
 
@@ -82,26 +104,26 @@ public class StandardPager extends AbstractPager<Paragraph> {
 	    }
 	}
     }
-    
+
     private Paragraph remarginDual(Paragraph p) {
 	if (currentDual == Dual.FIRST) {
-		p.setMarginLeft(getDualValue(getMarginLeft()+p.getMarginLeft()));
-		p.setMarginRight((getPageWidth() / 2) + p.getMarginRight());
+	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft()));
+	    p.setMarginRight(getPageWidth() / 2);
 	} else if (currentDual == Dual.SECOND) {
-		p.setMarginLeft(getDualValue(getMarginLeft()+p.getMarginLeft()));
+	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft()));
+	    p.setMarginRight(p.getActualPageWidth());
 	}
 	return p;
     }
-    
+
     private float getDualValue(Float f) {
 	if (currentDual == Dual.FIRST) {
 	    return (f / 2);
 	} else if (currentDual == Dual.SECOND) {
 	    return (getPageWidth() / 2) + (f / 2);
+	} else {
+	    throw new IllegalStateException("\nIt's not really possible to get here.\nHow am I supposed to help you?!\nI have nooo Idea what you did.");
 	}
-
-	// not allowed to happen. just don't let that happen.
-	return 0f;
     }
 
     @Override
@@ -115,6 +137,11 @@ public class StandardPager extends AbstractPager<Paragraph> {
 
     private void printLeftAligned(RichFormat rowPart, float x, float y) throws IOException {
 	super.printLeftAligned(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+    }
+
+    private void printLeftAligned(RichFormat rowPart, float x, float y, boolean underlined) throws IOException {
+	super.printLeftAligned(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	super.underline(x, y + super.getUnderLineDifference(), x + rowPart.stringWidth(this), y + super.getUnderLineDifference());
     }
 
     @SuppressWarnings("unused")

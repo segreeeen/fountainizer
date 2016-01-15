@@ -7,8 +7,8 @@ import java.util.List;
 import at.hsol.fountainizer.io.FilePrinter;
 import at.hsol.fountainizer.io.FileReader;
 import at.hsol.fountainizer.parser.Parser;
-import at.hsol.fountainizer.parser.data.FCharacter;
-import at.hsol.fountainizer.parser.line.DynamicLines;
+import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.meta.FCharacter;
 import at.hsol.fountainizer.parser.types.Statistic;
 
 /**

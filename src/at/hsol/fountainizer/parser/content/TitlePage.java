@@ -1,58 +1,69 @@
-package at.hsol.fountainizer.parser.line;
+package at.hsol.fountainizer.parser.content;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
-import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
 import at.hsol.fountainizer.parser.types.LineType;
+import at.hsol.fountainizer.parser.types.TitlePageType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 
 /**
- * This Line is used as a substitute for all the title Lines
- * and in the end is printed as a Title Page. It consists of a List of
- * TitleLines that are found in the first run of parsing. It does not
- * contain any actual text.
+ * This is the TitlePage, it is used as a substitute for all the title Lines and
+ * in the end is printed as a Title Page. It consists of a Map of TitleLines
+ * that are found in the first run of parsing. It does not contain any actual
+ * text.
  * 
- * @author SeGreeeen 
+ * @author Felix Batusic
  * 
  */
-public class TitlePage implements ParserLine {
-    private LinkedList<TitlePageLine> titlePageLines;
-    private ParserType type = LineType.TITLE;
+public class TitlePage {
+    private final HashMap<TitlePageType, TitlePageLine> titlePageLines;
+    private ParserType type = LineType.TITLEPAGE;
 
     public TitlePage() {
-	this.titlePageLines = new LinkedList<>();
+	this.titlePageLines = new HashMap<TitlePageType, TitlePageLine>();
     }
 
-    public void addLine(TitlePageLine l) {
-	titlePageLines.add(l);
+    public void addLine(TitlePageType t, TitlePageLine l) {
+	titlePageLines.put(t, l);
     }
 
-    @Override
-    public LinkedList<Paragraph> getParagraphForPDF() {
-	LinkedList<Paragraph> p = new LinkedList<>();
-	for (TitlePageLine t : titlePageLines) {
-	    p.addAll(t.getParagraphForPDF());
+    public LinkedList<Paragraph> getParagraphForPDF(TitlePageType type) {
+	LinkedList<Paragraph> paragraphs = new LinkedList<>();
+	if (titlePageLines.containsKey(type)) {
+	    titlePageLines.get(type);
+	    for (Paragraph p : titlePageLines.get(type).getParagraphForPDF()) {
+		paragraphs.add(p);
+	    }
+	    return paragraphs;
+	} else {
+	    return null;
 	}
-	return p;
     }
 
-    @Override
+    public TitlePageLine getLine(TitlePageType t) {
+	return titlePageLines.get(t);
+    }
+
+    public boolean contains(TitlePageType t) {
+	return titlePageLines.containsKey(t);
+    }
+
     public ParserType getLineType() {
 	return type;
     }
 
-    @Override
     public boolean emptyText() {
 	return titlePageLines.isEmpty();
     }
 
-    @Override
     public String getText() {
-	// TODO Auto-generated method stub
-	return null;
+	return type.toString();
     }
 
-
+    public boolean isEmpty() {
+	return titlePageLines.isEmpty();
+    }
 
 }

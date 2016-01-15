@@ -1,112 +1,82 @@
 package at.hsol.fountainizer.parser;
 
 import java.util.LinkedList;
-import java.util.function.Function;
 
+import at.hsol.fountainizer.parser.content.SimpleLine;
+import at.hsol.fountainizer.parser.content.TitlePage;
+import at.hsol.fountainizer.parser.content.TitlePageLine;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserList;
-import at.hsol.fountainizer.parser.line.Formatter;
-import at.hsol.fountainizer.parser.line.SimpleLine;
-import at.hsol.fountainizer.parser.line.TitlePage;
-import at.hsol.fountainizer.parser.line.TitlePageLine;
 import at.hsol.fountainizer.parser.types.ParserConstants;
-import at.hsol.fountainizer.parser.types.TitleLineType;
+import at.hsol.fountainizer.parser.types.TitlePageType;
 
 /**
  * @author Felix Batusic
  */
 class TitleParser {
-    /*
-     * Parses the titlepage
-     */
-    TitlePage parse(ParserList outputLines, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
-	TitlePage titlePage = new TitlePage();
-	for (int i = 0; i < outputLines.getLineCount(); i++) {
-	    SimpleLine l = outputLines.get(i);
-	    if (titleHandlers != null && !titleHandlers.isEmpty()) {
-		l = callTitleHandlers(l, titleHandlers);
-	    }
-	    TitlePageLine tpl;
-	    if (!l.emptyText()) {
-		l.setText(l.getText());
-		if (isTitle(l) == TitleLineType.CENTERED) {
-		    // find text that is going to be centered on the page
-		    l.setLineType(TitleLineType.CENTERED);
-		    tpl = new TitlePageLine(TitleLineType.CENTERED);
-		    String fText = Formatter.format(l.getText(), TitleLineType.CENTERED);
-		    if (fText != null) {
-			SimpleLine newLine = new SimpleLine(fText, l.getLineNr());
-			newLine.setLineType(TitleLineType.CENTERED);
-			tpl.addLine(newLine);
-		    }
-		    i = setFollowingTitles(i, l, outputLines, tpl);
-		    outputLines.remove(l);
-		    titlePage.addLine(tpl);
+    private TitlePage titlePage = new TitlePage();
 
-		} else if (isTitle(l) == TitleLineType.LEFT) {
-		    // find text that is going to be centered on the page
-		    l.setLineType(TitleLineType.LEFT);
-		    tpl = new TitlePageLine(TitleLineType.LEFT);
-		    String fText = Formatter.format(l.getText(), TitleLineType.LEFT);
-		    if (fText != null) {
-			SimpleLine newLine = new SimpleLine(fText, l.getLineNr());
-			newLine.setLineType(TitleLineType.LEFT);
-			tpl.addLine(newLine);
-		    }
-
-		    i = setFollowingTitles(i, l, outputLines, tpl);
-		    outputLines.remove(l);
-		    titlePage.addLine(tpl);
-		}
-	    }
+    public TitlePage parse(ParserList outputLines) {
+	if (getTitle(outputLines.get(0)) == null) {
+	    return null;
 	}
-	return titlePage;
-    }
 
-    TitlePage parse(ParserList outputLines) {
-	return parse(outputLines, null);
-    }
+	LinkedList<SimpleLine> titleLines = new LinkedList<>();
+	SimpleLine s = outputLines.get(0);
 
-    private int setFollowingTitles(int i, SimpleLine l, ParserList outputLines, TitlePageLine tpl) {
-	SimpleLine iterator = l.getNext();
-	if (iterator != null) {
-	    while (iterator.hasNext()) {
-		if (iterator.emptyText() || isTitle(iterator) != null) {
-		    return iterator.getLineNr() - 2;
-		}
-		iterator.setLineType(tpl.getLineType());
-		tpl.addLine(iterator);
-		outputLines.remove(iterator);
-		String fText = Formatter.format(iterator.getText(), iterator.getLineType());
-		if (fText != null) {
-		    iterator.setText(fText);
-		}
-		iterator = iterator.getNext();
+	while (s.hasNext()) {
+	    if (!s.emptyText()) {
+		outputLines.remove(s);
+		titleLines.add(s);
+	    } else {
+		break;
 	    }
-	    return iterator.getLineNr();
+	    s = s.getNext();
 	}
-	return i;
+
+	parseTPL(titleLines);
+
+	if (!titlePage.isEmpty()) {
+	    return titlePage;
+	} else {
+	    return null;
+	}
     }
 
-    private TitleLineType isTitle(ParserLine l) {
+    private void parseTPL(LinkedList<SimpleLine> titleLines) {
+	TitlePageLine tpl = new TitlePageLine();
+	for (SimpleLine l : titleLines) {
+	    TitlePageType t = getTitle(l);
+	    if (t != null) {
+		if (titlePage.contains(t)) {
+		    tpl = titlePage.getLine(t);
+		    tpl.add(l);
+		} else {
+		    tpl = new TitlePageLine(t);
+		    tpl.add(l);
+		    titlePage.addLine(t, tpl);
+		}
+	    } else {
+		tpl.add(l);
+	    } 
+	}
+    }
+
+    private TitlePageType getTitle(ParserLine l) {
 	if (!l.emptyText()) {
 	    if (l.getText().matches(ParserConstants.TP_CENTERED)) {
-		return TitleLineType.CENTERED;
+		return TitlePageType.CENTERED;
 	    } else if (l.getText().matches(ParserConstants.TP_LEFT)) {
-		return TitleLineType.LEFT;
+		return TitlePageType.LEFT;
+	    } else if (l.getText().matches(ParserConstants.TP_TITLE)) {
+		return TitlePageType.TITLE;
+	    } else if (l.getText().matches(ParserConstants.TP_RIGHT)) {
+		return TitlePageType.RIGHT;
+	    } else {
+		return null;
 	    }
 	}
 	return null;
-    }
-
-    private SimpleLine callTitleHandlers(SimpleLine l, LinkedList<Function<ParserLine, ParserLine>> titleHandlers) {
-	if (!titleHandlers.isEmpty()) {
-	    for (Function<ParserLine, ParserLine> c : titleHandlers) {
-		c.apply(l);
-	    }
-	    return l;
-	} else
-	    throw new IllegalArgumentException("handlers can't be empty or null");
     }
 
 }

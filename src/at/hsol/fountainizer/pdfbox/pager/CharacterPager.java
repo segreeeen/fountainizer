@@ -2,7 +2,7 @@ package at.hsol.fountainizer.pdfbox.pager;
 import java.io.IOException;
 import java.util.List;
 
-import at.hsol.fountainizer.parser.data.FCharacter;
+import at.hsol.fountainizer.parser.meta.FCharacter;
 
 public class CharacterPager extends AbstractPager<List<FCharacter>> {
     Integer fontSize;

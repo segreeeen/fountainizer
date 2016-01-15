@@ -1,10 +1,10 @@
-package at.hsol.fountainizer.parser.line;
+package at.hsol.fountainizer.parser.content;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import at.hsol.fountainizer.parser.data.Characters;
 import at.hsol.fountainizer.parser.interfaces.ParserList;
+import at.hsol.fountainizer.parser.meta.Characters;
 
 /**
  * @author Felix Batusic

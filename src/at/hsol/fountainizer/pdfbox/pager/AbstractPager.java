@@ -35,7 +35,7 @@ public abstract class AbstractPager<T> implements Pager {
 	this.document = new PDDocument();
 	this.nextPage();
 	this.xPos = getMarginLeft();
-	this.yPos = getPageHeight();
+	this.yPos = getPageHeight() - getMarginTop();
     }
 
     PDPageTree getPages() {
@@ -50,30 +50,31 @@ public abstract class AbstractPager<T> implements Pager {
 	this.currentPage = new PDPage();
 	this.document.addPage(currentPage);
 	this.stream = new PDPageContentStream(document, currentPage);
-	this.yPos = getPageHeight()-getMarginTop();
+	this.yPos = getPageHeight() - getMarginTop();
     }
 
     void nextLine(Float marginTop) {
 	if (marginTop != null) {
-	    this.yPos -= marginTop;
+	    this.xPos = getMarginLeft();
+	    this.yPos -= marginTop - PagerController.UNDER_LINE_CORRECTION;
+	} else {
+	    this.xPos = getMarginLeft();
+	    this.yPos -= getLineHeight() - PagerController.UNDER_LINE_CORRECTION;
 	}
-	xPos = getMarginLeft();
-	yPos -= getLineHeight() - PagerController.UNDER_LINE_CORRECTION; 
     }
 
     void nextLine() {
 	nextLine(null);
     }
-    
+
     void closeStream() throws IOException {
 	stream.stroke();
 	stream.close();
     }
-    
+
     void close() throws IOException {
 	this.document.close();
     }
-
 
     protected void printLeftAligned(String s, float x, float y, PDFont font, int fontSize, Color color) throws IOException {
 	stream.beginText();
@@ -98,7 +99,7 @@ public abstract class AbstractPager<T> implements Pager {
 	stream.endText();
 	stream.stroke();
     }
-    
+
     protected boolean yExceeded(float heightAddition) {
 	if ((yPos - getMarginBottom() - getLineHeight() - heightAddition) < 0) {
 	    return true;
@@ -106,10 +107,11 @@ public abstract class AbstractPager<T> implements Pager {
 	    return false;
 	}
     }
+
     protected boolean yExceeded() {
 	return yExceeded(0);
     }
-    
+
     protected boolean xExceeded(float stringWidth, float marginRight) {
 	if ((xPos + stringWidth + getMarginRight() + marginRight) >= getPageWidth()) {
 	    return true;
@@ -117,9 +119,13 @@ public abstract class AbstractPager<T> implements Pager {
 	    return false;
 	}
     }
-    
+
     protected boolean xExceeded(float stringWidth) {
 	return xExceeded(stringWidth, 0);
+    }
+
+    protected float getUnderLineDifference() {
+	return controller.font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize * PagerController.UNDER_LINE_FACTOR - getLineHeight();
     }
 
     public abstract void printContent(T t) throws IOException;
@@ -190,17 +196,23 @@ public abstract class AbstractPager<T> implements Pager {
 	return controller.boldItalicFont;
     }
 
-    abstract public int getFontSize();
+    public abstract int getFontSize();
 
     public void finishLine(float marginBottom) {
 	yPos -= marginBottom;
     }
-    
+
     private void setTextOptions(float x, float y, PDFont font, int fontSize, Color color) throws IOException {
 	stream.newLineAtOffset(x, y);
 	stream.setNonStrokingColor(Color.BLACK);
 	stream.setFont(font, fontSize);
     }
 
+    public void underline(float x, float y, float x2, float y2) throws IOException {
+	stream.setLineWidth(0.1f);
+	stream.moveTo(x, y);
+	stream.lineTo(x2, y2);
+	stream.stroke();
+    }
 
 }

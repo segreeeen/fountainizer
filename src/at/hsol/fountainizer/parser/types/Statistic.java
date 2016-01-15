@@ -3,8 +3,8 @@ package at.hsol.fountainizer.parser.types;
 import java.util.List;
 
 import at.hsol.fountainizer.Options;
-import at.hsol.fountainizer.parser.data.Characters;
-import at.hsol.fountainizer.parser.data.FCharacter;
+import at.hsol.fountainizer.parser.meta.Characters;
+import at.hsol.fountainizer.parser.meta.FCharacter;
 
 /**
  * This class is used to count... Everything.

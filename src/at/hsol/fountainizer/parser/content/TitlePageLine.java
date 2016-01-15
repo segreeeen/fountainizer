@@ -1,27 +1,32 @@
-package at.hsol.fountainizer.parser.line;
+package at.hsol.fountainizer.parser.content;
 
 import java.util.LinkedList;
 
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
+import at.hsol.fountainizer.parser.types.TitlePageType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 
 /**
  * @author Felix Batusic
  */
 public class TitlePageLine implements ParserLine {
-    private ParserType type;
-    private LinkedList<ParserLine> lines;
+    private TitlePageType type;
+    private final LinkedList<ParserLine> lines;
+
+    public TitlePageLine(TitlePageType t) {
+	this.lines = new LinkedList<>();
+	this.type = t;
+    }
+
+    public TitlePageLine() {
+	this(null);
+    }
 
     public LinkedList<ParserLine> getLines() {
 	return lines;
     }
-
-    public TitlePageLine(ParserType type) {
-	this.lines = new LinkedList<>();
-	this.type = type;
-    }
-
+    
     @Override
     public LinkedList<Paragraph> getParagraphForPDF() {
 	LinkedList<Paragraph> p = new LinkedList<>();
@@ -31,7 +36,7 @@ public class TitlePageLine implements ParserLine {
 	return p;
     }
 
-    public void addLine(ParserLine iterator) {
+    public void add(ParserLine iterator) {
 	lines.add(iterator);
     }
 
@@ -42,12 +47,16 @@ public class TitlePageLine implements ParserLine {
 
     @Override
     public boolean emptyText() {
-	return false;
+	return getLines().isEmpty();
     }
 
     @Override
     public String getText() {
-	return null;
+	return type.toString();
+    }
+
+    public void setType(TitlePageType t) {
+	this.type = t;
     }
 
 }

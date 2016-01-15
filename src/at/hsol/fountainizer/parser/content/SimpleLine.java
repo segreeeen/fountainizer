@@ -1,4 +1,4 @@
-package at.hsol.fountainizer.parser.line;
+package at.hsol.fountainizer.parser.content;
 
 import java.util.LinkedList;
 

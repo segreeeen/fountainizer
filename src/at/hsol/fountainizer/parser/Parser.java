@@ -4,11 +4,11 @@
 
 package at.hsol.fountainizer.parser;
 
+import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.content.Formatter;
+import at.hsol.fountainizer.parser.content.SimpleLine;
+import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.interfaces.ParserList;
-import at.hsol.fountainizer.parser.line.DynamicLines;
-import at.hsol.fountainizer.parser.line.Formatter;
-import at.hsol.fountainizer.parser.line.SimpleLine;
-import at.hsol.fountainizer.parser.line.TitlePage;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.parser.types.ParserConstants;
 import at.hsol.fountainizer.parser.types.Statistic;

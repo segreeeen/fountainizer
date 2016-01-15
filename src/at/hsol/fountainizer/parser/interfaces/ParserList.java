@@ -1,8 +1,8 @@
 package at.hsol.fountainizer.parser.interfaces;
 
-import at.hsol.fountainizer.parser.data.Characters;
-import at.hsol.fountainizer.parser.line.SimpleLine;
-import at.hsol.fountainizer.parser.line.TitlePage;
+import at.hsol.fountainizer.parser.content.SimpleLine;
+import at.hsol.fountainizer.parser.content.TitlePage;
+import at.hsol.fountainizer.parser.meta.Characters;
 
 /**
  * @author Felix Batusic

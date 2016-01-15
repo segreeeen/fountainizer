@@ -113,11 +113,15 @@ public final class ParserConstants {
     /**
      * Matches TitlePage linestarts for the centered text
      */
-    public static final String TP_CENTERED = "^(\\s+)?[Tt]itle:(.*?)|^(\\s+)?[cC]redit:(.*?)|^(\\s+)?[Aa]uthor:(.*?)|^(\\s+)?[Ss]ource:(.*?)";
+    public static final String TP_CENTERED = "^(\\s+)?[cC]redit:(.*?)|^(\\s+)?[Aa]uthor:(.*?)|^(\\s+)?[Ss]ource:(.*?)";
 
     /**
      * Matches TitlePage linestarts for the down-left text
      */
-    public static final String TP_LEFT = "^(\\s+)?[Dd]raft [Dd]ate:(.*?)|^(\\s+)?[Cc]ontact:(.*?)|^(\\s+)?[Nn]otes:(.*?)|^(\\s+)?[Cc]opyright:(.*?)";
+    public static final String TP_LEFT = "^(\\s+)?[Cc]ontact:(.*?)|^(\\s+)?[Nn]otes:(.*?)|^(\\s+)?[Cc]opyright:(.*?)";
+
+    public static final String TP_TITLE = "^(\\s+)?[Tt]itle:(.*?)";
+
+    public static final String TP_RIGHT = "^(\\s+)?[Dd]raft [Dd]ate:(.*?)";
 
 }

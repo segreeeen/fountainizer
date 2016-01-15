@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-import at.hsol.fountainizer.parser.line.DynamicLines;
-import at.hsol.fountainizer.parser.line.SimpleLine;
+import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.content.SimpleLine;
 
 /**
  * @author Felix Batusic

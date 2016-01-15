@@ -1,4 +1,4 @@
-package at.hsol.fountainizer.parser.line;
+package at.hsol.fountainizer.parser.content;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.parser.types.ParserConstants;
-import at.hsol.fountainizer.parser.types.TitleLineType;
+import at.hsol.fountainizer.parser.types.TitlePageType;
 
 /**
  * @author Felix Batusic
@@ -63,7 +63,7 @@ public class Formatter {
 	    return matcher.group(1).trim();
 	} else if (type == LineType.PAGEBREAK) {
 	    return s;
-	} else if (type == TitleLineType.CENTERED) {
+	} else if (type == TitlePageType.CENTERED) {
 	    Pattern p = Pattern.compile(ParserConstants.TP_CENTERED);
 	    Matcher m = p.matcher(s);
 	    if (m.find()) {
@@ -77,7 +77,7 @@ public class Formatter {
 		return null;
 	    }
 
-	} else if (type == TitleLineType.LEFT) {
+	} else if (type == TitlePageType.LEFT) {
 	    Pattern p = Pattern.compile(ParserConstants.TP_LEFT);
 	    Matcher m = p.matcher(s);
 	    if (m.find()) {

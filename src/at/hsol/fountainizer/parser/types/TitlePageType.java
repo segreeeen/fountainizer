@@ -5,9 +5,11 @@ import at.hsol.fountainizer.parser.interfaces.ParserType;
 /**
  * @author Felix Batusic
  */
-public enum TitleLineType implements ParserType {
+public enum TitlePageType implements ParserType {
+    TITLE(false, false, false, 0.0F, 0F, 0.0F, 10.0F),
     CENTERED(false, true, false, 0F, 0F, 0F, 0.0F), 
-    LEFT(false, false, false, 0.0F, 0F, 0.0F, 10.0F);
+    LEFT(false, false, false, 0.0F, 0F, 0.0F, 10.0F),
+    RIGHT(false, false, false, 0.0F, 0F, 0.0F, 10.0F);
 
     private final boolean uppercase;
     private final boolean centered;
@@ -17,7 +19,7 @@ public enum TitleLineType implements ParserType {
     private final float marginTop;
     private final float marginBottom;
 
-    private TitleLineType(boolean uppercase, boolean centered,
+    private TitlePageType(boolean uppercase, boolean centered,
 	    boolean underlined, float marginLeft, float marginRight,
 	    float marginTop, float marginBottom) {
 	this.uppercase = uppercase;
@@ -29,7 +31,7 @@ public enum TitleLineType implements ParserType {
 	this.marginBottom = marginBottom;
     }
 
-    public TitleLineType getType(String s) {
+    public TitlePageType getType(String s) {
 	if (s.matches(ParserConstants.TP_CENTERED)) {
 	    return CENTERED;
 	} else {
