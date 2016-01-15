@@ -1,4 +1,5 @@
 package at.hsol.fountainizer.pdfbox.pager;
+import java.io.IOException;
 import java.util.List;
 
 import at.hsol.fountainizer.parser.data.FCharacter;
@@ -6,14 +7,14 @@ import at.hsol.fountainizer.parser.data.FCharacter;
 public class CharacterPager extends AbstractPager<List<FCharacter>> {
     Integer fontSize;
     
-    CharacterPager(PageController controller) {
+    CharacterPager(PagerController controller) throws IOException {
 	super(controller);
-	super.type = PageController.PagerType.CHARACTER_PAGER;
+	super.type = PagerController.PagerType.CHARACTER_PAGER;
 	this.fontSize = null;
     }
 
     @Override
-    void printContent(List<FCharacter> t) {
+    public void printContent(List<FCharacter> t) {
 	// TODO Auto-generated method stub
 	
     }
@@ -23,9 +24,10 @@ public class CharacterPager extends AbstractPager<List<FCharacter>> {
 	if (fontSize != null) {
 	    return fontSize;
 	} else {
-	    return PageController.STANDARD_FONT_SIZE;
+	    return PagerController.STANDARD_FONT_SIZE;
 	}
     }
+
 
 
 }

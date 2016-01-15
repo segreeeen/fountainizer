@@ -109,6 +109,7 @@ public class SimpleLine implements ParserLine {
 	    p.setMargin(type.getMarginTop(), type.getMarginLeft(), type.getMarginRight(), type.getMarginBottom());
 	    LinkedList<Paragraph> paragraphs = new LinkedList<>();
 	    p.setLineTypeNumber(lineTypeNumber);
+	    p.setDualDialogue(dualDialogue);
 	    paragraphs.add(p);
 	    return paragraphs;
 	} else {

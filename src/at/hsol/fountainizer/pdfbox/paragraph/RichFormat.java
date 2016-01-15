@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
-import at.hsol.fountainizer.pdfbox.pager.AbstractPager;
+import at.hsol.fountainizer.pdfbox.interfaces.Pager;
 
 /**
  * @author Lukas Theis
@@ -65,21 +65,21 @@ public class RichFormat {
 	this.text = text;
     }
 
-    public PDFont selectFont(AbstractPager<?> pager) throws IOException {
+    public PDFont selectFont(Pager page) throws IOException {
 	if (isBold() && isItalic()) {
-	    return pager.getBoldItalicFont();
+	    return page.getBoldItalicFont();
 	} else if (isBold()) {
-	    return pager.getBoldFont();
+	    return page.getBoldFont();
 	} else if (isItalic()) {
-	    return pager.getItalicFont();
+	    return page.getItalicFont();
 	} else {
-	    return pager.getFont();
+	    return page.getFont();
 	}
     }
 
-    public float stringWidth(AbstractPager<?> pager) throws IOException {
-	return selectFont(pager).getStringWidth(getText()) / 1000
-		* pager.getFontSize();
+    public float stringWidth(Pager page) throws IOException {
+	return selectFont(page).getStringWidth(getText()) / 1000
+		* page.getFontSize();
     }
 
     @Override

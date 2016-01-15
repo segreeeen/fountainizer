@@ -1,7 +1,9 @@
 package at.hsol.fountainizer.pdfbox.pager;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -19,15 +21,21 @@ import at.hsol.fountainizer.pdfbox.fonts.Fonts;
  * @author Felix Batusic
  *
  */
-public class PageController {
+public class PagerController {
     public enum PagerType {
 	TITLE_PAGER, STANDARD_PAGER, CHARACTER_PAGER;
     }
+    
+    public enum FormattingType {
+	NORMAL, ITALIC, BOLD, BOLDITALIC, UNDERLINED;
+    }
 
     // Page Layout
-    public static final int STANDARD_FONT_SIZE = 12;
-    public static final float LINE_HEIGHT_FACTOR = 1.2f;
-    public static final float UNDER_LINE_FACTOR = 1.1f;
+    static final Color STANDARD_TEXT_COLOR = Color.BLACK;
+    static final int STANDARD_FONT_SIZE = 12;
+    static final float LINE_HEIGHT_FACTOR = 1.2f;
+    static final float UNDER_LINE_FACTOR = 1.1f;
+    static final float UNDER_LINE_CORRECTION = 3f;
 
     // Dual Constants
     // TODO: move them to appropriate PageBuilder class.
@@ -53,7 +61,7 @@ public class PageController {
     // Options
     final Options options;
 
-    public PageController(float marginLeft, float marginRight, float marginTop, float marginBottom, Options options) throws IOException {
+    public PagerController(float marginLeft, float marginRight, float marginTop, float marginBottom, Options options) throws IOException {
 	// set values defined by user
 	this.doc = new PDDocument();
 	this.marginLeft = marginLeft;
@@ -75,8 +83,9 @@ public class PageController {
     /**
      * There can only be one Pager of a type at a time. Please see
      * PageController.PagerType for the possible Types.
+     * @throws IOException 
      */
-    public AbstractPager<?> getPager(PagerType PAGER_TYPE) {
+    public AbstractPager<?> getPager(PagerType PAGER_TYPE) throws IOException {
 	if (pagers.containsKey(PAGER_TYPE)) {
 	    return pagers.get(PAGER_TYPE);
 	} else {
@@ -98,23 +107,36 @@ public class PageController {
 	}
 	
 	if (pagers.containsKey(PagerType.TITLE_PAGER)) {
-	    PDPageTree pages = pagers.get(PagerType.TITLE_PAGER).getPages();
+	    TitlePager pager = (TitlePager) pagers.get(PagerType.TITLE_PAGER);
+	    pager.closeStream();
+	    PDPageTree pages = pager.getPages();
 	    for (PDPage p: pages) {
 		doc.addPage(p);
 	    }
 	} else if (pagers.containsKey(PagerType.CHARACTER_PAGER)) {
-	    PDPageTree pages = pagers.get(PagerType.CHARACTER_PAGER).getPages();
+	    CharacterPager pager = (CharacterPager) pagers.get(PagerType.CHARACTER_PAGER);
+	    pager.closeStream();
+	    PDPageTree pages = pager.getPages();
 	    for (PDPage p: pages) {
 		doc.addPage(p);
 	    }
 	} else if (pagers.containsKey(PagerType.STANDARD_PAGER)) {
-	    PDPageTree pages = pagers.get(PagerType.STANDARD_PAGER).getPages();
+	    StandardPager pager = (StandardPager) pagers.get(PagerType.STANDARD_PAGER);
+	    pager.closeStream();
+	    PDPageTree pages = pager.getPages();
 	    for (PDPage p: pages) {
 		doc.addPage(p);
 	    }
 	}
 	doc.save(fileName);
 	doc.close();
+	closePagers();
+    }
+
+    private void closePagers() throws IOException {
+	for(Entry<PagerType, AbstractPager<?>> p: pagers.entrySet()) {
+	    p.getValue().close();
+	}
     }
 
     

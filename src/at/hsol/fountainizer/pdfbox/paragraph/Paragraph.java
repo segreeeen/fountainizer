@@ -8,6 +8,7 @@ import at.hsol.fountainizer.parser.interfaces.ParserType;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.interfaces.Margins;
 import at.hsol.fountainizer.pdfbox.pager.AbstractPager;
+import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
 /**
  * @author Lukas Theis
@@ -16,6 +17,7 @@ public class Paragraph implements Margins {
 
     // private String text;
     private RichString richText;
+    private AbstractPager<?> pager;
     private ParserType linetype;
     private List<RichString> lines;
 
@@ -28,7 +30,7 @@ public class Paragraph implements Margins {
     private boolean centered = false;
     private boolean underlined = false;
     private Integer lineTypeNumber;
-    private AbstractPager<?> pager;
+    private boolean dualDialogue;
 
     public Paragraph(RichString richString) {
 	this.richText = richString;
@@ -72,7 +74,7 @@ public class Paragraph implements Margins {
 
 	while (start < text.length()) {
 	    int end = start;
-	    while (richText.substring(start, end).stringWidth(pager) < getPageWidthRespectingMargins() && end < text.length()) {
+	    while (richText.substring(start, end).stringWidth(pager) < getActualPageWidth() && end < text.length()) {
 		end++;
 	    }
 	    int lastSpace = richText.substring(start, end).toString().lastIndexOf(" ");
@@ -86,9 +88,8 @@ public class Paragraph implements Margins {
 
 	return lines;
     }
-    
 
-    public float getPageWidthRespectingMargins() {
+    public float getActualPageWidth() {
 	if (pager == null) {
 	    return 0.0f;
 	}
@@ -176,6 +177,14 @@ public class Paragraph implements Margins {
     
     public Integer getLineTypeNumber() {
 	return lineTypeNumber;
+    }
+
+    public boolean isDualDialogue() {
+	return dualDialogue;
+    }
+
+    public void setDualDialogue(boolean dualDialogue) {
+	this.dualDialogue = dualDialogue;
     }
 
 }
