@@ -32,7 +32,17 @@ public class StandardPager extends AbstractPager<Paragraph> {
     }
     
     protected void printRightAligned(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
-	float text_width = (controller.font.getStringWidth(rowPart.getText()) / 1000.0f) * fontSize;
+	float text_width = (rowPart.stringWidth(this) / 1000.0f) * fontSize;
+	stream.beginText();
+	stream.newLineAtOffset(x - text_width, y);
+	stream.setFont(rowPart.selectFont(this), fontSize);
+	stream.showText(rowPart.getText());
+	stream.endText();
+	stream.stroke();
+    }
+    
+    protected void printCentered(RichFormat rowPart, float x, float y, float currentLineWidth) throws IOException {
+	float text_width = (rowPart.stringWidth(this) / 1000.0f) * fontSize;
 	stream.beginText();
 	stream.newLineAtOffset(x - text_width, y);
 	stream.setFont(rowPart.selectFont(this), fontSize);
