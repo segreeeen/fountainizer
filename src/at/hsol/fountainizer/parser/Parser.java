@@ -4,7 +4,7 @@
 
 package at.hsol.fountainizer.parser;
 
-import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.content.Formatter;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
@@ -22,7 +22,7 @@ public class Parser {
     private TypeHelper typeHelper;
     private ParserList outputLines;
 
-    public Parser(DynamicLines outputLines) {
+    public Parser(ParserContent outputLines) {
 	this.stats = new Statistic(outputLines.getCharacters());
 	this.typeHelper = new TypeHelper(stats, outputLines);
 	this.outputLines = outputLines;

@@ -2,7 +2,7 @@ package at.hsol.fountainizer.parser.interfaces;
 
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
-import at.hsol.fountainizer.parser.meta.Characters;
+import at.hsol.fountainizer.parser.meta.FCharacters;
 
 /**
  * @author Felix Batusic
@@ -28,8 +28,8 @@ public interface ParserList extends Iterable<SimpleLine> {
 
     public void setTitlepage(TitlePage tp);
     
-    public Characters getCharacters();
+    public FCharacters getCharacters();
     
-    public void setCharacters(Characters characters);
+    public void setCharacters(FCharacters characters);
 
 }

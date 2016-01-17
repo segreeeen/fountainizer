@@ -3,7 +3,7 @@ package at.hsol.fountainizer.parser.types;
 import java.util.List;
 
 import at.hsol.fountainizer.Options;
-import at.hsol.fountainizer.parser.meta.Characters;
+import at.hsol.fountainizer.parser.meta.FCharacters;
 import at.hsol.fountainizer.parser.meta.FCharacter;
 
 /**
@@ -21,9 +21,9 @@ public class Statistic {
     private int lyrics = 0;
     private int centered = 0;
     private int emtpy = 0;
-    private Characters characters = new Characters();
+    private FCharacters characters = new FCharacters();
 
-    public Statistic(Characters characters) {
+    public Statistic(FCharacters characters) {
 	this.characters = characters;
     }
 

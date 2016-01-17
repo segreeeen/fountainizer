@@ -6,15 +6,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 
 /**
  * @author Felix Batusic
  */
 public class FileReader {
-    public static DynamicLines getLines(String fileName) throws IOException {
-	DynamicLines lines = new DynamicLines();
+    public static ParserContent getLines(String fileName) throws IOException {
+	ParserContent lines = new ParserContent();
 	InputStreamReader reader = new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8);
 	BufferedReader readLine = new BufferedReader(reader);
 	SimpleLine prev = null;

@@ -9,7 +9,7 @@ import static at.hsol.fountainizer.parser.types.ParserConstants.L_PARENTHETICAL;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_1;
 import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_2;
 
-import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserType;
@@ -19,14 +19,14 @@ import at.hsol.fountainizer.parser.interfaces.ParserType;
  */
 public class TypeHelper {
     Statistic stats;
-    DynamicLines outputLines;
+    ParserContent outputLines;
 
-    public TypeHelper(Statistic stats, DynamicLines outputLines) {
+    public TypeHelper(Statistic stats, ParserContent outputLines) {
 	this.stats = stats;
 	this.outputLines = outputLines;
     }
 
-    public TypeHelper(DynamicLines outputLines) {
+    public TypeHelper(ParserContent outputLines) {
 	this(null, outputLines);
 
     }

@@ -7,7 +7,7 @@ import java.util.List;
 import at.hsol.fountainizer.io.FilePrinter;
 import at.hsol.fountainizer.io.FileReader;
 import at.hsol.fountainizer.parser.Parser;
-import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.meta.FCharacter;
 import at.hsol.fountainizer.parser.types.Statistic;
 
@@ -21,7 +21,7 @@ import at.hsol.fountainizer.parser.types.Statistic;
 public class FountainizerHelper {
 	private String fileIn;
 	private String fileOut;
-	private DynamicLines textlines = null;
+	private ParserContent textlines = null;
 	private Statistic stats;
 	private Options options;
 	

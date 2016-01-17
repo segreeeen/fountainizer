@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import at.hsol.fountainizer.parser.interfaces.ParserList;
-import at.hsol.fountainizer.parser.meta.Characters;
+import at.hsol.fountainizer.parser.meta.FCharacters;
 
 /**
  * @author Felix Batusic
  */
-public class DynamicLines implements ParserList {
+public class ParserContent implements ParserList {
     private TitlePage tp;
     private ArrayList<SimpleLine> lines;
-    private Characters characters;
+    private FCharacters characters;
 
-    public DynamicLines() {
+    public ParserContent() {
 	lines = new ArrayList<>(100);
-	setCharacters(new Characters());
+	setCharacters(new FCharacters());
     }
 
     @Override
@@ -159,11 +159,11 @@ public class DynamicLines implements ParserList {
 	this.tp = tp;
     }
 
-    public Characters getCharacters() {
+    public FCharacters getCharacters() {
 	return characters;
     }
 
-    public void setCharacters(Characters characters) {
+    public void setCharacters(FCharacters characters) {
 	this.characters = characters;
     }
 

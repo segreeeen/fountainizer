@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
-public class StandardPager extends AbstractPager<DynamicLines> {
+public class StandardPager extends AbstractPager<ParserContent> {
     private enum Dual {
 	FIRST, SECOND;
     }
@@ -28,7 +28,7 @@ public class StandardPager extends AbstractPager<DynamicLines> {
     }
 
     @Override
-    public void printContent(DynamicLines t) throws IOException {
+    public void printContent(ParserContent t) throws IOException {
 	for (ParserLine line : t) {
 	    LinkedList<Paragraph> paragraphs = line.getParagraphForPDF();
 	    if (paragraphs != null) {

@@ -9,7 +9,7 @@ import java.util.Map;
 
 import at.hsol.fountainizer.Options;
 
-public class Characters {
+public class FCharacters {
     private static final String CHARACTER_ASSIGNMENT = "=";
 
     private HashMap<String, FCharacter> charRegister = new HashMap<>();
