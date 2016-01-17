@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
 import at.hsol.fountainizer.pdfbox.interfaces.Pager;
@@ -152,6 +153,10 @@ public abstract class AbstractPager<T> implements Pager {
 	return currentPage.getMediaBox().getWidth() - getMarginLeft() - getMarginRight();
     }
 
+    public float getAbsoluteWidth() {
+	return currentPage.getMediaBox().getWidth();
+    }
+
     public float getPageHeight() {
 	return currentPage.getMediaBox().getHeight();
     }
@@ -204,13 +209,19 @@ public abstract class AbstractPager<T> implements Pager {
     }
 
     private void printPageNumber(float x) throws IOException {
-	printString(Integer.toString(document.getNumberOfPages()), getMarginLeft() + x, getMarginBottom() - (getLineHeight()), getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	String nr = Integer.toString(document.getNumberOfPages());
+	float nrWidth = getFont().getStringWidth(nr) / 1000 * getFontSize();
+	printString(nr, (getAbsoluteWidth() / 2)-nrWidth, getMarginBottom() - (getLineHeight()), getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
     }
 
     private void setTextOptions(float x, float y, PDFont font, int fontSize, Color color) throws IOException {
 	stream.newLineAtOffset(x, y);
 	stream.setNonStrokingColor(Color.BLACK);
 	stream.setFont(font, fontSize);
+    }
+
+    PDPageTree getPages() {
+	return document.getPages();
     }
 
 }

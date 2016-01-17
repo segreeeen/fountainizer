@@ -2,18 +2,18 @@ package at.hsol.fountainizer.parser.content;
 
 import java.util.LinkedList;
 
-import at.hsol.fountainizer.parser.interfaces.ParserLine;
-import at.hsol.fountainizer.parser.interfaces.ParserType;
+import at.hsol.fountainizer.parser.interfaces.Line;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
 /**
  * @author Felix Batusic
  */
-public class SimpleLine implements ParserLine {
+public class SimpleLine implements Line {
     private String text;
     private int lineNr;
-    private ParserType type;
+    private MarginType type;
     private boolean dualDialogue;
     private int lineTypeNumber;
     private SimpleLine prev = null;
@@ -25,11 +25,11 @@ public class SimpleLine implements ParserLine {
 	this.dualDialogue = false;
     }
 
-    public ParserType getLineType() {
+    public MarginType getLineType() {
 	return type;
     }
 
-    public void setLineType(ParserType type) {
+    public void setLineType(MarginType type) {
 	this.type = type;
     }
 

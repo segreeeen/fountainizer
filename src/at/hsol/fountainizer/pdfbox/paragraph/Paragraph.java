@@ -4,21 +4,19 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import at.hsol.fountainizer.parser.interfaces.ParserType;
-import at.hsol.fountainizer.parser.types.LineType;
-import at.hsol.fountainizer.pdfbox.interfaces.Margins;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
+import at.hsol.fountainizer.parser.types.LineMargins;
 import at.hsol.fountainizer.pdfbox.pager.AbstractPager;
-import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
 /**
  * @author Lukas Theis
  */
-public class Paragraph implements Margins {
+public class Paragraph implements MarginType {
 
     // private String text;
     private RichString richText;
     private AbstractPager<?> pager;
-    private ParserType linetype;
+    private MarginType linetype;
     private List<RichString> lines;
 
     private float marginTop;
@@ -36,7 +34,7 @@ public class Paragraph implements Margins {
 	this.richText = richString;
     }
     
-    public Paragraph(LineType type) {
+    public Paragraph(LineMargins type) {
 	this.linetype = type;
     }
 
@@ -59,7 +57,7 @@ public class Paragraph implements Margins {
 	}
 	
 	List<RichString> lines = new LinkedList<RichString>();
-	if (linetype == LineType.TRANSITION) {
+	if (linetype == LineMargins.TRANSITION) {
 	    lines.add(richText);
 	    return lines;
 	}
@@ -159,16 +157,16 @@ public class Paragraph implements Margins {
 	this.underlined = underlined;
     }
 
-    public ParserType getLinetype() {
+    public MarginType getLinetype() {
 	return linetype;
     }
 
-    public void setLinetype(ParserType linetype) {
+    public void setLinetype(MarginType linetype) {
 	this.linetype = linetype;
     }
     
     public static Paragraph getEmptyParagraph() {
-	return new Paragraph(LineType.EMPTY);
+	return new Paragraph(LineMargins.EMPTY);
     }
 
     public void setLineTypeNumber(int lineTypeNumber) {

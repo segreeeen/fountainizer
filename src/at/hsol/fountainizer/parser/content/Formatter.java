@@ -3,8 +3,8 @@ package at.hsol.fountainizer.parser.content;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import at.hsol.fountainizer.parser.interfaces.ParserType;
-import at.hsol.fountainizer.parser.types.LineType;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
+import at.hsol.fountainizer.parser.types.LineMargins;
 import at.hsol.fountainizer.parser.types.ParserConstants;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 
@@ -12,23 +12,23 @@ import at.hsol.fountainizer.parser.types.TitlePageType;
  * @author Felix Batusic
  */
 public class Formatter {
-    public static String format(String s, ParserType type) {
+    public static String format(String s, MarginType type) {
 	if (s != null) {
 	    s = s.trim();
 	}
 
-	if (type == LineType.HEADING) {
+	if (type == LineMargins.HEADING) {
 	    return formatColonTag(s, ParserConstants.L_HEADING);
-	} else if (type == LineType.CHARACTER) {
+	} else if (type == LineMargins.CHARACTER) {
 	    if (s.contains("@")) {
 		return s.replaceFirst("@", "");
 	    }
 	    return s;
-	} else if (type == LineType.DIALOGUE) {
+	} else if (type == LineMargins.DIALOGUE) {
 	    return s;
-	} else if (type == LineType.PARENTHETICAL) {
+	} else if (type == LineMargins.PARENTHETICAL) {
 	    return s;
-	} else if (type == LineType.TRANSITION) {
+	} else if (type == LineMargins.TRANSITION) {
 	    Pattern p = Pattern.compile(ParserConstants.L_TRANSITION_2);
 	    Matcher m = p.matcher(s);
 	    if (m.find()) {
@@ -41,16 +41,16 @@ public class Formatter {
 	    } else {
 		return s;
 	    }
-	} else if (type == LineType.ACTION) {
+	} else if (type == LineMargins.ACTION) {
 	    return s;
-	} else if (type == LineType.LYRICS) {
+	} else if (type == LineMargins.LYRICS) {
 	    return s;
-	} else if (type == LineType.CENTERED) {
+	} else if (type == LineMargins.CENTERED) {
 	    final Pattern pattern = Pattern.compile(ParserConstants.L_CENTERED);
 	    final Matcher matcher = pattern.matcher(s);
 	    matcher.find();
 	    return matcher.group(1).trim();
-	} else if (type == LineType.PAGEBREAK) {
+	} else if (type == LineMargins.PAGEBREAK) {
 	    return s;
 	} else if (type == TitlePageType.CENTERED) {
 	    return formatColonTag(s, ParserConstants.TP_CENTERED);

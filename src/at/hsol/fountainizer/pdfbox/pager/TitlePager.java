@@ -74,7 +74,7 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	List<RichString> sList = p.getLines();
 	for (RichString s : sList) {
 	    float currentLineWidth = 0f;
-	    float x = getMarginLeft() + p.getMarginLeft() + ((p.getActualPageWidth() - s.stringWidth(this)) / 2);
+	    float x = (super.getAbsoluteWidth() / 2) - (s.stringWidth(this)/2)-p.getMarginLeft();
 	    for (RichFormat f : s.getFormattings()) {
 		printString(f.getText(), currentLineWidth + x, titleY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 		currentLineWidth += f.stringWidth(this);
@@ -117,7 +117,7 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	List<RichString> sList = p.getLines();
 	for (RichString s : sList) {
 	    float currentLineWidth = 0f;
-	    float x = getMarginLeft() + ((p.getActualPageWidth() / 2) - (s.stringWidth(this) / 2));
+	    float x = (super.getAbsoluteWidth() / 2) - (s.stringWidth(this)/2)-p.getMarginLeft();
 	    for (RichFormat f : s.getFormattings()) {
 		printString(f.getText(), currentLineWidth + x, centeredY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 		currentLineWidth += f.stringWidth(this);

@@ -7,14 +7,14 @@ import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 /**
  * @author Felix Batusic
  */
-public interface ParserLine {
+public interface Line {
 
     /**
      * @return Paragraph for the PDF printer.
      */
     public LinkedList<Paragraph> getParagraphForPDF();
 
-    public ParserType getLineType();
+    public MarginType getLineType();
 
     public boolean emptyText();
 

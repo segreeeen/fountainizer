@@ -14,7 +14,7 @@ import at.hsol.fountainizer.pdfbox.pager.TitlePager;
  */
 public class FilePrinter {
     public static void writePDFBox(ParserContent dLines, String fileName, Options options) throws IOException, URISyntaxException {
-	PagerController controller = new PagerController(80, 40, 60, 60, options);
+	PagerController controller = new PagerController(80, 40, 60, 80, options);
 	StandardPager pager = controller.getPager(PagerController.PagerType.STANDARD_PAGER);
 	TitlePager titlePager = controller.getPager(PagerController.PagerType.TITLE_PAGER);
 	CharacterPager cPager = controller.getPager(PagerController.PagerType.CHARACTER_PAGER);

@@ -1,11 +1,11 @@
 package at.hsol.fountainizer.parser.types;
 
-import at.hsol.fountainizer.parser.interfaces.ParserType;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
 
 /**
  * @author Felix Batusic
  */
-public enum TitlePageType implements ParserType {
+public enum TitlePageType implements MarginType {
     TITLE(false, false, false, 0.0F, 0F, 0.0F, 10.0F),
     CENTERED(false, true, false, 0F, 0F, 0F, 20.0F), 
     LEFT(false, false, false, 80F, 0F, 0.0F, 3.0F),

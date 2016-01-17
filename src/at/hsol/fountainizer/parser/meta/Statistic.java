@@ -1,10 +1,11 @@
-package at.hsol.fountainizer.parser.types;
+package at.hsol.fountainizer.parser.meta;
 
 import java.util.List;
 
 import at.hsol.fountainizer.Options;
-import at.hsol.fountainizer.parser.meta.FCharacters;
-import at.hsol.fountainizer.parser.meta.FCharacter;
+import at.hsol.fountainizer.parser.content.SimpleLine;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
+import at.hsol.fountainizer.parser.types.LineMargins;
 
 /**
  * This class is used to count... Everything.
@@ -67,40 +68,65 @@ public class Statistic {
 	return emtpy;
     }
 
-    protected void incCharacter(String name) {
-	characters.incCharCount(name);
-	this.character++;
+    public void countLine(SimpleLine l) {
+	MarginType t = l.getLineType();
+	if (t == LineMargins.HEADING) {
+	    incHeading();
+	} else if (t == LineMargins.PARENTHETICAL) {
+	    incParenthetical();
+	} else if (t == LineMargins.LYRICS) {
+	    incLyrics();
+	} else if (t == LineMargins.CENTERED) {
+	    incCentered();
+	} else if (t == LineMargins.TRANSITION) {
+	    incTransition();
+	} else if (t == LineMargins.CHARACTER) {
+	    incCharacter(l.getText());
+	} else if (t == LineMargins.DIALOGUE) {
+	    incDialogue();
+	} else if (t == LineMargins.EMPTY) {
+	    incEmtpy();
+	} else {
+	    incAction();
+	}
     }
 
-    protected void incHeading() {
+    private void incCharacter(String name) {
+	this.characters.add(name);
+	this.characters.incCharCount(name);
+	this.character++;
+	System.out.println(character);
+    }
+
+    private void incHeading() {
 	this.heading++;
     }
 
-    protected void incDialogue() {
+    private void incDialogue() {
 	this.dialogue++;
     }
 
-    protected void incParenthetical() {
+    private void incParenthetical() {
 	this.parenthetical++;
     }
 
-    protected void incTransition() {
+    private void incTransition() {
 	this.transition++;
     }
 
-    protected void incAction() {
+    private void incAction() {
 	this.action++;
     }
 
-    protected void incLyrics() {
+    private void incLyrics() {
 	this.lyrics++;
     }
 
-    protected void incCentered() {
+    private void incCentered() {
 	this.centered++;
     }
 
-    protected void incEmtpy() {
+    private void incEmtpy() {
 	this.emtpy++;
     }
 

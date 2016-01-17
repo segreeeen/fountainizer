@@ -9,7 +9,7 @@ import at.hsol.fountainizer.io.FileReader;
 import at.hsol.fountainizer.parser.Parser;
 import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.meta.FCharacter;
-import at.hsol.fountainizer.parser.types.Statistic;
+import at.hsol.fountainizer.parser.meta.Statistic;
 
 /**
  * Use this class to read, parse and print.

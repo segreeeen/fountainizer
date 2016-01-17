@@ -3,7 +3,7 @@ package at.hsol.fountainizer.parser.interfaces;
 /**
  * @author Felix Batusic
  */
-public interface ParserType {
+public interface MarginType {
 
     public boolean isUppercase();
 

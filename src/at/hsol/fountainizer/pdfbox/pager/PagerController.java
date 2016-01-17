@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
@@ -95,37 +96,38 @@ public class PagerController {
 	}
     }
 
-    /**
-     * Saves the document. For the Pagers following order is applied: Titlepage,
-     * Characterpage, Standardpage
-     * 
-     * @throws IOException
-     */
     public void finalizeDocument(String fileName) throws IOException {
 	if (pagers.isEmpty()) {
 	    throw new IllegalStateException("There are no pagers to be written.");
 	}
 
-	PDFMergerUtility merger = new PDFMergerUtility();
-
 	if (pagers.containsKey(PagerType.TITLE_PAGER)) {
 	    TitlePager pager = (TitlePager) pagers.get(PagerType.TITLE_PAGER);
 	    pager.closeStream();
-	    merger.appendDocument(this.doc, pager.getDoc());
+	    PDPageTree pages = pagers.get(PagerType.TITLE_PAGER).getPages();
+	    pager.closeStream();
+	    for (PDPage p : pages) {
+		doc.addPage(p);
+	    }
 	}
-
+	
 	if (pagers.containsKey(PagerType.CHARACTER_PAGER)) {
 	    CharacterPager pager = (CharacterPager) pagers.get(PagerType.CHARACTER_PAGER);
 	    pager.closeStream();
-	    merger.appendDocument(this.doc, pager.getDoc());
+	    PDPageTree pages = pagers.get(PagerType.CHARACTER_PAGER).getPages();
+	    for (PDPage p : pages) {
+		doc.addPage(p);
+	    }
 	}
-
+	
 	if (pagers.containsKey(PagerType.STANDARD_PAGER)) {
 	    StandardPager pager = (StandardPager) pagers.get(PagerType.STANDARD_PAGER);
 	    pager.closeStream();
-	    merger.appendDocument(this.doc, pager.getDoc());
+	    PDPageTree pages = pagers.get(PagerType.STANDARD_PAGER).getPages();
+	    for (PDPage p : pages) {
+		doc.addPage(p);
+	    }
 	}
-
 	doc.save(fileName);
 	doc.close();
 	closePagers();

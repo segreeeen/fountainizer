@@ -9,9 +9,9 @@ import at.hsol.fountainizer.parser.content.Formatter;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.interfaces.Content;
-import at.hsol.fountainizer.parser.types.LineType;
+import at.hsol.fountainizer.parser.meta.Statistic;
+import at.hsol.fountainizer.parser.types.LineMargins;
 import at.hsol.fountainizer.parser.types.ParserConstants;
-import at.hsol.fountainizer.parser.types.Statistic;
 import at.hsol.fountainizer.parser.types.TypeHelper;
 
 /**
@@ -24,7 +24,7 @@ public class Parser {
 
     public Parser(ParserContent outputLines) {
 	this.stats = new Statistic(outputLines.getCharacters());
-	this.typeHelper = new TypeHelper(stats, outputLines);
+	this.typeHelper = new TypeHelper(outputLines);
 	this.outputLines = outputLines;
     }
 
@@ -35,14 +35,14 @@ public class Parser {
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
 	    SimpleLine l = (SimpleLine) outputLines.get(i);
 	    if (l.getText() == null) {
-		l.setLineType(LineType.EMPTY);
+		l.setLineType(LineMargins.EMPTY);
 		continue;
 	    }
 	    setAttributes(l, outputLines);
 	}
 
 	for (SimpleLine l : outputLines) {
-	    if (l.getLineType() == LineType.CHARACTER) {
+	    if (l.getLineType() == LineMargins.CHARACTER) {
 		l.setText(outputLines.getCharacters().lookup(l.getText()));
 	    }
 	}
@@ -54,21 +54,19 @@ public class Parser {
     }
 
     private void setAttributes(SimpleLine l, Content outputLines) {
-	LineType type = typeHelper.getType(l);
+	LineMargins type = typeHelper.getType(l);
 	l.setLineType(type);
 	String fText = Formatter.format(l.getText(), type);
 	if (fText != null) {
 	    l.setText(fText);
 	}
+	stats.countLine(l);
+	l.setLineTypeNumber(stats.getCharacterLines());
 	String text = l.getText();
-	if (type == LineType.CHARACTER && text.matches(ParserConstants.L_DUAL_DIALOGUE)) {
+	if (type == LineMargins.CHARACTER && text.matches(ParserConstants.L_DUAL_DIALOGUE)) {
 	    setDualDialogue(l, outputLines);
 	}
 
-//	if (type == LineType.CHARACTER) {
-//	    outputLines.getCharacters().add(text);
-//	    outputLines.getCharacters().incCharCount(text);
-//	}
     }
 
     private void setDualDialogue(SimpleLine l, Content outputLines) {
@@ -78,7 +76,7 @@ public class Parser {
 	// set dualdialogue backwards
 	SimpleLine bIterator = l.getPrev();
 	if (bIterator != null) {
-	    while (bIterator.getPrev() != null && bIterator.getLineType() != LineType.CHARACTER) {
+	    while (bIterator.getPrev() != null && bIterator.getLineType() != LineMargins.CHARACTER) {
 		if (l.getLineNr() - bIterator.getLineNr() > 6) {
 		    break;
 		}
@@ -91,7 +89,7 @@ public class Parser {
 	// set dualdialogue forward
 	SimpleLine fIterator = l.getNext();
 	if (fIterator != null) {
-	    while (fIterator.getNext() != null && fIterator.getLineType() != LineType.EMPTY) {
+	    while (fIterator.getNext() != null && fIterator.getLineType() != LineMargins.EMPTY) {
 		if (fIterator.emptyText()) {
 		    break;
 		}

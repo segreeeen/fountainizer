@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import at.hsol.fountainizer.parser.content.ParserContent;
-import at.hsol.fountainizer.parser.interfaces.ParserLine;
-import at.hsol.fountainizer.parser.types.LineType;
+import at.hsol.fountainizer.parser.interfaces.Line;
+import at.hsol.fountainizer.parser.types.LineMargins;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 import at.hsol.fountainizer.pdfbox.paragraph.RichString;
@@ -27,9 +27,16 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	this.fontSize = null;
     }
 
+    void nextLine(Paragraph p) throws IOException {
+	if (controller.options.printTakeNumber() && p.getLinetype() == LineMargins.CHARACTER) {
+	    printTakeNumber(p.getLineTypeNumber());
+	}
+	super.nextLine();
+    }
+
     @Override
     public void printContent(ParserContent t) throws IOException {
-	for (ParserLine line : t) {
+	for (Line line : t) {
 	    LinkedList<Paragraph> paragraphs = line.getParagraphForPDF();
 	    if (paragraphs != null) {
 		for (Paragraph p : paragraphs) {
@@ -41,7 +48,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 
     public void printParagraph(Paragraph p) throws IOException {
 	// go to next line, if this is a newline
-	if (p.getLinetype() == LineType.EMPTY) {
+	if (p.getLinetype() == LineMargins.EMPTY) {
 	    super.nextLine();
 	    return;
 	}
@@ -49,7 +56,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	// if this line is a character, we don't want the dialogue to be split
 	// over two pages, so we check if there is enough space for at least 3
 	// more lines. if there isn't we get next page
-	if (p.getLinetype() == LineType.CHARACTER) {
+	if (p.getLinetype() == LineMargins.CHARACTER) {
 	    if (super.yExceeded(getLineHeight() * 3)) {
 		nextPage();
 	    }
@@ -74,10 +81,10 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	for (RichString rs : lines) {
 
 	    if (p.isCentered()) { // print centered
-		super.xPos = (getMarginLeft() + p.getMarginLeft() + ((p.getActualPageWidth() - rs.stringWidth(this)) / 2));
+		super.xPos = (super.getAbsoluteWidth() / 2) - (rs.stringWidth(this)/2)-p.getMarginLeft();
 	    }
 
-	    if (p.getLinetype() == LineType.TRANSITION) {
+	    if (p.getLinetype() == LineMargins.TRANSITION) {
 		super.xPos = (p.getActualPageWidth() - rs.stringWidth(this) - p.getMarginRight());
 	    }
 
@@ -93,7 +100,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	    }
 	    // return yPos to position if left (first) dialogue was longer than
 	    // second (right)
-	    if (nextY != null && p.getLinetype() == LineType.DIALOGUE && nextY < yPos) {
+	    if (nextY != null && p.getLinetype() == LineMargins.DIALOGUE && nextY < yPos) {
 		yPos = nextY;
 		nextY = null;
 		currentDual = null;
@@ -108,7 +115,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
     }
 
     private void setDualDialogue(Paragraph p) {
-	if (p.getLinetype() == LineType.CHARACTER) {
+	if (p.getLinetype() == LineMargins.CHARACTER) {
 	    if (currentDual == null) {
 		originalY = super.yPos;
 		currentDual = Dual.FIRST;
@@ -123,7 +130,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 
     private Paragraph remarginDual(Paragraph p) {
 	if (currentDual == Dual.FIRST) {
-	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft())-40);
+	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft()) - 40);
 	    p.setMarginRight(getPageWidth() / 2);
 	} else if (currentDual == Dual.SECOND) {
 	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft()));
@@ -160,16 +167,9 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	super.underline(x, y + super.getUnderLineDifference(), x + rowPart.stringWidth(this), y + super.getUnderLineDifference());
     }
 
-    void nextLine(Paragraph p) throws IOException {
-	if (controller.options.printTakeNumber() && p.getLinetype() == LineType.CHARACTER) {
-	    printTakeNumber(p.getLineTypeNumber());
-	}
-	super.nextLine();
-    }
-
     private void printTakeNumber(Integer lineNr) throws IOException {
 	if (currentDual != null && currentDual == Dual.SECOND) {
-	    printString(lineNr.toString(), getMarginLeft() + (getPageWidth() / 2)+20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	    printString(lineNr.toString(), getMarginLeft() + (getPageWidth() / 2) + 20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 	} else {
 	    printString(lineNr.toString(), getMarginLeft() - 20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 	}

@@ -11,78 +11,38 @@ import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_2;
 
 import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.content.SimpleLine;
-import at.hsol.fountainizer.parser.interfaces.ParserLine;
-import at.hsol.fountainizer.parser.interfaces.ParserType;
+import at.hsol.fountainizer.parser.interfaces.Line;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
 
 /**
  * @author Felix Batusic
  */
 public class TypeHelper {
-    Statistic stats;
     ParserContent outputLines;
 
-    public TypeHelper(Statistic stats, ParserContent outputLines) {
-	this.stats = stats;
+    public TypeHelper(ParserContent outputLines) {
 	this.outputLines = outputLines;
     }
 
-    public TypeHelper(ParserContent outputLines) {
-	this(null, outputLines);
-
-    }
-
-    public LineType getType(SimpleLine l) {
+    public LineMargins getType(SimpleLine l) {
 	if (isHeading(l)) {
-	    if (stats != null) {
-		stats.incHeading();
-		l.setLineTypeNumber(stats.getHeading());
-	    }
-	    return LineType.HEADING;
+	    return LineMargins.HEADING;
 	} else if (isParenthetical(l)) {
-	    if (stats != null) {
-		stats.incParenthetical();
-		l.setLineTypeNumber(stats.getParenthetical());
-	    }
-	    return LineType.PARENTHETICAL;
+	    return LineMargins.PARENTHETICAL;
 	} else if (isLyrics(l)) {
-	    if (stats != null) {
-		stats.incLyrics();
-		l.setLineTypeNumber(stats.getLyrics());
-	    }
-	    return LineType.LYRICS;
+	    return LineMargins.LYRICS;
 	} else if (isCentered(l)) {
-	    if (stats != null) {
-		stats.incCentered();
-		l.setLineTypeNumber(stats.getCentered());
-	    }
-	    return LineType.CENTERED;
+	    return LineMargins.CENTERED;
 	} else if (isPagebreak(l)) {
-	    return LineType.PAGEBREAK;
+	    return LineMargins.PAGEBREAK;
 	} else if (isTransition(l)) {
-	    if (stats != null) {
-		stats.incTransition();
-		l.setLineTypeNumber(stats.getTransition());
-	    }
-	    return LineType.TRANSITION;
+	    return LineMargins.TRANSITION;
 	} else if (isCharacter(l)) {
-	    if (stats != null) {
-		outputLines.getCharacters().add(l.getText());
-		stats.incCharacter(l.getText());
-		l.setLineTypeNumber(stats.getCharacterLines());
-	    }
-	    return LineType.CHARACTER;
+	    return LineMargins.CHARACTER;
 	} else if (isDialogue(l)) {
-	    if (stats != null) {
-		stats.incDialogue();
-		l.setLineTypeNumber(stats.getDialogue());
-	    }
-	    return LineType.DIALOGUE;
+	    return LineMargins.DIALOGUE;
 	} else {
-	    if (stats != null) {
-		stats.incAction();
-		l.setLineTypeNumber(stats.getAction());
-	    }
-	    return LineType.ACTION;
+	    return LineMargins.ACTION;
 	}
     }
 
@@ -123,14 +83,14 @@ public class TypeHelper {
     }
 
     private boolean isDialogue(SimpleLine l) {
-	ParserLine prevLine = l.getPrev();
+	Line prevLine = l.getPrev();
 	if (prevLine != null) {
-	    ParserType prevType = prevLine.getLineType();
+	    MarginType prevType = prevLine.getLineType();
 	    if (l.getText() == null) {
-		if (prevType == LineType.DIALOGUE) {
+		if (prevType == LineMargins.DIALOGUE) {
 		    return true;
 		}
-	    } else if (prevType == LineType.CHARACTER || prevType == LineType.PARENTHETICAL) {
+	    } else if (prevType == LineMargins.CHARACTER || prevType == LineMargins.PARENTHETICAL) {
 		return true;
 	    }
 	}

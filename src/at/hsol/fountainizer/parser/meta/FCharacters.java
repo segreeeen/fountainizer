@@ -18,6 +18,7 @@ public class FCharacters {
 	name = name.replaceAll("\\^", " ");
 	name = name.toLowerCase();
 	name = name.trim();
+	
 	FCharacter n = charRegister.get(name);
 	if (n != null) {
 	    n.incTakes();
