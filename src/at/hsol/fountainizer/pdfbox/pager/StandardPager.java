@@ -78,7 +78,6 @@ public class StandardPager extends AbstractPager<DynamicLines> {
 	    }
 
 	    if (p.getLinetype() == LineType.TRANSITION) {
-		System.out.println("found transition");
 		super.xPos = (p.getActualPageWidth() - rs.stringWidth(this) - p.getMarginRight());
 	    }
 
