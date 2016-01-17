@@ -19,7 +19,7 @@ public class StandardPager extends AbstractPager<DynamicLines> {
     private Integer fontSize;
     private Dual currentDual = null;
     private Float nextY = null;
-    private float originalY;
+    private Float originalY;
 
     StandardPager(PagerController controller, Class<? extends AbstractPager<?>> type) throws IOException {
 	super(controller);
@@ -96,6 +96,8 @@ public class StandardPager extends AbstractPager<DynamicLines> {
 	    if (nextY != null && p.getLinetype() == LineType.DIALOGUE && nextY < yPos) {
 		yPos = nextY;
 		nextY = null;
+		currentDual = null;
+		originalY = null;
 	    } else {
 		nextLine(p);
 	    }
@@ -113,7 +115,7 @@ public class StandardPager extends AbstractPager<DynamicLines> {
 	    } else if (currentDual == Dual.FIRST) {
 		nextY = yPos;
 		super.yPos = originalY;
-		originalY = 0;
+		originalY = null;
 		currentDual = Dual.SECOND;
 	    }
 	}
@@ -121,7 +123,7 @@ public class StandardPager extends AbstractPager<DynamicLines> {
 
     private Paragraph remarginDual(Paragraph p) {
 	if (currentDual == Dual.FIRST) {
-	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft()));
+	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft())-40);
 	    p.setMarginRight(getPageWidth() / 2);
 	} else if (currentDual == Dual.SECOND) {
 	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft()));
@@ -166,7 +168,11 @@ public class StandardPager extends AbstractPager<DynamicLines> {
     }
 
     private void printTakeNumber(Integer lineNr) throws IOException {
-	printString(lineNr.toString(), getMarginLeft() - 20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	if (currentDual != null && currentDual == Dual.SECOND) {
+	    printString(lineNr.toString(), getMarginLeft() + (getPageWidth() / 2)+20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	} else {
+	    printString(lineNr.toString(), getMarginLeft() - 20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	}
     }
 
 }
