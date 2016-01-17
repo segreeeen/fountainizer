@@ -5,7 +5,6 @@ import java.util.List;
 
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.types.TitlePageType;
-import at.hsol.fountainizer.pdfbox.pager.PagerController.PagerType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 import at.hsol.fountainizer.pdfbox.paragraph.RichString;
@@ -18,9 +17,9 @@ public class TitlePager extends AbstractPager<TitlePage> {
     private float centeredY;
     private float leftY;
 
-    TitlePager(PagerController controller) throws IOException {
+    TitlePager(PagerController controller, Class<? extends AbstractPager<?>> type) throws IOException {
 	super(controller);
-	super.type = PagerType.TITLE_PAGER;
+	super.type = type;
 	this.fontSize = null;
 	this.titleY = getPageHeight() - (getPageHeight() / 5f);
 	this.rightY = getPageHeight() - (getPageHeight() / 4f) * 3;

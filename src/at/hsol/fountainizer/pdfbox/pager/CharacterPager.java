@@ -8,9 +8,9 @@ import at.hsol.fountainizer.parser.meta.FCharacter;
 public class CharacterPager extends AbstractPager<List<FCharacter>> {
     private float HEADING_X = 80;
 
-    CharacterPager(PagerController controller) throws IOException {
+    CharacterPager(PagerController controller, Class<? extends AbstractPager<?>> type) throws IOException {
 	super(controller);
-	super.type = PagerController.PagerType.CHARACTER_PAGER;
+	super.type = type;
     }
 
     @Override

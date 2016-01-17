@@ -3,7 +3,6 @@ package at.hsol.fountainizer.pdfbox.pager;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -21,10 +20,12 @@ import at.hsol.fountainizer.pdfbox.fonts.Fonts;
  *
  */
 public class PagerController {
-    public enum PagerType {
-	TITLE_PAGER, STANDARD_PAGER, CHARACTER_PAGER;
+    public static class PagerType {
+	public static final Class<TitlePager> TITLE_PAGER = TitlePager.class;
+	public static final Class<StandardPager> STANDARD_PAGER = StandardPager.class;
+	public static final Class<CharacterPager> CHARACTER_PAGER = CharacterPager.class;
     }
-    
+
     public enum FormattingType {
 	NORMAL, ITALIC, BOLD, BOLDITALIC, UNDERLINED;
     }
@@ -42,7 +43,7 @@ public class PagerController {
 
     // Document
     private PDDocument doc;
-    private HashMap<PagerType, AbstractPager<?>> pagers;
+    private HashMap<Class<? extends AbstractPager<?>>, AbstractPager<?>> pagers;
 
     // Fonts
     final PDFont font;
@@ -81,15 +82,16 @@ public class PagerController {
     /**
      * There can only be one Pager of a type at a time. Please see
      * PageController.PagerType for the possible Types.
-     * @throws IOException 
+     * 
+     * @throws IOException
      */
-    public AbstractPager<?> getPager(PagerType PAGER_TYPE) throws IOException {
+    public <T extends AbstractPager<?>> T getPager(Class<T> PAGER_TYPE) throws IOException {
 	if (pagers.containsKey(PAGER_TYPE)) {
-	    return pagers.get(PAGER_TYPE);
+	    return PAGER_TYPE.cast(pagers.get(PAGER_TYPE));
 	} else {
 	    AbstractPager<?> p = PagerFactory.getPager(PAGER_TYPE, this);
 	    pagers.put(PAGER_TYPE, p);
-	    return p;
+	    return PAGER_TYPE.cast(p);
 	}
     }
 
@@ -103,38 +105,36 @@ public class PagerController {
 	if (pagers.isEmpty()) {
 	    throw new IllegalStateException("There are no pagers to be written.");
 	}
-	
+
 	PDFMergerUtility merger = new PDFMergerUtility();
-	
+
 	if (pagers.containsKey(PagerType.TITLE_PAGER)) {
 	    TitlePager pager = (TitlePager) pagers.get(PagerType.TITLE_PAGER);
 	    pager.closeStream();
 	    merger.appendDocument(this.doc, pager.getDoc());
-	} 
+	}
 
 	if (pagers.containsKey(PagerType.CHARACTER_PAGER)) {
 	    CharacterPager pager = (CharacterPager) pagers.get(PagerType.CHARACTER_PAGER);
 	    pager.closeStream();
 	    merger.appendDocument(this.doc, pager.getDoc());
-	} 
+	}
 
 	if (pagers.containsKey(PagerType.STANDARD_PAGER)) {
 	    StandardPager pager = (StandardPager) pagers.get(PagerType.STANDARD_PAGER);
 	    pager.closeStream();
 	    merger.appendDocument(this.doc, pager.getDoc());
 	}
-	
+
 	doc.save(fileName);
 	doc.close();
 	closePagers();
     }
 
     private void closePagers() throws IOException {
-	for(Entry<PagerType, AbstractPager<?>> p: pagers.entrySet()) {
-	    p.getValue().close();
+	for (AbstractPager<?> p : pagers.values()) {
+	    p.close();
 	}
     }
-
-    
 
 }

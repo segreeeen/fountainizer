@@ -1,14 +1,17 @@
 package at.hsol.fountainizer.pdfbox.pager;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
+import at.hsol.fountainizer.parser.content.DynamicLines;
+import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
-public class StandardPager extends AbstractPager<Paragraph> {
+public class StandardPager extends AbstractPager<DynamicLines> {
     private enum Dual {
 	FIRST, SECOND;
     }
@@ -17,14 +20,25 @@ public class StandardPager extends AbstractPager<Paragraph> {
     private Dual currentDual = null;
     private float originalY;
 
-    StandardPager(PagerController controller) throws IOException {
+    StandardPager(PagerController controller, Class<? extends AbstractPager<?>> type) throws IOException {
 	super(controller);
-	super.type = PagerController.PagerType.STANDARD_PAGER;
+	super.type = type;
 	this.fontSize = null;
     }
 
     @Override
-    public void printContent(Paragraph p) throws IOException {
+    public void printContent(DynamicLines t) throws IOException {
+	for (ParserLine line : t) {
+	    LinkedList<Paragraph> paragraphs = line.getParagraphForPDF();
+	    if (paragraphs != null) {
+		for (Paragraph p : paragraphs) {
+		    printParagraph(p);
+		}
+	    }
+	}
+    }
+
+    public void printParagraph(Paragraph p) throws IOException {
 	// go to next line, if this is a newline
 	if (p.getLinetype() == LineType.EMPTY) {
 	    super.nextLine();
@@ -55,20 +69,15 @@ public class StandardPager extends AbstractPager<Paragraph> {
 	p.initForPager(this);
 
 	List<RichString> lines = p.getLines();
-	
+
 	for (RichString rs : lines) {
 
 	    if (p.isCentered()) { // print centered
-		super.xPos = (getMarginLeft() 
-			+ p.getMarginLeft() 
-			+ ((p.getActualPageWidth() 
-				- rs.stringWidth(this)) / 2));
+		super.xPos = (getMarginLeft() + p.getMarginLeft() + ((p.getActualPageWidth() - rs.stringWidth(this)) / 2));
 	    }
 
 	    if (p.getLinetype() == LineType.TRANSITION) {
-		super.xPos = (((p.getActualPageWidth() 
-			- rs.stringWidth(this) 
-			- p.getMarginRight()) / 2));
+		super.xPos = (((p.getActualPageWidth() - rs.stringWidth(this) - p.getMarginRight()) / 2));
 	    }
 
 	    List<RichFormat> formats = rs.getFormattings();

@@ -9,14 +9,13 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
 import at.hsol.fountainizer.pdfbox.interfaces.Pager;
-import at.hsol.fountainizer.pdfbox.pager.PagerController.PagerType;
 
 public abstract class AbstractPager<T> implements Pager {
     enum Alignment {
 	LEFT, CENTERED, RIGHT;
     }
 
-    protected PagerType type;
+    protected Class<? extends AbstractPager<?>> type;
     protected PagerController controller;
 
     protected PDDocument document;
