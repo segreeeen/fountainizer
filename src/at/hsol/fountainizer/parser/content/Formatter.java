@@ -28,8 +28,10 @@ public class Formatter {
 		    } else {
 			return rets.trim();
 		    }
-		} else return s;
-	    } else return s;
+		} else
+		    return s;
+	    } else
+		return s;
 	} else if (type == LineType.CHARACTER) {
 	    if (s.contains("@")) {
 		return s.replaceFirst("@", "");
@@ -64,34 +66,31 @@ public class Formatter {
 	} else if (type == LineType.PAGEBREAK) {
 	    return s;
 	} else if (type == TitlePageType.CENTERED) {
-	    Pattern p = Pattern.compile(ParserConstants.TP_CENTERED);
-	    Matcher m = p.matcher(s);
-	    if (m.find()) {
-		String rets = s.substring(m.end(), s.length());
-		if (rets.isEmpty()) {
-		    return null;
-		} else {
-		    return rets.trim();
-		}
-	    } else {
-		return null;
-	    }
-
+	    return formatTP(s, ParserConstants.TP_CENTERED);
 	} else if (type == TitlePageType.LEFT) {
-	    Pattern p = Pattern.compile(ParserConstants.TP_LEFT);
-	    Matcher m = p.matcher(s);
-	    if (m.find()) {
-		String rets = s.substring(m.end(), s.length());
-		if (rets.isEmpty()) {
-		    return null;
-		} else {
-		    return rets.trim();
-		}
-	    } else {
-		return s.trim();
-	    }
+	    return formatTP(s, ParserConstants.TP_LEFT);
+	} else if (type == TitlePageType.RIGHT) {
+	    return formatTP(s, ParserConstants.TP_RIGHT);
+	} else if (type == TitlePageType.TITLE) {
+	    return formatTP(s, ParserConstants.TP_TITLE);
 	} else {
 	    return null;
 	}
     }
+
+    private static String formatTP(String s, String regex) {
+	Pattern p = Pattern.compile(regex);
+	Matcher m = p.matcher(s);
+	if (m.find()) {
+	    String rets = s.substring(m.end(), s.length());
+	    if (rets.isEmpty()) {
+		return null;
+	    } else {
+		return rets.trim();
+	    }
+	} else {
+	    return s;
+	}
+    }
+
 }

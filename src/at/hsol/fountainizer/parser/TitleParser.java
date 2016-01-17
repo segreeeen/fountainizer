@@ -2,10 +2,10 @@ package at.hsol.fountainizer.parser;
 
 import java.util.LinkedList;
 
+import at.hsol.fountainizer.parser.content.Formatter;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.content.TitlePageLine;
-import at.hsol.fountainizer.parser.interfaces.ParserLine;
 import at.hsol.fountainizer.parser.interfaces.ParserList;
 import at.hsol.fountainizer.parser.types.ParserConstants;
 import at.hsol.fountainizer.parser.types.TitlePageType;
@@ -48,21 +48,27 @@ class TitleParser {
 	for (SimpleLine l : titleLines) {
 	    TitlePageType t = getTitle(l);
 	    if (t != null) {
+		String s = Formatter.format(l.getText(), t);
+		l.setText(s);
 		if (titlePage.contains(t)) {
 		    tpl = titlePage.getLine(t);
-		    tpl.add(l);
+		    if (l.getText()!= null) {
+			tpl.add(l);
+		    }
 		} else {
 		    tpl = new TitlePageLine(t);
-		    tpl.add(l);
+		    if (l.getText()!= null) {
+			tpl.add(l);
+		    }
 		    titlePage.addLine(t, tpl);
 		}
 	    } else {
 		tpl.add(l);
-	    } 
+	    }
 	}
     }
 
-    private TitlePageType getTitle(ParserLine l) {
+    private TitlePageType getTitle(SimpleLine l) {
 	if (!l.emptyText()) {
 	    if (l.getText().matches(ParserConstants.TP_CENTERED)) {
 		return TitlePageType.CENTERED;

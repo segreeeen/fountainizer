@@ -54,13 +54,8 @@ public class StandardPager extends AbstractPager<Paragraph> {
 	// actualPageWidth()
 	p.initForPager(this);
 
-	// this is a right-aligned line, so we let printRightAligned() print it
-	if (p.getLinetype() == LineType.TRANSITION) {
-
-	}
-
 	List<RichString> lines = p.getLines();
-	nextLine(p.getMarginTop()); // start paragraph
+	
 	for (RichString rs : lines) {
 
 	    if (p.isCentered()) { // print centered

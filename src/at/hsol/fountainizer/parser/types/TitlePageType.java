@@ -7,9 +7,9 @@ import at.hsol.fountainizer.parser.interfaces.ParserType;
  */
 public enum TitlePageType implements ParserType {
     TITLE(false, false, false, 0.0F, 0F, 0.0F, 10.0F),
-    CENTERED(false, true, false, 0F, 0F, 0F, 0.0F), 
-    LEFT(false, false, false, 0.0F, 0F, 0.0F, 10.0F),
-    RIGHT(false, false, false, 0.0F, 0F, 0.0F, 10.0F);
+    CENTERED(false, true, false, 0F, 0F, 0F, 20.0F), 
+    LEFT(false, false, false, 80F, 0F, 0.0F, 3.0F),
+    RIGHT(false, false, false, 450F, 0F, 0.0F, 0.0F);
 
     private final boolean uppercase;
     private final boolean centered;

@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
@@ -38,7 +37,6 @@ public class PagerController {
     static final float UNDER_LINE_CORRECTION = 3f;
 
     // Dual Constants
-    // TODO: move them to appropriate PageBuilder class.
     protected static final int FIRST = 1;
     protected static final int SECOND = 2;
 
@@ -106,28 +104,26 @@ public class PagerController {
 	    throw new IllegalStateException("There are no pagers to be written.");
 	}
 	
+	PDFMergerUtility merger = new PDFMergerUtility();
+	
 	if (pagers.containsKey(PagerType.TITLE_PAGER)) {
 	    TitlePager pager = (TitlePager) pagers.get(PagerType.TITLE_PAGER);
 	    pager.closeStream();
-	    PDPageTree pages = pager.getPages();
-	    for (PDPage p: pages) {
-		doc.addPage(p);
-	    }
-	} else if (pagers.containsKey(PagerType.CHARACTER_PAGER)) {
+	    merger.appendDocument(this.doc, pager.getDoc());
+	} 
+
+	if (pagers.containsKey(PagerType.CHARACTER_PAGER)) {
 	    CharacterPager pager = (CharacterPager) pagers.get(PagerType.CHARACTER_PAGER);
 	    pager.closeStream();
-	    PDPageTree pages = pager.getPages();
-	    for (PDPage p: pages) {
-		doc.addPage(p);
-	    }
-	} else if (pagers.containsKey(PagerType.STANDARD_PAGER)) {
+	    merger.appendDocument(this.doc, pager.getDoc());
+	} 
+
+	if (pagers.containsKey(PagerType.STANDARD_PAGER)) {
 	    StandardPager pager = (StandardPager) pagers.get(PagerType.STANDARD_PAGER);
 	    pager.closeStream();
-	    PDPageTree pages = pager.getPages();
-	    for (PDPage p: pages) {
-		doc.addPage(p);
-	    }
+	    merger.appendDocument(this.doc, pager.getDoc());
 	}
+	
 	doc.save(fileName);
 	doc.close();
 	closePagers();

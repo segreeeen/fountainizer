@@ -36,8 +36,9 @@ public class TitlePageLine implements ParserLine {
 	return p;
     }
 
-    public void add(ParserLine iterator) {
-	lines.add(iterator);
+    public void add(SimpleLine l) {
+	l.setLineType(type);
+	lines.add(l);
     }
 
     @Override
