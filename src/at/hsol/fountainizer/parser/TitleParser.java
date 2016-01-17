@@ -6,7 +6,7 @@ import at.hsol.fountainizer.parser.content.Formatter;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.content.TitlePageLine;
-import at.hsol.fountainizer.parser.interfaces.ParserList;
+import at.hsol.fountainizer.parser.interfaces.Content;
 import at.hsol.fountainizer.parser.types.ParserConstants;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 
@@ -16,7 +16,7 @@ import at.hsol.fountainizer.parser.types.TitlePageType;
 class TitleParser {
     private TitlePage titlePage = new TitlePage();
 
-    public TitlePage parse(ParserList outputLines) {
+    public TitlePage parse(Content outputLines) {
 	if (getTitle(outputLines.get(0)) == null) {
 	    return null;
 	}

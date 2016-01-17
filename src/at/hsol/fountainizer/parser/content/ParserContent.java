@@ -3,13 +3,13 @@ package at.hsol.fountainizer.parser.content;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import at.hsol.fountainizer.parser.interfaces.ParserList;
+import at.hsol.fountainizer.parser.interfaces.Content;
 import at.hsol.fountainizer.parser.meta.FCharacters;
 
 /**
  * @author Felix Batusic
  */
-public class ParserContent implements ParserList {
+public class ParserContent implements Content {
     private TitlePage tp;
     private ArrayList<SimpleLine> lines;
     private FCharacters characters;

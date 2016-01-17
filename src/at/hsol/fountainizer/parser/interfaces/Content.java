@@ -7,7 +7,7 @@ import at.hsol.fountainizer.parser.meta.FCharacters;
 /**
  * @author Felix Batusic
  */
-public interface ParserList extends Iterable<SimpleLine> {
+public interface Content extends Iterable<SimpleLine> {
     public SimpleLine get(int index);
 
     public SimpleLine getNext(SimpleLine l);
