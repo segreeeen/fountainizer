@@ -76,7 +76,7 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	    float currentLineWidth = 0f;
 	    float x = getMarginLeft() + p.getMarginLeft() + ((p.getActualPageWidth() - s.stringWidth(this)) / 2);
 	    for (RichFormat f : s.getFormattings()) {
-		printLeftAligned(f.getText(), currentLineWidth+x, titleY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+		printString(f.getText(), currentLineWidth + x, titleY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 		currentLineWidth += f.stringWidth(this);
 	    }
 	    titleY -= getLineHeight();
@@ -90,7 +90,7 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	for (RichString s : sList) {
 	    float currentLineWidth = 0f;
 	    for (RichFormat f : s.getFormattings()) {
-		printLeftAligned(f.getText(), p.getMarginLeft() + currentLineWidth, rightY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+		printString(f.getText(), super.xPos + p.getMarginLeft() + currentLineWidth, rightY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 		currentLineWidth += f.stringWidth(this);
 	    }
 	    rightY -= getLineHeight();
@@ -104,7 +104,7 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	for (RichString s : sList) {
 	    float currentLineWidth = 0f;
 	    for (RichFormat f : s.getFormattings()) {
-		printLeftAligned(f.getText(), p.getMarginLeft() + currentLineWidth, leftY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+		printString(f.getText(), super.xPos + currentLineWidth, leftY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 		currentLineWidth += f.stringWidth(this);
 	    }
 	    leftY -= getLineHeight();
@@ -117,9 +117,9 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	List<RichString> sList = p.getLines();
 	for (RichString s : sList) {
 	    float currentLineWidth = 0f;
-	    float x = getMarginLeft() + ((p.getActualPageWidth()/2) - (s.stringWidth(this)/2));
+	    float x = getMarginLeft() + ((p.getActualPageWidth() / 2) - (s.stringWidth(this) / 2));
 	    for (RichFormat f : s.getFormattings()) {
-		printLeftAligned(f.getText(), currentLineWidth + x, centeredY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+		printString(f.getText(), currentLineWidth + x, centeredY, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 		currentLineWidth += f.stringWidth(this);
 	    }
 	    centeredY -= getLineHeight();

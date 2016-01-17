@@ -16,10 +16,6 @@ public class TestClass {
 	    helper.read();
 	    helper.parse();
 	    helper.printPdf();
-	    List<FCharacter> characters = helper.getCharacterStats();
-	    for (FCharacter e: characters) {
-		System.out.println(e.getName()+": "+e.getTakes() + " Lines");
-	    }
 	    
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block

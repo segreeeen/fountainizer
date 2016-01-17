@@ -42,6 +42,9 @@ public abstract class AbstractPager<T> implements Pager {
 
     void nextPage() throws IOException {
 	if (currentPage != null) {
+	    if (controller.options.printPageNumber()) {
+		printPageNumber(getPageWidth() / 2);
+	    }
 	    stream.close();
 	}
 
@@ -51,7 +54,7 @@ public abstract class AbstractPager<T> implements Pager {
 	this.yPos = getPageHeight() - getMarginTop();
     }
 
-    void nextLine(Float marginTop) {
+    void nextLine(Float marginTop) throws IOException {
 	if (marginTop != null) {
 	    this.xPos = getMarginLeft();
 	    this.yPos -= (getLineHeight() + marginTop - PagerController.UNDER_LINE_CORRECTION);
@@ -61,11 +64,14 @@ public abstract class AbstractPager<T> implements Pager {
 	}
     }
 
-    void nextLine() {
+    void nextLine() throws IOException {
 	nextLine(null);
     }
 
     void closeStream() throws IOException {
+	if (this.type == PagerController.PagerType.STANDARD_PAGER && controller.options.printPageNumber()) {
+	    printPageNumber(getPageWidth() / 2);
+	}
 	stream.stroke();
 	stream.close();
     }
@@ -73,27 +79,18 @@ public abstract class AbstractPager<T> implements Pager {
     void close() throws IOException {
 	this.document.close();
     }
-    
+
     void finishLine(float marginBottom) {
 	yPos -= marginBottom;
     }
 
-    protected void printLeftAligned(String s, float x, float y, PDFont font, int fontSize, Color color) throws IOException {
+    protected void printString(String s, float x, float y, PDFont font, int fontSize, Color color) throws IOException {
 	stream.beginText();
 	setTextOptions(x, y, font, fontSize, color);
 	stream.showText(s);
 	stream.endText();
 	stream.stroke();
     }
-
-    protected void printRightAligned(String s, float sWidth, float x, float y, PDFont font, int fontSize, Color color) throws IOException {
-	stream.beginText();
-	setTextOptions(x - sWidth - getMarginRight(), y, font, fontSize, color);
-	stream.showText(s);
-	stream.endText();
-	stream.stroke();
-    }
-
 
     protected boolean yExceeded(float heightAddition) {
 	if ((yPos - getMarginBottom() - getLineHeight() - heightAddition) < 0) {
@@ -199,19 +196,21 @@ public abstract class AbstractPager<T> implements Pager {
 	}
     }
 
-    
-
-    private void setTextOptions(float x, float y, PDFont font, int fontSize, Color color) throws IOException {
-	stream.newLineAtOffset(x, y);
-	stream.setNonStrokingColor(Color.BLACK);
-	stream.setFont(font, fontSize);
-    }
-
     public void underline(float x, float y, float x2, float y2) throws IOException {
 	stream.setLineWidth(0.1f);
 	stream.moveTo(x, y);
 	stream.lineTo(x2, y2);
 	stream.stroke();
+    }
+
+    private void printPageNumber(float x) throws IOException {
+	printString(Integer.toString(document.getNumberOfPages()), getMarginLeft() + x, getMarginBottom() - (getLineHeight()), getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+    }
+
+    private void setTextOptions(float x, float y, PDFont font, int fontSize, Color color) throws IOException {
+	stream.newLineAtOffset(x, y);
+	stream.setNonStrokingColor(Color.BLACK);
+	stream.setFont(font, fontSize);
     }
 
 }

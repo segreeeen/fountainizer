@@ -17,7 +17,7 @@ public class Options {
 	this.printCharacterPage = true;
     }
 
-    public boolean printTakeNumbers() {
+    public boolean printTakeNumber() {
         return printTakeNumbers;
     }
 
@@ -25,7 +25,7 @@ public class Options {
         this.printTakeNumbers = printTakeNumbers;
     }
 
-    public boolean printPageNumbers() {
+    public boolean printPageNumber() {
         return printPageNumbers;
     }
     

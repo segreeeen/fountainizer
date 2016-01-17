@@ -8,7 +8,7 @@ public final class ParserConstants {
     /**
      * Matches headings
      */
-    public static final String L_HEADING = "INT(.*?)|EXT(.*?)|EST(.*?)|INT./EXT(.*?)|INT/EXT(.*?)|I/E(.*?)|\\.(.*?)";
+    public static final String L_HEADING = "INT[\\.?](.*?)|EXT(.*?)|EST(.*?)|INT./EXT(.*?)|INT/EXT(.*?)|I/E(.*?)|\\.(.*?)";
 
     /**
      * Matches "text ^"

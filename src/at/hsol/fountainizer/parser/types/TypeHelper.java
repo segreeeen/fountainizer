@@ -150,12 +150,7 @@ public class TypeHelper {
 	String text = l.getText();
 	if (l.getPrev() != null && l.getNext() != null) {
 	    if (l.getPrev().emptyText() && l.getNext().emptyText()) {
-		if (text.matches(L_TRANSITION_1) || text.matches(L_TRANSITION_2)) {
-		    for (int i = 0; i < text.length(); i++) {
-			if (Character.isLowerCase(text.charAt(i))) {
-			    return false;
-			}
-		    }
+		if (text.matches(L_TRANSITION_2) || text.matches(L_TRANSITION_1)) {
 		    return true;
 		}
 	    }

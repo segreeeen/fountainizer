@@ -6,12 +6,12 @@ import at.hsol.fountainizer.parser.interfaces.ParserType;
  * @author Felix Batusic
  */
 public enum LineType implements ParserType {
-    HEADING(true, false, false, 40.0F, 0F, 15.0F, 0.0F), 
-    CHARACTER(true, false, false, 40.0F, 0F, 0.0F, 0.0F), 
-    DIALOGUE(false, false, false, 80.0F, 80F, 0.2F, 0.0F), 
-    PARENTHETICAL(false, false, false, 80.0F, 0F, 0.2F, 0.0F), 
-    TRANSITION(false,false, false, 0F, 80F, 0F, 0.0F), 
-    ACTION(false, false, false, 40.0F, 40F, 10F, 0F), 
+    HEADING(true, false, false, 80.0F, 0F, 15.0F, 0.0F), 
+    CHARACTER(true, false, false, 0.0F, 0F, 0.0F, 0.0F), 
+    DIALOGUE(false, false, false, 40.0F, 80F, 0.2F, 0.0F), 
+    PARENTHETICAL(false, false, false, 20.0F, 0F, 0.2F, 0.0F), 
+    TRANSITION(false,false, false, 0F, 40F, 0F, 0.0F), 
+    ACTION(false, false, false, 0.0F, 40F, 10F, 0F), 
     LYRICS(false, true, false, 10.0F, 0F, 10.0F, 10.0F), 
     CENTERED(false, true, false, 10.0F, 0F, 10.0F, 10.0F), 
     PAGEBREAK(false, false, false, 0F, 0F, 0F, 0F), 

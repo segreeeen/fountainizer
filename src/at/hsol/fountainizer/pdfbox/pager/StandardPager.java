@@ -18,6 +18,7 @@ public class StandardPager extends AbstractPager<DynamicLines> {
 
     private Integer fontSize;
     private Dual currentDual = null;
+    private Float nextY = null;
     private float originalY;
 
     StandardPager(PagerController controller, Class<? extends AbstractPager<?>> type) throws IOException {
@@ -77,7 +78,8 @@ public class StandardPager extends AbstractPager<DynamicLines> {
 	    }
 
 	    if (p.getLinetype() == LineType.TRANSITION) {
-		super.xPos = (((p.getActualPageWidth() - rs.stringWidth(this) - p.getMarginRight()) / 2));
+		System.out.println("found transition");
+		super.xPos = (p.getActualPageWidth() - rs.stringWidth(this) - p.getMarginRight());
 	    }
 
 	    List<RichFormat> formats = rs.getFormattings();
@@ -90,8 +92,16 @@ public class StandardPager extends AbstractPager<DynamicLines> {
 		}
 		currentLineWidth += rf.stringWidth(this);
 	    }
-	    nextLine();
+	    // return yPos to position if left (first) dialogue was longer than
+	    // second (right)
+	    if (nextY != null && p.getLinetype() == LineType.DIALOGUE && nextY < yPos) {
+		yPos = nextY;
+		nextY = null;
+	    } else {
+		nextLine(p);
+	    }
 	}
+
 	super.finishLine(p.getMarginBottom()); // finish paragraph
 
     }
@@ -99,10 +109,11 @@ public class StandardPager extends AbstractPager<DynamicLines> {
     private void setDualDialogue(Paragraph p) {
 	if (p.getLinetype() == LineType.CHARACTER) {
 	    if (currentDual == null) {
-		originalY = yPos;
+		originalY = super.yPos;
 		currentDual = Dual.FIRST;
 	    } else if (currentDual == Dual.FIRST) {
-		yPos = originalY;
+		nextY = yPos;
+		super.yPos = originalY;
 		originalY = 0;
 		currentDual = Dual.SECOND;
 	    }
@@ -140,17 +151,23 @@ public class StandardPager extends AbstractPager<DynamicLines> {
     }
 
     private void printLeftAligned(RichFormat rowPart, float x, float y) throws IOException {
-	super.printLeftAligned(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	super.printString(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
     }
 
     private void printLeftAligned(RichFormat rowPart, float x, float y, boolean underlined) throws IOException {
-	super.printLeftAligned(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	super.printString(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 	super.underline(x, y + super.getUnderLineDifference(), x + rowPart.stringWidth(this), y + super.getUnderLineDifference());
     }
 
-    @SuppressWarnings("unused")
-    private void printRightAligned(RichFormat rowPart, float x, float y) throws IOException {
-	super.printRightAligned(rowPart.getText(), rowPart.stringWidth(this), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+    void nextLine(Paragraph p) throws IOException {
+	if (controller.options.printTakeNumber() && p.getLinetype() == LineType.CHARACTER) {
+	    printTakeNumber(p.getLineTypeNumber());
+	}
+	super.nextLine();
+    }
+
+    private void printTakeNumber(Integer lineNr) throws IOException {
+	printString(lineNr.toString(), getMarginLeft() - 20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
     }
 
 }

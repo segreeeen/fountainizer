@@ -11,11 +11,11 @@ import at.hsol.fountainizer.Options;
 
 public class Characters {
     private static final String CHARACTER_ASSIGNMENT = "=";
-    
+
     private HashMap<String, FCharacter> charRegister = new HashMap<>();
-    
+
     public void incCharCount(String name) {
-	name = name.replaceAll("^", " ");
+	name = name.replaceAll("\\^", " ");
 	name = name.toLowerCase();
 	name = name.trim();
 	FCharacter n = charRegister.get(name);
@@ -23,7 +23,7 @@ public class Characters {
 	    n.incTakes();
 	}
     }
-    
+
     /**
      * Returns a Map of the Characters and the number of their takes.
      */
@@ -31,9 +31,9 @@ public class Characters {
 	if (charRegister.isEmpty()) {
 	    return null;
 	}
-	
+
 	LinkedList<FCharacter> sortedChars = new LinkedList<>();
-	for (Map.Entry<String, FCharacter> e: charRegister.entrySet()) {
+	for (Map.Entry<String, FCharacter> e : charRegister.entrySet()) {
 	    sortedChars.add(e.getValue());
 	}
 	if (options.sortCharacters() == Options.SORT_BY_NAME) {
@@ -43,13 +43,10 @@ public class Characters {
 	    Collections.sort(sortedChars, takeCmp);
 	    return sortedChars;
 	} else {
-	    throw new IllegalArgumentException("\nsortCharacters has to be set.\n "
-	    	+ "\n...Seriously, how did you get here?"
-	    	+ "\n\nStop screwing around, god damnit. ");
+	    throw new IllegalArgumentException("\nsortCharacters has to be set.\n " + "\n...Seriously, how did you get here?" + "\n\nStop screwing around, god damnit. ");
 	}
     }
 
-    
     /**
      * Returns the corresponding Charactername
      * 
@@ -58,9 +55,7 @@ public class Characters {
      * @return full character name
      */
     public String lookup(String charName) {
-	charName = charName.replaceAll("^", " ");
-	charName = charName.trim();
-	charName = charName.toLowerCase();
+	charName = format(charName);
 	if (charName.contains(CHARACTER_ASSIGNMENT)) {
 	    String[] abbs = charName.split(CHARACTER_ASSIGNMENT);
 	    charName = abbs[0].trim();
@@ -86,9 +81,7 @@ public class Characters {
      * @return true if added, else false
      */
     public String add(String charName) {
-	charName = charName.replaceAll("^", " ");
-	charName = charName.trim();
-	charName = charName.toLowerCase();
+	charName = format(charName);
 	if (charName.split(CHARACTER_ASSIGNMENT).length <= 1) {
 	    String charInRegister = lookup(charName);
 	    if (charInRegister == null) {
@@ -118,39 +111,49 @@ public class Characters {
 	    }
 	}
     }
-    
-    private Comparator<FCharacter> nameCmp = new Comparator<FCharacter>(){
-	    @Override
-	    public int compare(FCharacter c1, FCharacter c2) {
-		String o1 = c1.getName();
-		String o2 = c2.getName();
-		o1 = o1.toLowerCase();
-		o2 = o2.toLowerCase();
-		int ret = o1.charAt(0) - o2.charAt(0);
-		if (ret == 0) {
-		    int lenRet = o1.length()-o2.length();
-		    if ( lenRet == 0) {
-			for (int i = o1.length(); i<o1.length(); i++) {
-			    if (o1.charAt(i) - o2.charAt(i) < 0) {
-				return o1.charAt(i) - o2.charAt(i);
-			    }
+
+    private Comparator<FCharacter> nameCmp = new Comparator<FCharacter>() {
+	@Override
+	public int compare(FCharacter c1, FCharacter c2) {
+	    String o1 = c1.getName();
+	    String o2 = c2.getName();
+	    o1 = o1.toLowerCase();
+	    o2 = o2.toLowerCase();
+	    int ret = o1.charAt(0) - o2.charAt(0);
+	    if (ret == 0) {
+		int lenRet = o1.length() - o2.length();
+		if (lenRet == 0) {
+		    for (int i = o1.length(); i < o1.length(); i++) {
+			if (o1.charAt(i) - o2.charAt(i) < 0) {
+			    return o1.charAt(i) - o2.charAt(i);
 			}
-			return 1;
-		    } else {
-			return lenRet;
 		    }
+		    return 1;
 		} else {
-		    return ret;
+		    return lenRet;
 		}
+	    } else {
+		return ret;
 	    }
-	};
-	
-	private Comparator<FCharacter> takeCmp = new Comparator<FCharacter>(){
-	    @Override
-	    public int compare(FCharacter c1, FCharacter c2) {
-		return c2.getTakes() - c1.getTakes();
-	    }
-	};
-	
-	
+	}
+    };
+
+    private Comparator<FCharacter> takeCmp = new Comparator<FCharacter>() {
+	@Override
+	public int compare(FCharacter c1, FCharacter c2) {
+	    return c2.getTakes() - c1.getTakes();
+	}
+    };
+
+    private String format(String charName) {
+	charName = charName.replaceAll("\\^", "");
+	int parPos = charName.indexOf("(");
+	if (parPos > -1) {
+	    charName = charName.substring(0, parPos);
+	}
+	charName = charName.trim();
+	charName = charName.toLowerCase();
+	return charName;
+    }
+
 }

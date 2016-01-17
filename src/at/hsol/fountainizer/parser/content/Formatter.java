@@ -18,20 +18,7 @@ public class Formatter {
 	}
 
 	if (type == LineType.HEADING) {
-	    if (s.startsWith(".")) {
-		Pattern p = Pattern.compile("\\.(.*?)");
-		Matcher m = p.matcher(s);
-		if (m.find()) {
-		    String rets = s.substring(m.end(), s.length()).trim();
-		    if (rets.isEmpty()) {
-			return s;
-		    } else {
-			return rets.trim();
-		    }
-		} else
-		    return s;
-	    } else
-		return s;
+	    return formatColonTag(s, ParserConstants.L_HEADING);
 	} else if (type == LineType.CHARACTER) {
 	    if (s.contains("@")) {
 		return s.replaceFirst("@", "");
@@ -49,7 +36,7 @@ public class Formatter {
 		if (rets.isEmpty()) {
 		    return s;
 		} else {
-		    return rets.trim();
+		    return rets.trim().toUpperCase();
 		}
 	    } else {
 		return s;
@@ -66,19 +53,19 @@ public class Formatter {
 	} else if (type == LineType.PAGEBREAK) {
 	    return s;
 	} else if (type == TitlePageType.CENTERED) {
-	    return formatTP(s, ParserConstants.TP_CENTERED);
+	    return formatColonTag(s, ParserConstants.TP_CENTERED);
 	} else if (type == TitlePageType.LEFT) {
-	    return formatTP(s, ParserConstants.TP_LEFT);
+	    return formatColonTag(s, ParserConstants.TP_LEFT);
 	} else if (type == TitlePageType.RIGHT) {
-	    return formatTP(s, ParserConstants.TP_RIGHT);
+	    return formatColonTag(s, ParserConstants.TP_RIGHT);
 	} else if (type == TitlePageType.TITLE) {
-	    return formatTP(s, ParserConstants.TP_TITLE);
+	    return formatColonTag(s, ParserConstants.TP_TITLE);
 	} else {
 	    return null;
 	}
     }
 
-    private static String formatTP(String s, String regex) {
+    private static String formatColonTag(String s, String regex) {
 	Pattern p = Pattern.compile(regex);
 	Matcher m = p.matcher(s);
 	if (m.find()) {
