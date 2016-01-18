@@ -5,14 +5,11 @@
 package at.hsol.fountainizer.parser;
 
 import at.hsol.fountainizer.parser.content.ParserContent;
-import at.hsol.fountainizer.parser.content.Formatter;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.interfaces.Content;
 import at.hsol.fountainizer.parser.meta.Statistic;
-import at.hsol.fountainizer.parser.types.LineMargins;
-import at.hsol.fountainizer.parser.types.ParserConstants;
-import at.hsol.fountainizer.parser.types.TypeHelper;
+import at.hsol.fountainizer.parser.types.LineType;
 
 /**
  * @author Felix Batusic
@@ -35,14 +32,14 @@ public class Parser {
 	for (int i = 0; i < outputLines.getLineCount(); i++) {
 	    SimpleLine l = (SimpleLine) outputLines.get(i);
 	    if (l.getText() == null) {
-		l.setLineType(LineMargins.EMPTY);
+		l.setLineType(LineType.EMPTY);
 		continue;
 	    }
 	    setAttributes(l, outputLines);
 	}
 
 	for (SimpleLine l : outputLines) {
-	    if (l.getLineType() == LineMargins.CHARACTER) {
+	    if (l.getLineType() == LineType.CHARACTER) {
 		l.setText(outputLines.getCharacters().lookup(l.getText()));
 	    }
 	}
@@ -54,16 +51,25 @@ public class Parser {
     }
 
     private void setAttributes(SimpleLine l, Content outputLines) {
-	LineMargins type = typeHelper.getType(l);
+	// get helper instance
+	LineType type = typeHelper.getType(l);
+	
+	// get linetype
 	l.setLineType(type);
+	
+	//format text if it conforms to a linetype
 	String fText = Formatter.format(l.getText(), type);
 	if (fText != null) {
 	    l.setText(fText);
 	}
+	
+	//count the linetype and set it's number
 	stats.countLine(l);
 	l.setLineTypeNumber(stats.getCharacterLines());
+	
+	//set dual dialog flags
 	String text = l.getText();
-	if (type == LineMargins.CHARACTER && text.matches(ParserConstants.L_DUAL_DIALOGUE)) {
+	if (type == LineType.CHARACTER && text.matches(ParserConstants.L_DUAL_DIALOGUE)) {
 	    setDualDialogue(l, outputLines);
 	}
 
@@ -76,7 +82,7 @@ public class Parser {
 	// set dualdialogue backwards
 	SimpleLine bIterator = l.getPrev();
 	if (bIterator != null) {
-	    while (bIterator.getPrev() != null && bIterator.getLineType() != LineMargins.CHARACTER) {
+	    while (bIterator.getPrev() != null && bIterator.getLineType() != LineType.CHARACTER) {
 		if (l.getLineNr() - bIterator.getLineNr() > 6) {
 		    break;
 		}
@@ -89,7 +95,7 @@ public class Parser {
 	// set dualdialogue forward
 	SimpleLine fIterator = l.getNext();
 	if (fIterator != null) {
-	    while (fIterator.getNext() != null && fIterator.getLineType() != LineMargins.EMPTY) {
+	    while (fIterator.getNext() != null && fIterator.getLineType() != LineType.EMPTY) {
 		if (fIterator.emptyText()) {
 		    break;
 		}

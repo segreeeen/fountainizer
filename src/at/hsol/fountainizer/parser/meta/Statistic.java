@@ -5,7 +5,7 @@ import java.util.List;
 import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.interfaces.MarginType;
-import at.hsol.fountainizer.parser.types.LineMargins;
+import at.hsol.fountainizer.parser.types.LineType;
 
 /**
  * This class is used to count... Everything.
@@ -70,21 +70,21 @@ public class Statistic {
 
     public void countLine(SimpleLine l) {
 	MarginType t = l.getLineType();
-	if (t == LineMargins.HEADING) {
+	if (t == LineType.HEADING) {
 	    incHeading();
-	} else if (t == LineMargins.PARENTHETICAL) {
+	} else if (t == LineType.PARENTHETICAL) {
 	    incParenthetical();
-	} else if (t == LineMargins.LYRICS) {
+	} else if (t == LineType.LYRICS) {
 	    incLyrics();
-	} else if (t == LineMargins.CENTERED) {
+	} else if (t == LineType.CENTERED) {
 	    incCentered();
-	} else if (t == LineMargins.TRANSITION) {
+	} else if (t == LineType.TRANSITION) {
 	    incTransition();
-	} else if (t == LineMargins.CHARACTER) {
+	} else if (t == LineType.CHARACTER) {
 	    incCharacter(l.getText());
-	} else if (t == LineMargins.DIALOGUE) {
+	} else if (t == LineType.DIALOGUE) {
 	    incDialogue();
-	} else if (t == LineMargins.EMPTY) {
+	} else if (t == LineType.EMPTY) {
 	    incEmtpy();
 	} else {
 	    incAction();

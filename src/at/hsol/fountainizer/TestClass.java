@@ -2,9 +2,6 @@ package at.hsol.fountainizer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
-
-import at.hsol.fountainizer.parser.meta.FCharacter;
 
 public class TestClass {
     public static void main(String[] args) throws URISyntaxException {

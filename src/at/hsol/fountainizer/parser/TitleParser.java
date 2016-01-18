@@ -2,12 +2,10 @@ package at.hsol.fountainizer.parser;
 
 import java.util.LinkedList;
 
-import at.hsol.fountainizer.parser.content.Formatter;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.content.TitlePageLine;
 import at.hsol.fountainizer.parser.interfaces.Content;
-import at.hsol.fountainizer.parser.types.ParserConstants;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 
 /**

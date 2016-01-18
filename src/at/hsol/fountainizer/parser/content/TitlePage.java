@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import at.hsol.fountainizer.parser.interfaces.MarginType;
-import at.hsol.fountainizer.parser.types.LineMargins;
+import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 
@@ -19,7 +19,7 @@ import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
  */
 public class TitlePage {
     private final HashMap<TitlePageType, TitlePageLine> titlePageLines;
-    private MarginType type = LineMargins.TITLEPAGE;
+    private MarginType type = LineType.TITLEPAGE;
 
     public TitlePage() {
 	this.titlePageLines = new HashMap<TitlePageType, TitlePageLine>();

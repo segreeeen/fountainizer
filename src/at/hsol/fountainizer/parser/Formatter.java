@@ -1,11 +1,10 @@
-package at.hsol.fountainizer.parser.content;
+package at.hsol.fountainizer.parser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import at.hsol.fountainizer.parser.interfaces.MarginType;
-import at.hsol.fountainizer.parser.types.LineMargins;
-import at.hsol.fountainizer.parser.types.ParserConstants;
+import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 
 /**
@@ -17,18 +16,18 @@ public class Formatter {
 	    s = s.trim();
 	}
 
-	if (type == LineMargins.HEADING) {
+	if (type == LineType.HEADING) {
 	    return formatColonTag(s, ParserConstants.L_HEADING);
-	} else if (type == LineMargins.CHARACTER) {
+	} else if (type == LineType.CHARACTER) {
 	    if (s.contains("@")) {
 		return s.replaceFirst("@", "");
 	    }
 	    return s;
-	} else if (type == LineMargins.DIALOGUE) {
+	} else if (type == LineType.DIALOGUE) {
 	    return s;
-	} else if (type == LineMargins.PARENTHETICAL) {
+	} else if (type == LineType.PARENTHETICAL) {
 	    return s;
-	} else if (type == LineMargins.TRANSITION) {
+	} else if (type == LineType.TRANSITION) {
 	    Pattern p = Pattern.compile(ParserConstants.L_TRANSITION_2);
 	    Matcher m = p.matcher(s);
 	    if (m.find()) {
@@ -41,16 +40,16 @@ public class Formatter {
 	    } else {
 		return s;
 	    }
-	} else if (type == LineMargins.ACTION) {
+	} else if (type == LineType.ACTION) {
 	    return s;
-	} else if (type == LineMargins.LYRICS) {
+	} else if (type == LineType.LYRICS) {
 	    return s;
-	} else if (type == LineMargins.CENTERED) {
+	} else if (type == LineType.CENTERED) {
 	    final Pattern pattern = Pattern.compile(ParserConstants.L_CENTERED);
 	    final Matcher matcher = pattern.matcher(s);
 	    matcher.find();
 	    return matcher.group(1).trim();
-	} else if (type == LineMargins.PAGEBREAK) {
+	} else if (type == LineType.PAGEBREAK) {
 	    return s;
 	} else if (type == TitlePageType.CENTERED) {
 	    return formatColonTag(s, ParserConstants.TP_CENTERED);

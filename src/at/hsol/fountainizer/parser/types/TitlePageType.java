@@ -1,5 +1,6 @@
 package at.hsol.fountainizer.parser.types;
 
+import at.hsol.fountainizer.parser.ParserConstants;
 import at.hsol.fountainizer.parser.interfaces.MarginType;
 
 /**

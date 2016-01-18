@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import at.hsol.fountainizer.parser.interfaces.MarginType;
-import at.hsol.fountainizer.parser.types.LineMargins;
+import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.pager.AbstractPager;
 
 /**
@@ -34,7 +34,7 @@ public class Paragraph implements MarginType {
 	this.richText = richString;
     }
     
-    public Paragraph(LineMargins type) {
+    public Paragraph(LineType type) {
 	this.linetype = type;
     }
 
@@ -57,7 +57,7 @@ public class Paragraph implements MarginType {
 	}
 	
 	List<RichString> lines = new LinkedList<RichString>();
-	if (linetype == LineMargins.TRANSITION) {
+	if (linetype == LineType.TRANSITION) {
 	    lines.add(richText);
 	    return lines;
 	}
@@ -166,7 +166,7 @@ public class Paragraph implements MarginType {
     }
     
     public static Paragraph getEmptyParagraph() {
-	return new Paragraph(LineMargins.EMPTY);
+	return new Paragraph(LineType.EMPTY);
     }
 
     public void setLineTypeNumber(int lineTypeNumber) {

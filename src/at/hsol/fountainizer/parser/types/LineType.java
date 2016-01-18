@@ -5,7 +5,7 @@ import at.hsol.fountainizer.parser.interfaces.MarginType;
 /**
  * @author Felix Batusic
  */
-public enum LineMargins implements MarginType {
+public enum LineType implements MarginType {
     HEADING(true, false, false, 80.0F, 0F, 15.0F, 0.0F), 
     CHARACTER(true, false, false, 0.0F, 0F, 0.0F, 0.0F), 
     DIALOGUE(false, false, false, 40.0F, 80F, 0.2F, 0.0F), 
@@ -27,7 +27,7 @@ public enum LineMargins implements MarginType {
     private final float marginTop;
     private final float marginBottom;
 
-    private LineMargins(boolean uppercase, boolean centered, boolean underlined, float marginLeft, float marginRight, float marginTop, float marginBottom) {
+    private LineType(boolean uppercase, boolean centered, boolean underlined, float marginLeft, float marginRight, float marginTop, float marginBottom) {
 	this.uppercase = uppercase;
 	this.centered = centered;
 	this.underlined = underlined;

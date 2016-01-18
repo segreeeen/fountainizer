@@ -6,7 +6,7 @@ import java.util.List;
 
 import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.interfaces.Line;
-import at.hsol.fountainizer.parser.types.LineMargins;
+import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
 import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
 import at.hsol.fountainizer.pdfbox.paragraph.RichString;
@@ -28,7 +28,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
     }
 
     void nextLine(Paragraph p) throws IOException {
-	if (controller.options.printTakeNumber() && p.getLinetype() == LineMargins.CHARACTER) {
+	if (controller.options.printTakeNumber() && p.getLinetype() == LineType.CHARACTER) {
 	    printTakeNumber(p.getLineTypeNumber());
 	}
 	super.nextLine();
@@ -48,7 +48,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 
     public void printParagraph(Paragraph p) throws IOException {
 	// go to next line, if this is a newline
-	if (p.getLinetype() == LineMargins.EMPTY) {
+	if (p.getLinetype() == LineType.EMPTY) {
 	    super.nextLine();
 	    return;
 	}
@@ -56,7 +56,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	// if this line is a character, we don't want the dialogue to be split
 	// over two pages, so we check if there is enough space for at least 3
 	// more lines. if there isn't we get next page
-	if (p.getLinetype() == LineMargins.CHARACTER) {
+	if (p.getLinetype() == LineType.CHARACTER) {
 	    if (super.yExceeded(getLineHeight() * 3)) {
 		nextPage();
 	    }
@@ -84,7 +84,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 		super.xPos = (super.getAbsoluteWidth() / 2) - (rs.stringWidth(this)/2)-p.getMarginLeft();
 	    }
 
-	    if (p.getLinetype() == LineMargins.TRANSITION) {
+	    if (p.getLinetype() == LineType.TRANSITION) {
 		super.xPos = (p.getActualPageWidth() - rs.stringWidth(this) - p.getMarginRight());
 	    }
 
@@ -100,7 +100,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	    }
 	    // return yPos to position if left (first) dialogue was longer than
 	    // second (right)
-	    if (nextY != null && p.getLinetype() == LineMargins.DIALOGUE && nextY < yPos) {
+	    if (nextY != null && p.getLinetype() == LineType.DIALOGUE && nextY < yPos) {
 		yPos = nextY;
 		nextY = null;
 		currentDual = null;
@@ -115,7 +115,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
     }
 
     private void setDualDialogue(Paragraph p) {
-	if (p.getLinetype() == LineMargins.CHARACTER) {
+	if (p.getLinetype() == LineType.CHARACTER) {
 	    if (currentDual == null) {
 		originalY = super.yPos;
 		currentDual = Dual.FIRST;

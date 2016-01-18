@@ -23,7 +23,7 @@ public class CharacterPager extends AbstractPager<List<FCharacter>> {
 	nextLine(5f);
 	super.fontSize = null;
 	for (FCharacter c : t) {
-	    super.printString(c.getName(), super.xPos, super.yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	    super.printString(c.getName().toUpperCase(), super.xPos, super.yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 	    super.printString(Integer.toString(c.getTakes()), super.xPos+xLines, super.yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 	    nextLine(15f);
 	}

@@ -1,18 +1,19 @@
-package at.hsol.fountainizer.parser.types;
+package at.hsol.fountainizer.parser;
 
-import static at.hsol.fountainizer.parser.types.ParserConstants.L_CENTERED;
-import static at.hsol.fountainizer.parser.types.ParserConstants.L_CHARACTER;
-import static at.hsol.fountainizer.parser.types.ParserConstants.L_HEADING;
-import static at.hsol.fountainizer.parser.types.ParserConstants.L_LYRICS;
-import static at.hsol.fountainizer.parser.types.ParserConstants.L_PAGEBREAK;
-import static at.hsol.fountainizer.parser.types.ParserConstants.L_PARENTHETICAL;
-import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_1;
-import static at.hsol.fountainizer.parser.types.ParserConstants.L_TRANSITION_2;
+import static at.hsol.fountainizer.parser.ParserConstants.L_CENTERED;
+import static at.hsol.fountainizer.parser.ParserConstants.L_CHARACTER;
+import static at.hsol.fountainizer.parser.ParserConstants.L_HEADING;
+import static at.hsol.fountainizer.parser.ParserConstants.L_LYRICS;
+import static at.hsol.fountainizer.parser.ParserConstants.L_PAGEBREAK;
+import static at.hsol.fountainizer.parser.ParserConstants.L_PARENTHETICAL;
+import static at.hsol.fountainizer.parser.ParserConstants.L_TRANSITION_1;
+import static at.hsol.fountainizer.parser.ParserConstants.L_TRANSITION_2;
 
 import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.interfaces.Line;
 import at.hsol.fountainizer.parser.interfaces.MarginType;
+import at.hsol.fountainizer.parser.types.LineType;
 
 /**
  * @author Felix Batusic
@@ -24,25 +25,25 @@ public class TypeHelper {
 	this.outputLines = outputLines;
     }
 
-    public LineMargins getType(SimpleLine l) {
+    public LineType getType(SimpleLine l) {
 	if (isHeading(l)) {
-	    return LineMargins.HEADING;
+	    return LineType.HEADING;
 	} else if (isParenthetical(l)) {
-	    return LineMargins.PARENTHETICAL;
+	    return LineType.PARENTHETICAL;
 	} else if (isLyrics(l)) {
-	    return LineMargins.LYRICS;
+	    return LineType.LYRICS;
 	} else if (isCentered(l)) {
-	    return LineMargins.CENTERED;
+	    return LineType.CENTERED;
 	} else if (isPagebreak(l)) {
-	    return LineMargins.PAGEBREAK;
+	    return LineType.PAGEBREAK;
 	} else if (isTransition(l)) {
-	    return LineMargins.TRANSITION;
+	    return LineType.TRANSITION;
 	} else if (isCharacter(l)) {
-	    return LineMargins.CHARACTER;
+	    return LineType.CHARACTER;
 	} else if (isDialogue(l)) {
-	    return LineMargins.DIALOGUE;
+	    return LineType.DIALOGUE;
 	} else {
-	    return LineMargins.ACTION;
+	    return LineType.ACTION;
 	}
     }
 
@@ -87,10 +88,10 @@ public class TypeHelper {
 	if (prevLine != null) {
 	    MarginType prevType = prevLine.getLineType();
 	    if (l.getText() == null) {
-		if (prevType == LineMargins.DIALOGUE) {
+		if (prevType == LineType.DIALOGUE) {
 		    return true;
 		}
-	    } else if (prevType == LineMargins.CHARACTER || prevType == LineMargins.PARENTHETICAL) {
+	    } else if (prevType == LineType.CHARACTER || prevType == LineType.PARENTHETICAL) {
 		return true;
 	    }
 	}
