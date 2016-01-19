@@ -1,18 +1,13 @@
 package at.hsol.fountainizer.parser;
 
-import static at.hsol.fountainizer.parser.ParserConstants.L_CENTERED;
-import static at.hsol.fountainizer.parser.ParserConstants.L_CHARACTER;
-import static at.hsol.fountainizer.parser.ParserConstants.L_HEADING;
-import static at.hsol.fountainizer.parser.ParserConstants.L_LYRICS;
-import static at.hsol.fountainizer.parser.ParserConstants.L_PAGEBREAK;
-import static at.hsol.fountainizer.parser.ParserConstants.L_PARENTHETICAL;
-import static at.hsol.fountainizer.parser.ParserConstants.L_TRANSITION_1;
-import static at.hsol.fountainizer.parser.ParserConstants.L_TRANSITION_2;
+import static at.hsol.fountainizer.parser.ParserConstants.*;
 
 import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.interfaces.Line;
 import at.hsol.fountainizer.parser.interfaces.MarginType;
+import at.hsol.fountainizer.parser.meta.Statistic;
+import at.hsol.fountainizer.parser.types.HeadingType;
 import at.hsol.fountainizer.parser.types.LineType;
 
 /**
@@ -20,14 +15,16 @@ import at.hsol.fountainizer.parser.types.LineType;
  */
 public class TypeHelper {
     ParserContent outputLines;
+    Statistic stats;
 
-    public TypeHelper(ParserContent outputLines) {
+    public TypeHelper(ParserContent outputLines, Statistic stats) {
 	this.outputLines = outputLines;
+	this.stats = stats;
     }
 
-    public LineType getType(SimpleLine l) {
+    public MarginType getType(SimpleLine l) {
 	if (isHeading(l)) {
-	    return LineType.HEADING;
+	    return getHeading(l);
 	} else if (isParenthetical(l)) {
 	    return LineType.PARENTHETICAL;
 	} else if (isLyrics(l)) {
@@ -56,10 +53,27 @@ public class TypeHelper {
 	}
 	return false;
     }
+    
+    private MarginType getHeading(SimpleLine l) {
+	String text = l.getText();
+	if (text.matches(L_HEADING_INT)) {
+	    return HeadingType.INT;
+	} else if (text.matches(L_HEADING_EXT)) {
+	    return HeadingType.EXT;
+	} else if (text.matches(L_HEADING_EST)) {
+	    return HeadingType.EST;
+	} else if (text.matches(L_HEADING_INT_EXT)) {
+	    return HeadingType.INT_EXT;
+	} else if (text.matches(L_HEADING_CUSTOM)) {
+	    return HeadingType.CUSTOM;
+	} else {
+	    return null;
+	}
+    }
 
     private boolean isCharacter(SimpleLine l) {
 	String text = l.getText();
-	if (outputLines.getCharacters().lookup(text) != null) {
+	if (stats.getCharacters().lookup(text) != null) {
 	    return true;
 	}
 	if (text.matches(L_CHARACTER)) {

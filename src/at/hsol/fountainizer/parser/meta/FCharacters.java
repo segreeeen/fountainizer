@@ -8,27 +8,38 @@ import java.util.List;
 import java.util.Map;
 
 import at.hsol.fountainizer.Options;
+import at.hsol.fountainizer.parser.content.SimpleLine;
 
 public class FCharacters {
     private static final String CHARACTER_ASSIGNMENT = "=";
 
     private HashMap<String, FCharacter> charRegister = new HashMap<>();
+    private Options options;
+    private int totalTakes = 0;
 
-    public void incCharCount(String name) {
-	name = name.replaceAll("\\^", " ");
-	name = name.toLowerCase();
-	name = name.trim();
-	
-	FCharacter n = charRegister.get(name);
+    public FCharacters(Options options) {
+	this.options = options;
+    }
+
+    public void incCharCount(SimpleLine l, Scene currentScene) {
+	add(l);
+	String s = format(l.getText());
+	FCharacter n = charRegister.get(s);
 	if (n != null) {
+	    if (n.getFirstTake() == null) {
+		n.setFirstTake(l.getLineNr());
+	    }
+	    n.setLastTake(l.getLineNr());
+	    n.addScene(currentScene);
 	    n.incTakes();
+	    totalTakes++;
 	}
     }
 
     /**
      * Returns a Map of the Characters and the number of their takes.
      */
-    public List<FCharacter> getCharacters(Options options) {
+    public List<FCharacter> getCharacters() {
 	if (charRegister.isEmpty()) {
 	    return null;
 	}
@@ -81,8 +92,8 @@ public class FCharacters {
      *            format "name = abbreviation"
      * @return true if added, else false
      */
-    public String add(String charName) {
-	charName = format(charName);
+    public String add(SimpleLine l) {
+	String charName = format(l.getText());
 	if (charName.split(CHARACTER_ASSIGNMENT).length <= 1) {
 	    String charInRegister = lookup(charName);
 	    if (charInRegister == null) {
@@ -155,6 +166,10 @@ public class FCharacters {
 	charName = charName.trim();
 	charName = charName.toLowerCase();
 	return charName;
+    }
+
+    int getTotalTakes() {
+	return totalTakes;
     }
 
 }

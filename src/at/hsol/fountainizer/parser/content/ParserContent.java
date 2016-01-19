@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import at.hsol.fountainizer.parser.interfaces.Content;
-import at.hsol.fountainizer.parser.meta.FCharacters;
 
 /**
  * @author Felix Batusic
@@ -12,11 +11,9 @@ import at.hsol.fountainizer.parser.meta.FCharacters;
 public class ParserContent implements Content {
     private TitlePage tp;
     private ArrayList<SimpleLine> lines;
-    private FCharacters characters;
 
     public ParserContent() {
 	lines = new ArrayList<>(100);
-	setCharacters(new FCharacters());
     }
 
     @Override
@@ -157,14 +154,6 @@ public class ParserContent implements Content {
 
     public void setTitlepage(TitlePage tp) {
 	this.tp = tp;
-    }
-
-    public FCharacters getCharacters() {
-	return characters;
-    }
-
-    public void setCharacters(FCharacters characters) {
-	this.characters = characters;
     }
 
 }

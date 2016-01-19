@@ -11,6 +11,31 @@ public final class ParserConstants {
     public static final String L_HEADING = "INT[\\.?](.*?)|EXT(.*?)|EST(.*?)|INT./EXT(.*?)|INT/EXT(.*?)|I/E(.*?)|\\.(.*?)";
 
     /**
+     * Matches int heading
+     */
+    public static final String L_HEADING_INT = "INT[\\.?](.*?)";
+    
+    /**
+     * Matches ext heading
+     */
+    public static final String L_HEADING_EXT = "EXT(.*?)";
+    
+    /**
+     * Matches est heading
+     */
+    public static final String L_HEADING_EST = "EST(.*?)";
+    
+    /**
+     * Matches int/ext heading
+     */
+    public static final String L_HEADING_INT_EXT = "INT./EXT(.*?)|INT/EXT(.*?)|I/E(.*?)|\\.(.*?)";
+    
+    /**
+     * Matches . (heading start)
+     */
+    public static final String L_HEADING_CUSTOM = "\\.(.*?)";
+    
+    /**
      * Matches "text ^"
      */
     public static final String L_DUAL_DIALOGUE = "(.*?)\\s+\\^";

@@ -4,10 +4,12 @@
 
 package at.hsol.fountainizer.parser;
 
+import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.interfaces.Content;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
 import at.hsol.fountainizer.parser.meta.Statistic;
 import at.hsol.fountainizer.parser.types.LineType;
 
@@ -19,10 +21,10 @@ public class Parser {
     private TypeHelper typeHelper;
     private Content outputLines;
 
-    public Parser(ParserContent outputLines) {
-	this.stats = new Statistic(outputLines.getCharacters());
-	this.typeHelper = new TypeHelper(outputLines);
+    public Parser(ParserContent outputLines, Options options) {
+	this.stats = new Statistic(options);
 	this.outputLines = outputLines;
+	this.typeHelper = new TypeHelper(outputLines, stats);
     }
 
     public Content parse() {
@@ -40,7 +42,7 @@ public class Parser {
 
 	for (SimpleLine l : outputLines) {
 	    if (l.getLineType() == LineType.CHARACTER) {
-		l.setText(outputLines.getCharacters().lookup(l.getText()));
+		l.setText(stats.getCharacters().lookup(l.getText()));
 	    }
 	}
 	return outputLines;
@@ -52,7 +54,7 @@ public class Parser {
 
     private void setAttributes(SimpleLine l, Content outputLines) {
 	// get helper instance
-	LineType type = typeHelper.getType(l);
+	MarginType type = typeHelper.getType(l);
 	
 	// get linetype
 	l.setLineType(type);

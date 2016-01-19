@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import at.hsol.fountainizer.parser.interfaces.MarginType;
+import at.hsol.fountainizer.parser.types.HeadingType;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 
@@ -16,7 +17,7 @@ public class Formatter {
 	    s = s.trim();
 	}
 
-	if (type == LineType.HEADING) {
+	if (type.getClass() == HeadingType.class) {
 	    return formatColonTag(s, ParserConstants.L_HEADING);
 	} else if (type == LineType.CHARACTER) {
 	    if (s.contains("@")) {

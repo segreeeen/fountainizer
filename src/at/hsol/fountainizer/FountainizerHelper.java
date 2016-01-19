@@ -24,6 +24,7 @@ public class FountainizerHelper {
 	private ParserContent textlines = null;
 	private Statistic stats;
 	private Options options;
+	private FilePrinter fp;
 	
 
 	public FountainizerHelper(String fileIn, String fileOut, Options options) {
@@ -32,6 +33,7 @@ public class FountainizerHelper {
 			this.fileOut = fileOut;
 			this.stats = null;
 			this.options = options;
+			this.fp = new FilePrinter(options);
 		} else {
 			throw new IllegalArgumentException("input/output file can't be null");
 		}
@@ -58,7 +60,7 @@ public class FountainizerHelper {
 	 * @throws IOException
 	 */
 	public double parse() throws IllegalStateException {
-	    	Parser parser = new Parser(textlines);
+	    	Parser parser = new Parser(textlines, options);
 		if (textlines != null) {
 			long time = System.currentTimeMillis();
 			parser.parse();
@@ -77,11 +79,7 @@ public class FountainizerHelper {
 	 */
 	public double printPdf() throws IOException, URISyntaxException {
 		long time = System.currentTimeMillis();
-		if (options != null) {
-		    FilePrinter.writePDFBox(textlines, fileOut, options);
-		} else {
-		    FilePrinter.writePDFBox(textlines, fileOut, null);
-		}
+		fp.writePDFBox(textlines, fileOut, stats);
 		return (System.currentTimeMillis() - time)/1000d;
 	}
 	

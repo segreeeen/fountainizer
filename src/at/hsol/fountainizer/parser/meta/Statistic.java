@@ -5,6 +5,7 @@ import java.util.List;
 import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.interfaces.MarginType;
+import at.hsol.fountainizer.parser.types.HeadingType;
 import at.hsol.fountainizer.parser.types.LineType;
 
 /**
@@ -13,8 +14,6 @@ import at.hsol.fountainizer.parser.types.LineType;
  * @author Felix Batusic
  */
 public class Statistic {
-    private int character = 0;
-    private int heading = 0;
     private int dialogue = 0;
     private int parenthetical = 0;
     private int transition = 0;
@@ -22,22 +21,24 @@ public class Statistic {
     private int lyrics = 0;
     private int centered = 0;
     private int emtpy = 0;
-    private FCharacters characters = new FCharacters();
+    private FCharacters characters;
+    private Scenes scenes;
 
-    public Statistic(FCharacters characters) {
-	this.characters = characters;
+    public Statistic(Options options) {
+	this.characters = new FCharacters(options);
+	this.scenes = new Scenes();
     }
 
     public List<FCharacter> getCharacterStats(Options options) {
-	return characters.getCharacters(options);
+	return characters.getCharacters();
     }
 
     public int getCharacterLines() {
-	return character;
+	return characters.getTotalTakes();
     }
 
     public int getHeading() {
-	return heading;
+	return scenes.getTotalScenes();
     }
 
     public int getDialogue() {
@@ -70,8 +71,8 @@ public class Statistic {
 
     public void countLine(SimpleLine l) {
 	MarginType t = l.getLineType();
-	if (t == LineType.HEADING) {
-	    incHeading();
+	if (t.getClass() == HeadingType.class) {
+	    incHeading(l);
 	} else if (t == LineType.PARENTHETICAL) {
 	    incParenthetical();
 	} else if (t == LineType.LYRICS) {
@@ -81,7 +82,7 @@ public class Statistic {
 	} else if (t == LineType.TRANSITION) {
 	    incTransition();
 	} else if (t == LineType.CHARACTER) {
-	    incCharacter(l.getText());
+	    incCharacter(l);
 	} else if (t == LineType.DIALOGUE) {
 	    incDialogue();
 	} else if (t == LineType.EMPTY) {
@@ -90,16 +91,13 @@ public class Statistic {
 	    incAction();
 	}
     }
-
-    private void incCharacter(String name) {
-	this.characters.add(name);
-	this.characters.incCharCount(name);
-	this.character++;
-	System.out.println(character);
+    
+    private void incCharacter(SimpleLine l) {
+	this.characters.incCharCount(l, scenes.getCurrentScene());
     }
 
-    private void incHeading() {
-	this.heading++;
+    private void incHeading(SimpleLine l) {
+	scenes.inc(l);
     }
 
     private void incDialogue() {
@@ -128,6 +126,10 @@ public class Statistic {
 
     private void incEmtpy() {
 	this.emtpy++;
+    }
+
+    public FCharacters getCharacters() {
+	return characters;
     }
 
 }
