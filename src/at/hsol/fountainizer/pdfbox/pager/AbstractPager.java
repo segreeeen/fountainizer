@@ -24,6 +24,7 @@ public abstract class AbstractPager<T> implements Pager {
     protected PDPageContentStream stream;
 
     protected Integer fontSize;
+    protected Color color;
     protected float yPos;
     protected float xPos;
     protected float curY;
@@ -35,6 +36,7 @@ public abstract class AbstractPager<T> implements Pager {
 	this.nextPage();
 	this.xPos = getMarginLeft();
 	this.yPos = getPageHeight() - getMarginTop();
+	this.color = null;
     }
 
     PDDocument getDoc() {
@@ -200,6 +202,18 @@ public abstract class AbstractPager<T> implements Pager {
 	    return PagerController.STANDARD_FONT_SIZE;
 	}
     }
+    
+    public Color getColor() {
+	if (color != null) {
+	    return color;
+	} else {
+	    return PagerController.STANDARD_TEXT_COLOR;
+	}
+    }
+    
+    public void setColor(Color color) {
+	this.color = color;
+    }
 
     public void underline(float x, float y, float x2, float y2) throws IOException {
 	stream.setLineWidth(0.1f);
@@ -211,12 +225,12 @@ public abstract class AbstractPager<T> implements Pager {
     private void printPageNumber(float x) throws IOException {
 	String nr = Integer.toString(document.getNumberOfPages());
 	float nrWidth = getFont().getStringWidth(nr) / 1000 * getFontSize();
-	printString(nr, (getAbsoluteWidth() / 2)-nrWidth, getMarginBottom() - (getLineHeight()), getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	printString(nr, (getAbsoluteWidth() / 2)-(nrWidth/2), getMarginBottom() - (getLineHeight()), getFont(), getFontSize(), getColor());
     }
 
     private void setTextOptions(float x, float y, PDFont font, int fontSize, Color color) throws IOException {
 	stream.newLineAtOffset(x, y);
-	stream.setNonStrokingColor(Color.BLACK);
+	stream.setNonStrokingColor(getColor());
 	stream.setFont(font, fontSize);
     }
 

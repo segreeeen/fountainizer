@@ -15,7 +15,6 @@ public class TestClass {
 	    helper.printPdf();
 	    
 	} catch (IOException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} 
     }

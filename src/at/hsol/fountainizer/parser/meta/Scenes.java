@@ -6,24 +6,31 @@ import java.util.Map;
 
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.interfaces.MarginType;
+import at.hsol.fountainizer.parser.types.HeadingType;
 
 public class Scenes {
     private Map<MarginType, LinkedList<Scene>> scenes = new HashMap<>();
     private int totalScenes = 0;
     private Scene currentScene;
+    
+    public Scenes() {
+	this.currentScene = new Scene(0, 0, 0, HeadingType.CUSTOM,new SimpleLine(null,0));
+    }
 
     void inc(SimpleLine l) {
+	totalScenes++;
 	if (scenes.containsKey(l.getLineType())) {
 	    LinkedList<Scene> list = scenes.get(l.getLineType());
-	    currentScene = new Scene(l.getLineNr(), list.size()+1,l.getLineType());
+	    currentScene.setSceneEnd(l.getLineNr()-1);
+	    currentScene = new Scene(l.getLineNr(), list.size()+1,totalScenes,l.getLineType(),l);
 	    list.add(currentScene);
 	} else {
 	    LinkedList<Scene> list = new LinkedList<>();
-	    currentScene = new Scene(l.getLineNr(), list.size()+1,l.getLineType());
+	    currentScene.setSceneEnd(l.getLineNr()-1);
+	    currentScene = new Scene(l.getLineNr(), list.size()+1,totalScenes,l.getLineType(),l);
 	    list.add(currentScene);
 	    scenes.put(l.getLineType(), list);
 	}
-	totalScenes++;
     }
     
     Scene getCurrentScene() {

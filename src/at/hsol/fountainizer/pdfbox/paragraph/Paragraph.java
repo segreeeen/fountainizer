@@ -15,6 +15,10 @@ public class Paragraph implements MarginType {
 
     // private String text;
     private RichString richText;
+    public RichString getRichText() {
+        return richText;
+    }
+
     private AbstractPager<?> pager;
     private MarginType linetype;
     private List<RichString> lines;

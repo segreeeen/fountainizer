@@ -2,8 +2,11 @@ package at.hsol.fountainizer.parser.content;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import at.hsol.fountainizer.parser.interfaces.Content;
+import at.hsol.fountainizer.parser.meta.Scene;
+import at.hsol.fountainizer.parser.types.LineType;
 
 /**
  * @author Felix Batusic
@@ -14,6 +17,11 @@ public class ParserContent implements Content {
 
     public ParserContent() {
 	lines = new ArrayList<>(100);
+    }
+    
+    public ParserContent(ArrayList<SimpleLine> lines, TitlePage tp) {
+	this.lines = lines;
+	this.tp = tp;
     }
 
     @Override
@@ -122,22 +130,6 @@ public class ParserContent implements Content {
 	}
     }
 
-    private void decFollowing(SimpleLine l) {
-	int start = l.getLineNr();
-	int end = getLineCount();
-	for (int i = start; i < end; i++) {
-	    lines.get(i).decLineNr();
-	}
-    }
-
-    private void incFollowing(SimpleLine nextLine) {
-	int start = nextLine.getLineNr();
-	int end = getLineCount();
-	for (int i = start; i < end; i++) {
-	    lines.get(i).incLineNr();
-	}
-    }
-
     @Override
     public boolean hasNext(SimpleLine l) {
 	return getNext(l) != null;
@@ -155,5 +147,34 @@ public class ParserContent implements Content {
     public void setTitlepage(TitlePage tp) {
 	this.tp = tp;
     }
+    
+    public ParserContent copyForCharacter(TreeSet<Scene> s) {
+	Scene[] scenes = s.toArray(new Scene[] {});
+	ArrayList<SimpleLine> lines = new ArrayList<>(this.lines.size());
+	for (Scene scene: scenes) {
+	    SimpleLine l = new SimpleLine("Scene " + scene.getTotalSceneNr(), scene.getTotalSceneNr());
+	    l.setLineType(LineType.CENTERED);
+	    lines.add(l);
+	    for (int i = scene.getScenestart(); i <= scene.getSceneend(); i++) {
+		lines.add(this.lines.get(i));
+	    }
+	}
+	return new ParserContent(lines, tp);
+    }
 
+    private void decFollowing(SimpleLine l) {
+	int start = l.getLineNr();
+	int end = getLineCount();
+	for (int i = start; i < end; i++) {
+	    lines.get(i).decLineNr();
+	}
+    }
+
+    private void incFollowing(SimpleLine nextLine) {
+	int start = nextLine.getLineNr();
+	int end = getLineCount();
+	for (int i = start; i < end; i++) {
+	    lines.get(i).incLineNr();
+	}
+    }
 }

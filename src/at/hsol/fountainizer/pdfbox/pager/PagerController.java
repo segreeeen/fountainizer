@@ -25,6 +25,7 @@ public class PagerController {
 	public static final Class<TitlePager> TITLE_PAGER = TitlePager.class;
 	public static final Class<StandardPager> STANDARD_PAGER = StandardPager.class;
 	public static final Class<CharacterPager> CHARACTER_PAGER = CharacterPager.class;
+	public static final Class<CustomScriptPager> CUSTOM_PAGER = CustomScriptPager.class;
     }
 
     public enum FormattingType {
@@ -124,6 +125,15 @@ public class PagerController {
 	    StandardPager pager = (StandardPager) pagers.get(PagerType.STANDARD_PAGER);
 	    pager.closeStream();
 	    PDPageTree pages = pagers.get(PagerType.STANDARD_PAGER).getPages();
+	    for (PDPage p : pages) {
+		doc.addPage(p);
+	    }
+	} 
+
+	if (pagers.containsKey(PagerType.CUSTOM_PAGER)) {
+	    CustomScriptPager pager = (CustomScriptPager) pagers.get(PagerType.CUSTOM_PAGER);
+	    pager.closeStream();
+	    PDPageTree pages = pagers.get(PagerType.CUSTOM_PAGER).getPages();
 	    for (PDPage p : pages) {
 		doc.addPage(p);
 	    }

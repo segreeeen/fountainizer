@@ -11,6 +11,8 @@ final class PagerFactory {
 	    return new CharacterPager(controller, PAGER_TYPE);
 	} else if (PAGER_TYPE == PagerController.PagerType.TITLE_PAGER) {
 	    return new TitlePager(controller, PAGER_TYPE);
+	} else if (PAGER_TYPE == PagerController.PagerType.CUSTOM_PAGER){
+	    return new CustomScriptPager(controller, PAGER_TYPE);
 	} else {
 	    return null;
 	}

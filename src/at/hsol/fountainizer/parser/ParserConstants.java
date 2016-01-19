@@ -8,7 +8,7 @@ public final class ParserConstants {
     /**
      * Matches headings
      */
-    public static final String L_HEADING = "INT[\\.?](.*?)|EXT(.*?)|EST(.*?)|INT./EXT(.*?)|INT/EXT(.*?)|I/E(.*?)|\\.(.*?)";
+    public static final String L_HEADING = "INT[\\.?](.*?)|EXT[\\.?](.*?)|EST[\\.?](.*?)|INT[\\.?]/EXT[\\.?](.*?)|I[\\.?]/E[\\.?](.*?)|\\.(.*?)";
 
     /**
      * Matches int heading
@@ -18,17 +18,17 @@ public final class ParserConstants {
     /**
      * Matches ext heading
      */
-    public static final String L_HEADING_EXT = "EXT(.*?)";
+    public static final String L_HEADING_EXT = "EXT[\\.?](.*?)";
     
     /**
      * Matches est heading
      */
-    public static final String L_HEADING_EST = "EST(.*?)";
+    public static final String L_HEADING_EST = "EST[\\.?](.*?)";
     
     /**
      * Matches int/ext heading
      */
-    public static final String L_HEADING_INT_EXT = "INT./EXT(.*?)|INT/EXT(.*?)|I/E(.*?)|\\.(.*?)";
+    public static final String L_HEADING_INT_EXT = "INT[\\.?]/EXT[\\.?](.*?)|INT/EXT(.*?)|I/E(.*?)";
     
     /**
      * Matches . (heading start)

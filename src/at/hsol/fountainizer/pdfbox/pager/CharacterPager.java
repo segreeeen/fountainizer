@@ -26,6 +26,9 @@ public class CharacterPager extends AbstractPager<List<FCharacter>> {
 	    super.printString(c.getName().toUpperCase(), super.xPos, super.yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 	    super.printString(Integer.toString(c.getTakes()), super.xPos+xLines, super.yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
 	    nextLine(15f);
+	    if (super.yExceeded()) {
+		super.nextPage();
+	    }
 	}
 
     }

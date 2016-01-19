@@ -12,6 +12,7 @@ import at.hsol.fountainizer.pdfbox.pager.AbstractPager;
 public class RichString {
 
     private LinkedList<RichFormat> formattings;
+    private final String rawText;
 
     public LinkedList<RichFormat> getFormattings() {
 	return formattings;
@@ -23,10 +24,12 @@ public class RichString {
 
     private RichString(LinkedList<RichFormat> formattings) {
 	this.formattings = formattings;
+	this.rawText = null;
     }
 
     public RichString(String rawText, RichFormat singleFormatting) {
 	formattings = new LinkedList<RichFormat>();
+	this.rawText = rawText;
 
 	if (singleFormatting == null) {
 	    RichFormatParser rfp = new RichFormatParser(rawText);
@@ -102,6 +105,10 @@ public class RichString {
 	    width = width + text.stringWidth(page);
 	}
 	return width;
+    }
+
+    public String getRawText() {
+	return rawText;
     }
 
 }

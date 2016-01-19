@@ -1,6 +1,7 @@
 package at.hsol.fountainizer.parser.meta;
 
 import java.util.HashSet;
+import java.util.TreeSet;
 
 public class FCharacter {
 
@@ -15,11 +16,11 @@ public class FCharacter {
     private int gender = G_UNKNOWN;
     private Integer firstTake = null;
     private Integer lastTake = null;
-    private final HashSet<Scene> scenes;
+    private final TreeSet<Scene> scenes;
     
     FCharacter(String name) {
 	this.name = name;
-	this.scenes = new HashSet<Scene>();
+	this.scenes = new TreeSet<Scene>();
     }
 
     public int getGender() {
@@ -78,7 +79,7 @@ public class FCharacter {
 	this.lastTake = lastTake;
     }
 
-    public HashSet<Scene> getScenes() {
+    public TreeSet<Scene> getScenes() {
 	return scenes;
     }
     

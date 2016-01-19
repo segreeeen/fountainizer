@@ -17,9 +17,9 @@ public class StandardPager extends AbstractPager<ParserContent> {
     }
 
     private Integer fontSize;
-    private Dual currentDual = null;
-    private Float nextY = null;
-    private Float originalY;
+    protected Dual currentDual = null;
+    protected Float nextY = null;
+    protected Float originalY;
 
     StandardPager(PagerController controller, Class<? extends AbstractPager<?>> type) throws IOException {
 	super(controller);
@@ -52,6 +52,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	    super.nextLine();
 	    return;
 	}
+	
 
 	// if this line is a character, we don't want the dialogue to be split
 	// over two pages, so we check if there is enough space for at least 3
@@ -79,6 +80,11 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	List<RichString> lines = p.getLines();
 
 	for (RichString rs : lines) {
+	    
+	    if (p.getLinetype() == LineType.PAGEBREAK) {
+		super.nextPage();
+		continue;
+	    }
 
 	    if (p.isCentered()) { // print centered
 		super.xPos = (super.getAbsoluteWidth() / 2) - (rs.stringWidth(this)/2)-p.getMarginLeft();
@@ -99,7 +105,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 		currentLineWidth += rf.stringWidth(this);
 	    }
 	    // return yPos to position if left (first) dialogue was longer than
-	    // second (right)
+	    // right (second)
 	    if (nextY != null && p.getLinetype() == LineType.DIALOGUE && nextY < yPos) {
 		yPos = nextY;
 		nextY = null;
@@ -113,8 +119,17 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	super.finishLine(p.getMarginBottom()); // finish paragraph
 
     }
+    
+    @Override
+    public int getFontSize() {
+	if (fontSize != null) {
+	    return fontSize;
+	} else {
+	    return PagerController.STANDARD_FONT_SIZE;
+	}
+    }
 
-    private void setDualDialogue(Paragraph p) {
+    protected void setDualDialogue(Paragraph p) {
 	if (p.getLinetype() == LineType.CHARACTER) {
 	    if (currentDual == null) {
 		originalY = super.yPos;
@@ -128,7 +143,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	}
     }
 
-    private Paragraph remarginDual(Paragraph p) {
+    protected Paragraph remarginDual(Paragraph p) {
 	if (currentDual == Dual.FIRST) {
 	    p.setMarginLeft(getDualValue(getMarginLeft() + p.getMarginLeft()) - 40);
 	    p.setMarginRight(getPageWidth() / 2);
@@ -149,29 +164,22 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	}
     }
 
-    @Override
-    public int getFontSize() {
-	if (fontSize != null) {
-	    return fontSize;
-	} else {
-	    return PagerController.STANDARD_FONT_SIZE;
-	}
+    protected void printLeftAligned(RichFormat rowPart, float x, float y) throws IOException {
+	super.printString(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), getColor());
     }
 
-    private void printLeftAligned(RichFormat rowPart, float x, float y) throws IOException {
-	super.printString(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
-    }
-
-    private void printLeftAligned(RichFormat rowPart, float x, float y, boolean underlined) throws IOException {
-	super.printString(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+    protected void printLeftAligned(RichFormat rowPart, float x, float y, boolean underlined) throws IOException {
+	super.printString(rowPart.getText(), x, y, rowPart.selectFont(this), getFontSize(), getColor());
 	super.underline(x, y + super.getUnderLineDifference(), x + rowPart.stringWidth(this), y + super.getUnderLineDifference());
     }
 
     private void printTakeNumber(Integer lineNr) throws IOException {
 	if (currentDual != null && currentDual == Dual.SECOND) {
-	    printString(lineNr.toString(), getMarginLeft() + (getPageWidth() / 2) + 20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	    float nrWidth = getFont().getStringWidth(lineNr.toString()) / 1000 * getFontSize();
+	    printString(lineNr.toString(), getMarginLeft() + (getPageWidth() / 2) + 30 - nrWidth, yPos, getFont(), getFontSize(), getColor());
 	} else {
-	    printString(lineNr.toString(), getMarginLeft() - 20, yPos, getFont(), getFontSize(), PagerController.STANDARD_TEXT_COLOR);
+	    float nrWidth = getFont().getStringWidth(lineNr.toString()) / 1000 * getFontSize();
+	    printString(lineNr.toString(), getMarginLeft() - nrWidth - 10, yPos, getFont(), getFontSize(), getColor());
 	}
     }
 

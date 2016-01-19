@@ -9,12 +9,14 @@ public class Options {
     private boolean printTitlePage;
     private boolean printCharacterPage;
     private int sortCharacters;
+    private String customCharacter;
         
     public Options() {
 	this.printPageNumbers = true;
 	this.printTakeNumbers = true;
 	this.sortCharacters = SORT_BY_NAME;
 	this.printCharacterPage = true;
+	this.customCharacter = "amos";
     }
 
     public boolean printTakeNumber() {
@@ -55,6 +57,14 @@ public class Options {
 
     public void setPrintCharacterPage(boolean printCharacterPage) {
 	this.printCharacterPage = printCharacterPage;
+    }
+
+    public String getCustomCharacter() {
+	return customCharacter;
+    }
+
+    public void setCustomCharacter(String customCharacter) {
+	this.customCharacter = customCharacter;
     }
     
     

@@ -24,7 +24,7 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	this.titleY = getPageHeight() - (getPageHeight() / 5f);
 	this.rightY = getPageHeight() - (getPageHeight() / 4f) * 3;
 	this.centeredY = getPageHeight() - (getPageHeight() / 4f);
-	this.leftY = getPageHeight() - (getPageHeight() / 4) * 3;
+	this.leftY = getPageHeight() - (getPageHeight() / 4) * 3.5f;
     }
 
     @Override
