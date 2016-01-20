@@ -44,7 +44,7 @@ public class MainWindowController {
 	/**
 	 * Contains the latest date of the latest Build
 	 */
-	private final String BUILD = "v0.5 beta build 6fc8cc0 04.01.2016 23:40";
+	private final String BUILD = "v0.5 beta build 5ad8763 20.01.2016 15:19";
 
 	/**
 	 * Primary stage which is currently displayed
