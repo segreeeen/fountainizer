@@ -43,7 +43,7 @@ public final class ParserConstants {
     /**
      * Matches "@text"
      */
-    public static final String L_CHARACTER = "@(.*?)";
+    public static final String L_CHARACTER = "@(.*?)|(.*?):=(.*?)";
 
     /**
      * Matches (text)

@@ -67,7 +67,6 @@ public class Parser {
 	
 	//count the linetype and set it's number
 	stats.countLine(l);
-	l.setLineTypeNumber(stats.getCharacterLines());
 	
 	//set dual dialog flags
 	String text = l.getText();

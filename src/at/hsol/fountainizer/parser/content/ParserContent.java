@@ -2,9 +2,9 @@ package at.hsol.fountainizer.parser.content;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import at.hsol.fountainizer.parser.interfaces.Content;
+import at.hsol.fountainizer.parser.meta.FCharacter;
 import at.hsol.fountainizer.parser.meta.Scene;
 import at.hsol.fountainizer.parser.types.LineType;
 
@@ -148,8 +148,8 @@ public class ParserContent implements Content {
 	this.tp = tp;
     }
     
-    public ParserContent copyForCharacter(TreeSet<Scene> s) {
-	Scene[] scenes = s.toArray(new Scene[] {});
+    public ParserContent copyForCharacter(FCharacter character) {
+	Scene[] scenes = character.getScenes().toArray(new Scene[] {});
 	ArrayList<SimpleLine> lines = new ArrayList<>(this.lines.size());
 	for (Scene scene: scenes) {
 	    SimpleLine l = new SimpleLine("Scene " + scene.getTotalSceneNr(), scene.getTotalSceneNr());

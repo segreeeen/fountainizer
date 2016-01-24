@@ -16,7 +16,7 @@ public class Options {
 	this.printTakeNumbers = true;
 	this.sortCharacters = SORT_BY_NAME;
 	this.printCharacterPage = true;
-	this.customCharacter = "amos";
+	this.customCharacter = null;
     }
 
     public boolean printTakeNumber() {

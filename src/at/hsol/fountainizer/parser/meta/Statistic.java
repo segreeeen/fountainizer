@@ -94,6 +94,7 @@ public class Statistic {
     
     private void incCharacter(SimpleLine l) {
 	this.characters.incCharCount(l, scenes.getCurrentScene());
+	l.setLineTypeNumber(characters.getTotalTakes());
     }
 
     private void incHeading(SimpleLine l) {

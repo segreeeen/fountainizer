@@ -11,7 +11,7 @@ import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 
 public class FCharacters {
-    private static final String CHARACTER_ASSIGNMENT = "=";
+    private static final String CHARACTER_ASSIGNMENT = ":=";
 
     private HashMap<String, FCharacter> charRegister = new HashMap<>();
     private Options options;
@@ -32,7 +32,6 @@ public class FCharacters {
 	    n.setLastTake(l.getLineNr());
 	    n.addScene(currentScene);
 	    n.incTakes();
-	    totalTakes++;
 	}
     }
 
@@ -169,6 +168,7 @@ public class FCharacters {
     }
 
     int getTotalTakes() {
+	totalTakes++;
 	return totalTakes;
     }
 
