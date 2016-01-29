@@ -47,6 +47,7 @@ public class FileReader {
 	text = text.replaceAll("[\uFFFD]", "");
 	text = text.replaceAll("[\uFEFF]", "");
 	text = text.replaceAll("[\u0084]", "");
+	text = text.replaceAll("[\u00AD]", "");
 	text = text.trim();
 	return text;
     }

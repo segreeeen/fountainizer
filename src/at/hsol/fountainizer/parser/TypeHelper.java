@@ -53,7 +53,7 @@ public class TypeHelper {
 	}
 	return false;
     }
-    
+
     private MarginType getHeading(SimpleLine l) {
 	String text = l.getText();
 	if (text.matches(L_HEADING_INT)) {
@@ -101,11 +101,7 @@ public class TypeHelper {
 	Line prevLine = l.getPrev();
 	if (prevLine != null) {
 	    MarginType prevType = prevLine.getLineType();
-	    if (l.getText() == null) {
-		if (prevType == LineType.DIALOGUE) {
-		    return true;
-		}
-	    } else if (prevType == LineType.CHARACTER || prevType == LineType.PARENTHETICAL) {
+	    if (prevType == LineType.DIALOGUE || prevType == LineType.CHARACTER || prevType == LineType.PARENTHETICAL) {
 		return true;
 	    }
 	}

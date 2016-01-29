@@ -7,7 +7,7 @@ import at.hsol.fountainizer.parser.interfaces.MarginType;
  */
 public enum LineType implements MarginType {
     HEADING(true, false, false, 80.0F, 0F, 15.0F, 0.0F), 
-    CHARACTER(true, false, false, 0.0F, 0F, 0.0F, 0.0F), 
+    CHARACTER(true, false, false, 10.0F, 0F, 0.0F, 0.0F), 
     DIALOGUE(false, false, false, 40.0F, 80F, 0.2F, 0.0F), 
     PARENTHETICAL(false, false, false, 20.0F, 0F, 0.2F, 0.0F), 
     TRANSITION(false,false, false, 0F, 40F, 0F, 0.0F), 
