@@ -23,12 +23,18 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	this.fontSize = null;
 	this.titleY = getPageHeight() - (getPageHeight() / 5f);
 	this.rightY = getPageHeight() - (getPageHeight() / 4f) * 3;
-	this.centeredY = getPageHeight() - (getPageHeight() / 4f);
+	this.centeredY = 50f;
 	this.leftY = getPageHeight() - (getPageHeight() / 4) * 3.5f;
     }
 
     @Override
     public void printContent(TitlePage t) throws IOException {
+
+	if (t.contains(TitlePageType.TITLE)) {
+	    List<Paragraph> paragraphs = t.getParagraphForPDF(TitlePageType.TITLE);
+	    printParagraphs(paragraphs, TitlePageType.TITLE);
+	}
+	
 	if (t.contains(TitlePageType.CENTERED)) {
 	    List<Paragraph> paragraphs = t.getParagraphForPDF(TitlePageType.CENTERED);
 	    printParagraphs(paragraphs, TitlePageType.CENTERED);
@@ -42,11 +48,6 @@ public class TitlePager extends AbstractPager<TitlePage> {
 	if (t.contains(TitlePageType.RIGHT)) {
 	    List<Paragraph> paragraphs = t.getParagraphForPDF(TitlePageType.RIGHT);
 	    printParagraphs(paragraphs, TitlePageType.RIGHT);
-	}
-
-	if (t.contains(TitlePageType.TITLE)) {
-	    List<Paragraph> paragraphs = t.getParagraphForPDF(TitlePageType.TITLE);
-	    printParagraphs(paragraphs, TitlePageType.TITLE);
 	}
 
     }
@@ -115,6 +116,7 @@ public class TitlePager extends AbstractPager<TitlePage> {
     private void printCentered(Paragraph p) throws IOException {
 	p.initForPager(this);
 	List<RichString> sList = p.getLines();
+	centeredY = titleY+centeredY;
 	for (RichString s : sList) {
 	    float currentLineWidth = 0f;
 	    float x = (super.getAbsoluteWidth() / 2) - (s.stringWidth(this)/2)-p.getMarginLeft();

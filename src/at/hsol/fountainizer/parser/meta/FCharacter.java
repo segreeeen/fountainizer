@@ -10,7 +10,7 @@ public class FCharacter {
     public final static int G_UNKNOWN = 3;
     
     HashSet<String> abbreviations = new HashSet<String>();
-    private int takes = 0;
+    private int takes = 1;
     private String name;
     private int age = G_UNKNOWN;
     private int gender = G_UNKNOWN;
