@@ -5,85 +5,82 @@ import java.util.TreeSet;
 
 public class FCharacter {
 
-    public final static int G_FEMALE = 1;
-    public final static int G_MALE = 2;
-    public final static int G_UNKNOWN = 3;
-    
-    HashSet<String> abbreviations = new HashSet<String>();
-    private int takes = 0;
-    private String name;
-    private int age = G_UNKNOWN;
-    private int gender = G_UNKNOWN;
-    private Integer firstTake = null;
-    private Integer lastTake = null;
-    private final TreeSet<Scene> scenes;
-    
-    FCharacter(String name) {
-	this.name = name;
-	this.scenes = new TreeSet<Scene>();
-    }
+	public final static int G_FEMALE = 1;
+	public final static int G_MALE = 2;
+	public final static int G_UNKNOWN = 3;
 
-    public int getGender() {
-        return gender;
-    }
+	HashSet<String> abbreviations = new HashSet<>();
+	private int takes = 1;
+	private String name;
+	private int age = G_UNKNOWN;
+	private int gender = G_UNKNOWN;
+	private Integer firstTake = null;
+	private Integer lastTake = null;
+	private final TreeSet<Scene> scenes;
 
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
+	FCharacter(String name) {
+		this.name = name;
+		this.scenes = new TreeSet<>();
+	}
 
-    boolean isEmpty() {
-	return abbreviations.isEmpty();
-    }
-	
-    void incTakes() {
-	takes++;
-    }
-    
-    void addScene(Scene scene) {
-	scenes.add(scene);
-    }
-	
-    public int getAge() {
-        return age;
-    }
+	public int getGender() {
+		return gender;
+	}
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
 
-    public int getTakes() {
-	return takes;
-    }
+	boolean isEmpty() {
+		return abbreviations.isEmpty();
+	}
 
-    public String getName() {
-	return name;
-    }
+	void incTakes() {
+		takes++;
+	}
 
-    public void setName(String name) {
-	this.name = name;
-    }
-    
-    public Integer getFirstTake() {
-	return firstTake;
-    }
-    
-    void setFirstTake(Integer firstTake) {
-	this.firstTake = firstTake;
-    }
-    
-    public Integer getLastTake() {
-	return lastTake;
-    }
-    
-    void setLastTake(Integer lastTake) {
-	this.lastTake = lastTake;
-    }
+	void addScene(Scene scene) {
+		scenes.add(scene);
+	}
 
-    public TreeSet<Scene> getScenes() {
-	return scenes;
-    }
-    
-    
-    
-    
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public int getTakes() {
+		return takes;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getFirstTake() {
+		return firstTake;
+	}
+
+	void setFirstTake(Integer firstTake) {
+		this.firstTake = firstTake;
+	}
+
+	public Integer getLastTake() {
+		return lastTake;
+	}
+
+	void setLastTake(Integer lastTake) {
+		this.lastTake = lastTake;
+	}
+
+	public TreeSet<Scene> getScenes() {
+		return scenes;
+	}
+
 }

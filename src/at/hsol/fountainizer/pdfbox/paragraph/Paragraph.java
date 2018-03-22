@@ -13,180 +13,188 @@ import at.hsol.fountainizer.pdfbox.pager.AbstractPager;
  */
 public class Paragraph implements MarginType {
 
-    // private String text;
-    private RichString richText;
-    public RichString getRichText() {
-        return richText;
-    }
+	// private String text;
+	private RichString richText;
 
-    private AbstractPager<?> pager;
-    private MarginType linetype;
-    private List<RichString> lines;
-
-    private float marginTop;
-    private float marginLeft;
-    private float marginRight;
-    private float marginBottom = 10.0f;
-
-    private boolean uppercase = false;
-    private boolean centered = false;
-    private boolean underlined = false;
-    private Integer lineTypeNumber;
-    private boolean dualDialogue;
-
-    public Paragraph(RichString richString) {
-	this.richText = richString;
-    }
-    
-    public Paragraph(LineType type) {
-	this.linetype = type;
-    }
-
-    public Paragraph(String text) {
-	this(new RichString(text, new RichFormat()));
-    }
-
-    public void initForPager(AbstractPager<?> abstractPager) throws IOException {
-	this.pager = abstractPager;
-	this.lines = initLines();
-    }
-
-    public  List<RichString> getLines() {
-	return lines;
-    }
-    
-    private List<RichString> initLines() throws IOException {
-	if (pager == null) {
-	    return null;
-	}
-	
-	List<RichString> lines = new LinkedList<RichString>();
-	if (linetype == LineType.TRANSITION) {
-	    lines.add(richText);
-	    return lines;
-	}
-	String text = this.richText.toString();
-
-	if (isUppercase()) {
-	    text = text.toUpperCase();
-	    richText.convertToUpperCase();
+	public RichString getRichText() {
+		return richText;
 	}
 
-	int start = 0;
+	private AbstractPager<?> pager;
+	private MarginType linetype;
+	private List<RichString> lines;
 
-	while (start < text.length()) {
-	    int end = start;
-	    while (richText.substring(start, end).stringWidth(pager) < getActualPageWidth() && end < text.length()) {
-		end++;
-	    }
-	    int lastSpace = richText.substring(start, end).toString().lastIndexOf(" ");
-	    if (end < text.length() && lastSpace > 0) {
-		end = start + lastSpace + 1;
-	    }
+	private float marginTop;
+	private float marginLeft;
+	private float marginRight;
+	private float marginBottom = 10.0f;
 
-	    lines.add(richText.substring(start, end));
-	    start = end;
+	private boolean uppercase = false;
+	private boolean centered = false;
+	private boolean underlined = false;
+	private Integer lineTypeNumber;
+	private boolean dualDialogue;
+
+	public Paragraph(RichString richString) {
+		this.richText = richString;
 	}
 
-	return lines;
-    }
-
-    public float getActualPageWidth() {
-	if (pager == null) {
-	    return 0.0f;
+	public Paragraph(LineType type) {
+		this.linetype = type;
 	}
-	return pager.getPageWidth() - getMarginLeft() - getMarginRight();
-    }
 
-    public float getMarginTop() {
-	return marginTop;
-    }
+	public Paragraph(String text) {
+		this(new RichString(text, new RichFormat()));
+	}
 
-    public float getMarginLeft() {
-	return marginLeft;
-    }
+	public void initForPager(AbstractPager<?> abstractPager) throws IOException {
+		this.pager = abstractPager;
+		this.lines = initLines();
+	}
 
-    public float getMarginRight() {
-	return marginRight;
-    }
+	public List<RichString> getLines() {
+		return lines;
+	}
 
-    public float getMarginBottom() {
-	return marginBottom;
-    }
+	private List<RichString> initLines() throws IOException {
+		if (pager == null) {
+			return null;
+		}
 
-    public void setMarginTop(float top) {
-	this.marginTop = top;
-    }
+		List<RichString> lines = new LinkedList<>();
+		if (linetype == LineType.TRANSITION) {
+			lines.add(richText);
+			return lines;
+		}
+		String text = this.richText.toString();
 
-    public void setMarginLeft(float left) {
-	this.marginLeft = left;
-    }
+		if (isUppercase()) {
+			text = text.toUpperCase();
+			richText.convertToUpperCase();
+		}
 
-    public void setMarginRight(float right) {
-	this.marginRight = right;
-    }
+		int start = 0;
 
-    public void setMarginBottom(float bottom) {
-	this.marginBottom = bottom;
-    }
+		while (start < text.length()) {
+			int end = start;
+			while (richText.substring(start, end).stringWidth(pager) < getActualPageWidth() && end < text.length()) {
+				end++;
+			}
+			int lastSpace = richText.substring(start, end).toString().lastIndexOf(" ");
+			if (end < text.length() && lastSpace > 0) {
+				end = start + lastSpace + 1;
+			}
 
-    public void setMargin(float top, float left, float right, float bottom) {
-	setMarginTop(top);
-	setMarginLeft(left);
-	setMarginRight(right);
-	setMarginBottom(bottom);
-    }
+			lines.add(richText.substring(start, end));
+			start = end;
+		}
 
-    public boolean isUppercase() {
-	return uppercase;
-    }
+		return lines;
+	}
 
-    public void setUppercase(boolean uppercase) {
-	this.uppercase = uppercase;
-    }
+	public float getActualPageWidth() {
+		if (pager == null) {
+			return 0.0f;
+		}
+		return pager.getPageWidth() - getMarginLeft() - getMarginRight();
+	}
 
-    public boolean isCentered() {
-	return centered;
-    }
+	@Override
+	public float getMarginTop() {
+		return marginTop;
+	}
 
-    public void setCentered(boolean centered) {
-	this.centered = centered;
-    }
+	@Override
+	public float getMarginLeft() {
+		return marginLeft;
+	}
 
-    public boolean isUnderlined() {
-	return underlined;
-    }
+	@Override
+	public float getMarginRight() {
+		return marginRight;
+	}
 
-    public void setUnderlined(boolean underlined) {
-	this.underlined = underlined;
-    }
+	@Override
+	public float getMarginBottom() {
+		return marginBottom;
+	}
 
-    public MarginType getLinetype() {
-	return linetype;
-    }
+	public void setMarginTop(float top) {
+		this.marginTop = top;
+	}
 
-    public void setLinetype(MarginType linetype) {
-	this.linetype = linetype;
-    }
-    
-    public static Paragraph getEmptyParagraph() {
-	return new Paragraph(LineType.EMPTY);
-    }
+	public void setMarginLeft(float left) {
+		this.marginLeft = left;
+	}
 
-    public void setLineTypeNumber(int lineTypeNumber) {
-	this.lineTypeNumber = lineTypeNumber;	
-    }
-    
-    public Integer getLineTypeNumber() {
-	return lineTypeNumber;
-    }
+	public void setMarginRight(float right) {
+		this.marginRight = right;
+	}
 
-    public boolean isDualDialogue() {
-	return dualDialogue;
-    }
+	public void setMarginBottom(float bottom) {
+		this.marginBottom = bottom;
+	}
 
-    public void setDualDialogue(boolean dualDialogue) {
-	this.dualDialogue = dualDialogue;
-    }
+	public void setMargin(float top, float left, float right, float bottom) {
+		setMarginTop(top);
+		setMarginLeft(left);
+		setMarginRight(right);
+		setMarginBottom(bottom);
+	}
+
+	@Override
+	public boolean isUppercase() {
+		return uppercase;
+	}
+
+	public void setUppercase(boolean uppercase) {
+		this.uppercase = uppercase;
+	}
+
+	@Override
+	public boolean isCentered() {
+		return centered;
+	}
+
+	public void setCentered(boolean centered) {
+		this.centered = centered;
+	}
+
+	@Override
+	public boolean isUnderlined() {
+		return underlined;
+	}
+
+	public void setUnderlined(boolean underlined) {
+		this.underlined = underlined;
+	}
+
+	public MarginType getLinetype() {
+		return linetype;
+	}
+
+	public void setLinetype(MarginType linetype) {
+		this.linetype = linetype;
+	}
+
+	public static Paragraph getEmptyParagraph() {
+		return new Paragraph(LineType.EMPTY);
+	}
+
+	public void setLineTypeNumber(int lineTypeNumber) {
+		this.lineTypeNumber = lineTypeNumber;
+	}
+
+	public Integer getLineTypeNumber() {
+		return lineTypeNumber;
+	}
+
+	public boolean isDualDialogue() {
+		return dualDialogue;
+	}
+
+	public void setDualDialogue(boolean dualDialogue) {
+		this.dualDialogue = dualDialogue;
+	}
 
 }
