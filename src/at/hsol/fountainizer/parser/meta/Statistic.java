@@ -14,122 +14,122 @@ import at.hsol.fountainizer.parser.types.LineType;
  * @author Felix Batusic
  */
 public class Statistic {
-    private int dialogue = 0;
-    private int parenthetical = 0;
-    private int transition = 0;
-    private int action = 0;
-    private int lyrics = 0;
-    private int centered = 0;
-    private int emtpy = 0;
-    private FCharacters characters;
-    private Scenes scenes;
+	private int dialogue = 0;
+	private int parenthetical = 0;
+	private int transition = 0;
+	private int action = 0;
+	private int lyrics = 0;
+	private int centered = 0;
+	private int emtpy = 0;
+	private FCharacters characters;
+	private Scenes scenes;
 
-    public Statistic(Options options) {
-	this.characters = new FCharacters(options);
-	this.scenes = new Scenes();
-    }
-
-    public List<FCharacter> getCharacterStats(Options options) {
-	return characters.getCharacters();
-    }
-
-    public int getCharacterLines() {
-	return characters.getTotalTakes();
-    }
-
-    public int getHeading() {
-	return scenes.getTotalScenes();
-    }
-
-    public int getDialogue() {
-	return dialogue;
-    }
-
-    public int getParenthetical() {
-	return parenthetical;
-    }
-
-    public int getTransition() {
-	return transition;
-    }
-
-    public int getAction() {
-	return action;
-    }
-
-    public int getLyrics() {
-	return lyrics;
-    }
-
-    public int getCentered() {
-	return centered;
-    }
-
-    public int getEmtpy() {
-	return emtpy;
-    }
-
-    public void countLine(SimpleLine l) {
-	MarginType t = l.getLineType();
-	if (t.getClass() == HeadingType.class) {
-	    incHeading(l);
-	} else if (t == LineType.PARENTHETICAL) {
-	    incParenthetical();
-	} else if (t == LineType.LYRICS) {
-	    incLyrics();
-	} else if (t == LineType.CENTERED) {
-	    incCentered();
-	} else if (t == LineType.TRANSITION) {
-	    incTransition();
-	} else if (t == LineType.CHARACTER) {
-	    incCharacter(l);
-	} else if (t == LineType.DIALOGUE) {
-	    incDialogue();
-	} else if (t == LineType.EMPTY) {
-	    incEmtpy();
-	} else {
-	    incAction();
+	public Statistic(Options options) {
+		this.characters = new FCharacters(options);
+		this.scenes = new Scenes();
 	}
-    }
-    
-    private void incCharacter(SimpleLine l) {
-	this.characters.incCharCount(l, scenes.getCurrentScene());
-    }
 
-    private void incHeading(SimpleLine l) {
-	scenes.inc(l);
-    }
+	public List<FCharacter> getCharacterStats(Options options) {
+		return characters.getCharacters();
+	}
 
-    private void incDialogue() {
-	this.dialogue++;
-    }
+	public int getCharacterLines() {
+		return characters.getTotalTakes();
+	}
 
-    private void incParenthetical() {
-	this.parenthetical++;
-    }
+	public int getHeading() {
+		return scenes.getTotalScenes();
+	}
 
-    private void incTransition() {
-	this.transition++;
-    }
+	public int getDialogue() {
+		return dialogue;
+	}
 
-    private void incAction() {
-	this.action++;
-    }
+	public int getParenthetical() {
+		return parenthetical;
+	}
 
-    private void incLyrics() {
-	this.lyrics++;
-    }
+	public int getTransition() {
+		return transition;
+	}
 
-    private void incCentered() {
-	this.centered++;
-    }
+	public int getAction() {
+		return action;
+	}
 
-    private void incEmtpy() {
-	this.emtpy++;
-    }
+	public int getLyrics() {
+		return lyrics;
+	}
 
-    public FCharacters getCharacters() {
-	return characters;
-    }
+	public int getCentered() {
+		return centered;
+	}
+
+	public int getEmtpy() {
+		return emtpy;
+	}
+
+	public void countLine(SimpleLine l) {
+		MarginType t = l.getLineType();
+		if (t.getClass() == HeadingType.class) {
+			incHeading(l);
+		} else if (t == LineType.PARENTHETICAL) {
+			incParenthetical();
+		} else if (t == LineType.LYRICS) {
+			incLyrics();
+		} else if (t == LineType.CENTERED) {
+			incCentered();
+		} else if (t == LineType.TRANSITION) {
+			incTransition();
+		} else if (t == LineType.CHARACTER) {
+			incCharacter(l);
+		} else if (t == LineType.DIALOGUE) {
+			incDialogue();
+		} else if (t == LineType.EMPTY) {
+			incEmtpy();
+		} else {
+			incAction();
+		}
+	}
+
+	private void incCharacter(SimpleLine l) {
+		this.characters.incCharCount(l, scenes.getCurrentScene());
+	}
+
+	private void incHeading(SimpleLine l) {
+		scenes.inc(l);
+	}
+
+	private void incDialogue() {
+		this.dialogue++;
+	}
+
+	private void incParenthetical() {
+		this.parenthetical++;
+	}
+
+	private void incTransition() {
+		this.transition++;
+	}
+
+	private void incAction() {
+		this.action++;
+	}
+
+	private void incLyrics() {
+		this.lyrics++;
+	}
+
+	private void incCentered() {
+		this.centered++;
+	}
+
+	private void incEmtpy() {
+		this.emtpy++;
+	}
+
+	public FCharacters getCharacters() {
+		return characters;
+	}
 
 }

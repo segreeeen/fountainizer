@@ -1,71 +1,70 @@
 package at.hsol.fountainizer;
 
 public class Options {
-    public static final int SORT_BY_NAME = 1;
-    public static final int SORT_BY_TAKES = 2;
-    
-    private boolean printTakeNumbers;
-    private boolean printPageNumbers;
-    private boolean printTitlePage;
-    private boolean printCharacterPage;
-    private int sortCharacters;
-    private String customCharacter;
-        
-    public Options() {
-	this.printPageNumbers = true;
-	this.printTakeNumbers = true;
-	this.sortCharacters = SORT_BY_NAME;
-	this.printCharacterPage = true;
-	this.customCharacter = "amos";
-    }
+	public static final int SORT_BY_NAME = 1;
+	public static final int SORT_BY_TAKES = 2;
 
-    public boolean printTakeNumber() {
-        return printTakeNumbers;
-    }
+	private boolean printTakeNumbers;
+	private boolean printPageNumbers;
+	private boolean printTitlePage;
+	private boolean printCharacterPage;
+	private int sortCharacters;
+	private String customCharacter;
 
-    public void setPrintTakeNumbers(boolean printTakeNumbers) {
-        this.printTakeNumbers = printTakeNumbers;
-    }
+	public Options() {
+		this.printPageNumbers = true;
+		this.printTakeNumbers = true;
+		this.sortCharacters = SORT_BY_NAME;
+		this.printCharacterPage = true;
+		this.customCharacter = "amos";
+	}
 
-    public boolean printPageNumber() {
-        return printPageNumbers;
-    }
-    
-    public void setPrintPageNumbers(boolean printPageNumbers) {
-        this.printPageNumbers = printPageNumbers;
-    }
+	public boolean printTakeNumber() {
+		return printTakeNumbers;
+	}
 
-    public int sortCharacters() {
-	return sortCharacters;
-    }
+	public void setPrintTakeNumbers(boolean printTakeNumbers) {
+		this.printTakeNumbers = printTakeNumbers;
+	}
 
-    public void setSortCharacters(int sortCharacters) {
-	this.sortCharacters = sortCharacters;
-    }
+	public boolean printPageNumber() {
+		return printPageNumbers;
+	}
 
-    public boolean printTitlePage() {
-	return printTitlePage;
-    }
+	public void setPrintPageNumbers(boolean printPageNumbers) {
+		this.printPageNumbers = printPageNumbers;
+	}
 
-    public void setPrintTitlePage(boolean printTitlePage) {
-	this.printTitlePage = printTitlePage;
-    }
+	public int sortCharacters() {
+		return sortCharacters;
+	}
 
-    public boolean printCharacterPage() {
-	return printCharacterPage;
-    }
+	public void setSortCharacters(int sortCharacters) {
+		this.sortCharacters = sortCharacters;
+	}
 
-    public void setPrintCharacterPage(boolean printCharacterPage) {
-	this.printCharacterPage = printCharacterPage;
-    }
+	public boolean printTitlePage() {
+		return printTitlePage;
+	}
 
-    public String getCustomCharacter() {
-	return customCharacter;
-    }
+	public void setPrintTitlePage(boolean printTitlePage) {
+		this.printTitlePage = printTitlePage;
+	}
 
-    public void setCustomCharacter(String customCharacter) {
-	this.customCharacter = customCharacter;
-    }
-    
-    
+	public boolean printCharacterPage() {
+		return printCharacterPage;
+	}
+
+	public void setPrintCharacterPage(boolean printCharacterPage) {
+		this.printCharacterPage = printCharacterPage;
+	}
+
+	public String getCustomCharacter() {
+		return customCharacter;
+	}
+
+	public void setCustomCharacter(String customCharacter) {
+		this.customCharacter = customCharacter;
+	}
+
 }

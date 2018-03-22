@@ -18,52 +18,52 @@ import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
  * 
  */
 public class TitlePage {
-    private final HashMap<TitlePageType, TitlePageLine> titlePageLines;
-    private MarginType type = LineType.TITLEPAGE;
+	private final HashMap<TitlePageType, TitlePageLine> titlePageLines;
+	private MarginType type = LineType.TITLEPAGE;
 
-    public TitlePage() {
-	this.titlePageLines = new HashMap<TitlePageType, TitlePageLine>();
-    }
-
-    public void addLine(TitlePageType t, TitlePageLine l) {
-	titlePageLines.put(t, l);
-    }
-
-    public LinkedList<Paragraph> getParagraphForPDF(TitlePageType type) {
-	LinkedList<Paragraph> paragraphs = new LinkedList<>();
-	if (titlePageLines.containsKey(type)) {
-	    titlePageLines.get(type);
-	    for (Paragraph p : titlePageLines.get(type).getParagraphForPDF()) {
-		paragraphs.add(p);
-	    }
-	    return paragraphs;
-	} else {
-	    return null;
+	public TitlePage() {
+		this.titlePageLines = new HashMap<>();
 	}
-    }
 
-    public TitlePageLine getLine(TitlePageType t) {
-	return titlePageLines.get(t);
-    }
+	public void addLine(TitlePageType t, TitlePageLine l) {
+		titlePageLines.put(t, l);
+	}
 
-    public boolean contains(TitlePageType t) {
-	return titlePageLines.containsKey(t);
-    }
+	public LinkedList<Paragraph> getParagraphForPDF(TitlePageType type) {
+		LinkedList<Paragraph> paragraphs = new LinkedList<>();
+		if (titlePageLines.containsKey(type)) {
+			titlePageLines.get(type);
+			for (Paragraph p : titlePageLines.get(type).getParagraphForPDF()) {
+				paragraphs.add(p);
+			}
+			return paragraphs;
+		} else {
+			return null;
+		}
+	}
 
-    public MarginType getLineType() {
-	return type;
-    }
+	public TitlePageLine getLine(TitlePageType t) {
+		return titlePageLines.get(t);
+	}
 
-    public boolean emptyText() {
-	return titlePageLines.isEmpty();
-    }
+	public boolean contains(TitlePageType t) {
+		return titlePageLines.containsKey(t);
+	}
 
-    public String getText() {
-	return type.toString();
-    }
+	public MarginType getLineType() {
+		return type;
+	}
 
-    public boolean isEmpty() {
-	return titlePageLines.isEmpty();
-    }
+	public boolean emptyText() {
+		return titlePageLines.isEmpty();
+	}
+
+	public String getText() {
+		return type.toString();
+	}
+
+	public boolean isEmpty() {
+		return titlePageLines.isEmpty();
+	}
 
 }

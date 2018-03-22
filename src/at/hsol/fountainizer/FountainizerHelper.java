@@ -25,7 +25,6 @@ public class FountainizerHelper {
 	private Statistic stats;
 	private Options options;
 	private FilePrinter fp;
-	
 
 	public FountainizerHelper(String fileIn, String fileOut, Options options) {
 		if (fileIn != null && fileOut != null) {
@@ -38,9 +37,9 @@ public class FountainizerHelper {
 			throw new IllegalArgumentException("input/output file can't be null");
 		}
 	}
-	
+
 	public FountainizerHelper(String fileIn, String fileOut) {
-	    this(fileIn, fileOut, new Options());
+		this(fileIn, fileOut, new Options());
 	}
 
 	/**
@@ -51,7 +50,7 @@ public class FountainizerHelper {
 	public double read() throws IOException {
 		long time = System.currentTimeMillis();
 		textlines = FileReader.getLines(fileIn);
-		return (System.currentTimeMillis() - time)/1000d;
+		return (System.currentTimeMillis() - time) / 1000d;
 	}
 
 	/**
@@ -60,11 +59,11 @@ public class FountainizerHelper {
 	 * @throws IOException
 	 */
 	public double parse() throws IllegalStateException {
-	    	Parser parser = new Parser(textlines, options);
+		Parser parser = new Parser(textlines, options);
 		if (textlines != null) {
 			long time = System.currentTimeMillis();
 			parser.parse();
-			time = (long) ((System.currentTimeMillis() - time)/1000d);
+			time = (long) ((System.currentTimeMillis() - time) / 1000d);
 			this.stats = parser.getStats();
 			return time;
 		} else {
@@ -80,9 +79,9 @@ public class FountainizerHelper {
 	public double printPdf() throws IOException, URISyntaxException {
 		long time = System.currentTimeMillis();
 		fp.writePDFBox(textlines, fileOut, stats);
-		return (System.currentTimeMillis() - time)/1000d;
+		return (System.currentTimeMillis() - time) / 1000d;
 	}
-	
+
 	/**
 	 * 
 	 * @return Number of Parsed Lines or -1 if not parsed yet
@@ -90,12 +89,12 @@ public class FountainizerHelper {
 	public int numOfLines() {
 		return textlines != null ? textlines.getLineCount() : -1;
 	}
-	
+
 	public Statistic getStats() {
-	    return stats;
+		return stats;
 	}
-	
+
 	public List<FCharacter> getCharacterStats() {
-	    return stats.getCharacterStats(options);
+		return stats.getCharacterStats(options);
 	}
 }
