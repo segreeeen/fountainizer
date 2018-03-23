@@ -20,6 +20,17 @@ public class Options {
 		this.customCharacter = "amos";
 	}
 
+	public Options(boolean printTakeNumbers, boolean printPageNumbers, boolean printTitlePage,
+			boolean printCharacterPage, boolean customCharacterScript, int sortCharacters, String customCharacter) {
+		this.printTakeNumbers = printTakeNumbers;
+		this.printPageNumbers = printPageNumbers;
+		this.printTitlePage = printTitlePage;
+		this.printCharacterPage = printCharacterPage;
+		this.customCharacterScript = customCharacterScript;
+		this.sortCharacters = sortCharacters;
+		this.customCharacter = customCharacter;
+	}
+
 	public boolean printTakeNumber() {
 		return printTakeNumbers;
 	}
