@@ -8,6 +8,7 @@ public class Options {
 	private boolean printPageNumbers;
 	private boolean printTitlePage;
 	private boolean printCharacterPage;
+	private boolean customCharacterScript;
 	private int sortCharacters;
 	private String customCharacter;
 
@@ -65,6 +66,14 @@ public class Options {
 
 	public void setCustomCharacter(String customCharacter) {
 		this.customCharacter = customCharacter;
+	}
+
+	public boolean customCharacterScript() {
+		return customCharacterScript;
+	}
+
+	public void setCustomCharacterScript(boolean customCharacterScript) {
+		this.customCharacterScript = customCharacterScript;
 	}
 
 }
