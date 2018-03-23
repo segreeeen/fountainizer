@@ -8,8 +8,8 @@ import at.hsol.fountainizer.io.FilePrinter;
 import at.hsol.fountainizer.io.FileReader;
 import at.hsol.fountainizer.parser.Parser;
 import at.hsol.fountainizer.parser.content.ParserContent;
-import at.hsol.fountainizer.parser.meta.FCharacter;
-import at.hsol.fountainizer.parser.meta.Statistic;
+import at.hsol.fountainizer.parser.meta.CharacterDesc;
+import at.hsol.fountainizer.parser.meta.Statistics;
 
 /**
  * Use this class to read, parse and print.
@@ -22,7 +22,7 @@ public class FountainizerHelper {
 	private String fileIn;
 	private String fileOut;
 	private ParserContent textlines = null;
-	private Statistic stats;
+	private Statistics stats;
 	private Options options;
 	private FilePrinter fp;
 
@@ -90,11 +90,11 @@ public class FountainizerHelper {
 		return textlines != null ? textlines.getLineCount() : -1;
 	}
 
-	public Statistic getStats() {
+	public Statistics getStats() {
 		return stats;
 	}
 
-	public List<FCharacter> getCharacterStats() {
+	public List<CharacterDesc> getCharacterStats() {
 		return stats.getCharacterStats(options);
 	}
 }

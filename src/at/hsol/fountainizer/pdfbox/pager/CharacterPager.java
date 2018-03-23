@@ -3,9 +3,9 @@ package at.hsol.fountainizer.pdfbox.pager;
 import java.io.IOException;
 import java.util.List;
 
-import at.hsol.fountainizer.parser.meta.FCharacter;
+import at.hsol.fountainizer.parser.meta.CharacterDesc;
 
-public class CharacterPager extends AbstractPager<List<FCharacter>> {
+public class CharacterPager extends AbstractPager<List<CharacterDesc>> {
 
 	CharacterPager(PagerController controller, Class<? extends AbstractPager<?>> type) throws IOException {
 		super(controller);
@@ -13,7 +13,7 @@ public class CharacterPager extends AbstractPager<List<FCharacter>> {
 	}
 
 	@Override
-	public void printContent(List<FCharacter> t) throws IOException {
+	public void printContent(List<CharacterDesc> t) throws IOException {
 		float xLines = 400;
 		printHeader();
 		super.nextLine();
@@ -24,7 +24,7 @@ public class CharacterPager extends AbstractPager<List<FCharacter>> {
 				PagerController.STANDARD_TEXT_COLOR);
 		nextLine(5f);
 		super.fontSize = null;
-		for (FCharacter c : t) {
+		for (CharacterDesc c : t) {
 			super.printString(c.getName().toUpperCase(), super.xPos, super.yPos, getFont(), getFontSize(),
 					PagerController.STANDARD_TEXT_COLOR);
 			super.printString(Integer.toString(c.getTakes()), super.xPos + xLines, super.yPos, getFont(), getFontSize(),

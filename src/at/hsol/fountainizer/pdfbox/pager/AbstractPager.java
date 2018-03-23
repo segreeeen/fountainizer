@@ -234,10 +234,12 @@ public abstract class AbstractPager<T> implements Pager {
 	}
 
 	private void printPageNumber(float x) throws IOException {
-		String nr = Integer.toString(document.getNumberOfPages());
-		float nrWidth = getFont().getStringWidth(nr) / 1000 * getFontSize();
-		printString(nr, (getAbsoluteWidth() / 2) - (nrWidth / 2), getMarginBottom() - (getLineHeight()), getFont(),
-				getFontSize(), getColor());
+		if (controller.options.printPageNumber()) {
+			String nr = Integer.toString(document.getNumberOfPages());
+			float nrWidth = getFont().getStringWidth(nr) / 1000 * getFontSize();
+			printString(nr, (getAbsoluteWidth() / 2) - (nrWidth / 2), getMarginBottom() - (getLineHeight()), getFont(),
+					getFontSize(), getColor());
+		}
 	}
 
 	private void setTextOptions(float x, float y, PDFont font, int fontSize, Color color) throws IOException {

@@ -10,19 +10,19 @@ import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.interfaces.Content;
 import at.hsol.fountainizer.parser.interfaces.MarginType;
-import at.hsol.fountainizer.parser.meta.Statistic;
+import at.hsol.fountainizer.parser.meta.Statistics;
 import at.hsol.fountainizer.parser.types.LineType;
 
 /**
  * @author Felix Batusic
  */
 public class Parser {
-	private Statistic stats;
+	private Statistics stats;
 	private TypeHelper typeHelper;
 	private Content outputLines;
 
 	public Parser(ParserContent outputLines, Options options) {
-		this.stats = new Statistic(options);
+		this.stats = new Statistics(options);
 		this.outputLines = outputLines;
 		this.typeHelper = new TypeHelper(outputLines, stats);
 	}
@@ -48,7 +48,7 @@ public class Parser {
 		return outputLines;
 	}
 
-	public Statistic getStats() {
+	public Statistics getStats() {
 		return stats;
 	}
 

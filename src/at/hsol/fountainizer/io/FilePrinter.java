@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.content.ParserContent;
-import at.hsol.fountainizer.parser.meta.Statistic;
+import at.hsol.fountainizer.parser.meta.Statistics;
 import at.hsol.fountainizer.pdfbox.pager.CharacterPager;
 //import at.hsol.fountainizer.pdfbox.pager.CustomScriptPager;
 import at.hsol.fountainizer.pdfbox.pager.PagerController;
@@ -23,7 +23,7 @@ public class FilePrinter {
 		this.options = options;
 	}
 
-	public void writePDFBox(ParserContent dLines, String fileName, Statistic stats)
+	public void writePDFBox(ParserContent dLines, String fileName, Statistics stats)
 			throws IOException, URISyntaxException {
 		PagerController controller = new PagerController(80, 40, 60, 80, options);
 		StandardPager pager = controller.getPager(PagerController.PagerType.STANDARD_PAGER);

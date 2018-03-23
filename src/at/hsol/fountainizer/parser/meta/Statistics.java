@@ -13,7 +13,7 @@ import at.hsol.fountainizer.parser.types.LineType;
  * 
  * @author Felix Batusic
  */
-public class Statistic {
+public class Statistics {
 	private int dialogue = 0;
 	private int parenthetical = 0;
 	private int transition = 0;
@@ -21,15 +21,15 @@ public class Statistic {
 	private int lyrics = 0;
 	private int centered = 0;
 	private int emtpy = 0;
-	private FCharacters characters;
+	private CharacterStats characters;
 	private Scenes scenes;
 
-	public Statistic(Options options) {
-		this.characters = new FCharacters(options);
+	public Statistics(Options options) {
+		this.characters = new CharacterStats(options);
 		this.scenes = new Scenes();
 	}
 
-	public List<FCharacter> getCharacterStats(Options options) {
+	public List<CharacterDesc> getCharacterStats(Options options) {
 		return characters.getCharacters();
 	}
 
@@ -128,7 +128,7 @@ public class Statistic {
 		this.emtpy++;
 	}
 
-	public FCharacters getCharacters() {
+	public CharacterStats getCharacters() {
 		return characters;
 	}
 

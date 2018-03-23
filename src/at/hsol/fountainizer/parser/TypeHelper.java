@@ -18,7 +18,7 @@ import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 import at.hsol.fountainizer.parser.interfaces.Line;
 import at.hsol.fountainizer.parser.interfaces.MarginType;
-import at.hsol.fountainizer.parser.meta.Statistic;
+import at.hsol.fountainizer.parser.meta.Statistics;
 import at.hsol.fountainizer.parser.types.HeadingType;
 import at.hsol.fountainizer.parser.types.LineType;
 
@@ -27,9 +27,9 @@ import at.hsol.fountainizer.parser.types.LineType;
  */
 public class TypeHelper {
 	ParserContent outputLines;
-	Statistic stats;
+	Statistics stats;
 
-	public TypeHelper(ParserContent outputLines, Statistic stats) {
+	public TypeHelper(ParserContent outputLines, Statistics stats) {
 		this.outputLines = outputLines;
 		this.stats = stats;
 	}

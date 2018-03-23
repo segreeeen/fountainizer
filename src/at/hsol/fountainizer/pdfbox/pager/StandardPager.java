@@ -183,13 +183,16 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	}
 
 	private void printTakeNumber(Integer lineNr) throws IOException {
-		if (currentDual != null && currentDual == Dual.SECOND) {
-			float nrWidth = getFont().getStringWidth(lineNr.toString()) / 1000 * getFontSize();
-			printString(lineNr.toString(), getMarginLeft() + (getPageWidth() / 2) + 30 - nrWidth, yPos, getFont(),
-					getFontSize(), getColor());
-		} else {
-			float nrWidth = getFont().getStringWidth(lineNr.toString()) / 1000 * getFontSize();
-			printString(lineNr.toString(), getMarginLeft() - nrWidth - 10, yPos, getFont(), getFontSize(), getColor());
+		if (controller.options.printTakeNumber()) {
+			if (currentDual != null && currentDual == Dual.SECOND) {
+				float nrWidth = getFont().getStringWidth(lineNr.toString()) / 1000 * getFontSize();
+				printString(lineNr.toString(), getMarginLeft() + (getPageWidth() / 2) + 30 - nrWidth, yPos, getFont(),
+						getFontSize(), getColor());
+			} else {
+				float nrWidth = getFont().getStringWidth(lineNr.toString()) / 1000 * getFontSize();
+				printString(lineNr.toString(), getMarginLeft() - nrWidth - 10, yPos, getFont(), getFontSize(),
+						getColor());
+			}
 		}
 	}
 

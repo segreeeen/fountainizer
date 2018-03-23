@@ -3,7 +3,7 @@ package at.hsol.fountainizer.parser.meta;
 import java.util.HashSet;
 import java.util.TreeSet;
 
-public class FCharacter {
+public class CharacterDesc {
 
 	public final static int G_FEMALE = 1;
 	public final static int G_MALE = 2;
@@ -18,7 +18,7 @@ public class FCharacter {
 	private Integer lastTake = null;
 	private final TreeSet<Scene> scenes;
 
-	FCharacter(String name) {
+	CharacterDesc(String name) {
 		this.name = name;
 		this.scenes = new TreeSet<>();
 	}

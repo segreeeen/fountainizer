@@ -10,21 +10,21 @@ import java.util.Map;
 import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.parser.content.SimpleLine;
 
-public class FCharacters {
+public class CharacterStats {
 	private static final String CHARACTER_ASSIGNMENT = "=";
 
-	private HashMap<String, FCharacter> charRegister = new HashMap<>();
+	private HashMap<String, CharacterDesc> charRegister = new HashMap<>();
 	private Options options;
 	private int totalTakes = 0;
 
-	public FCharacters(Options options) {
+	public CharacterStats(Options options) {
 		this.options = options;
 	}
 
 	public void incCharCount(SimpleLine l, Scene currentScene) {
 		add(l);
 		String s = format(l.getText());
-		FCharacter n = charRegister.get(s);
+		CharacterDesc n = charRegister.get(s);
 		if (n != null) {
 			if (n.getFirstTake() == null) {
 				n.setFirstTake(l.getLineNr());
@@ -39,19 +39,19 @@ public class FCharacters {
 	/**
 	 * Returns a Map of the Characters and the number of their takes.
 	 */
-	public List<FCharacter> getCharacters() {
+	public List<CharacterDesc> getCharacters() {
 		if (charRegister.isEmpty()) {
 			return null;
 		}
 
-		LinkedList<FCharacter> sortedChars = new LinkedList<>();
-		for (Map.Entry<String, FCharacter> e : charRegister.entrySet()) {
+		LinkedList<CharacterDesc> sortedChars = new LinkedList<>();
+		for (Map.Entry<String, CharacterDesc> e : charRegister.entrySet()) {
 			sortedChars.add(e.getValue());
 		}
-		if (options.sortCharacters() == Options.SORT_BY_NAME) {
+		if (options.sortCharacters() == Options.SortMode.BY_NAME) {
 			Collections.sort(sortedChars, nameCmp);
 			return sortedChars;
-		} else if (options.sortCharacters() == Options.SORT_BY_TAKES) {
+		} else if (options.sortCharacters() == Options.SortMode.BY_TAKE_COUNT) {
 			Collections.sort(sortedChars, takeCmp);
 			return sortedChars;
 		} else {
@@ -73,7 +73,7 @@ public class FCharacters {
 			String[] abbs = charName.split(CHARACTER_ASSIGNMENT);
 			charName = abbs[0].trim();
 		}
-		for (Map.Entry<String, FCharacter> e : charRegister.entrySet()) {
+		for (Map.Entry<String, CharacterDesc> e : charRegister.entrySet()) {
 			if (e.getKey().equals(charName)) {
 				return e.getKey();
 			} else if (!e.getValue().isEmpty()) {
@@ -98,7 +98,7 @@ public class FCharacters {
 		if (charName.split(CHARACTER_ASSIGNMENT).length <= 1) {
 			String charInRegister = lookup(charName);
 			if (charInRegister == null) {
-				charRegister.put(charName, new FCharacter(charName));
+				charRegister.put(charName, new CharacterDesc(charName));
 				return charName;
 			} else {
 				return null;
@@ -108,13 +108,13 @@ public class FCharacters {
 			String fullName = abbs[0].trim();
 			String charInRegister = lookup(fullName);
 			if (charInRegister == null) {
-				charRegister.put(fullName, new FCharacter(fullName));
+				charRegister.put(fullName, new CharacterDesc(fullName));
 				for (int i = 1; i < abbs.length; i++) {
 					charRegister.get(fullName).abbreviations.add(abbs[i].trim());
 				}
 				return fullName;
 			} else {
-				FCharacter n = charRegister.get(charInRegister);
+				CharacterDesc n = charRegister.get(charInRegister);
 				for (String s : abbs) {
 					s = s.trim();
 					s = s.toLowerCase();
@@ -125,9 +125,9 @@ public class FCharacters {
 		}
 	}
 
-	private Comparator<FCharacter> nameCmp = new Comparator<FCharacter>() {
+	private Comparator<CharacterDesc> nameCmp = new Comparator<>() {
 		@Override
-		public int compare(FCharacter c1, FCharacter c2) {
+		public int compare(CharacterDesc c1, CharacterDesc c2) {
 			String o1 = c1.getName();
 			String o2 = c2.getName();
 			o1 = o1.toLowerCase();
@@ -151,9 +151,9 @@ public class FCharacters {
 		}
 	};
 
-	private Comparator<FCharacter> takeCmp = new Comparator<FCharacter>() {
+	private Comparator<CharacterDesc> takeCmp = new Comparator<>() {
 		@Override
-		public int compare(FCharacter c1, FCharacter c2) {
+		public int compare(CharacterDesc c1, CharacterDesc c2) {
 			return c2.getTakes() - c1.getTakes();
 		}
 	};

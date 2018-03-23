@@ -1,28 +1,30 @@
 package at.hsol.fountainizer;
 
 public class Options {
-	public static final int SORT_BY_NAME = 1;
-	public static final int SORT_BY_TAKES = 2;
+	public enum SortMode {
+		BY_NAME, BY_TAKE_COUNT;
+	}
 
 	private boolean printTakeNumbers;
 	private boolean printPageNumbers;
 	private boolean printTitlePage;
 	private boolean printCharacterPage;
 	private boolean customCharacterScript;
-	private int sortCharacters;
+	private SortMode sortCharacters;
 	private String customCharacter;
 
 	public Options() {
 		this.printPageNumbers = true;
 		this.printTakeNumbers = true;
-		this.sortCharacters = SORT_BY_NAME;
+		this.sortCharacters = SortMode.BY_NAME;
 		this.printCharacterPage = true;
 		this.customCharacter = null;
 		this.customCharacterScript = false;
 	}
 
 	public Options(boolean printTakeNumbers, boolean printPageNumbers, boolean printTitlePage,
-			boolean printCharacterPage, boolean customCharacterScript, int sortCharacters, String customCharacter) {
+			boolean printCharacterPage, boolean customCharacterScript, SortMode sortCharacters,
+			String customCharacter) {
 		this.printTakeNumbers = printTakeNumbers;
 		this.printPageNumbers = printPageNumbers;
 		this.printTitlePage = printTitlePage;
@@ -48,11 +50,11 @@ public class Options {
 		this.printPageNumbers = printPageNumbers;
 	}
 
-	public int sortCharacters() {
+	public SortMode sortCharacters() {
 		return sortCharacters;
 	}
 
-	public void setSortCharacters(int sortCharacters) {
+	public void setSortCharacters(SortMode sortCharacters) {
 		this.sortCharacters = sortCharacters;
 	}
 
