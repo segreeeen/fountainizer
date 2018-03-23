@@ -27,13 +27,14 @@ public class FilePrinter {
 			throws IOException, URISyntaxException {
 		PagerController controller = new PagerController(80, 40, 60, 80, options);
 		StandardPager pager = controller.getPager(PagerController.PagerType.STANDARD_PAGER);
-		// CustomScriptPager custompager =
-		// controller.getPager(PagerController.PagerType.CUSTOM_PAGER);
 		TitlePager titlePager = controller.getPager(PagerController.PagerType.TITLE_PAGER);
 		CharacterPager cPager = controller.getPager(PagerController.PagerType.CHARACTER_PAGER);
-
-		titlePager.printContent(dLines.getTitlepage());
-		cPager.printContent(stats.getCharacters().getCharacters());
+		if (options.printTitlePage()) {
+			titlePager.printContent(dLines.getTitlepage());
+		}
+		if (options.printCharacterPage()) {
+			cPager.printContent(stats.getCharacters().getCharacters());
+		}
 		pager.printContent(dLines);
 
 		controller.finalizeDocument(fileName);

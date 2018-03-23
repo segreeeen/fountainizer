@@ -25,7 +25,6 @@ public class PagerController {
 		public static final Class<TitlePager> TITLE_PAGER = TitlePager.class;
 		public static final Class<StandardPager> STANDARD_PAGER = StandardPager.class;
 		public static final Class<CharacterPager> CHARACTER_PAGER = CharacterPager.class;
-		public static final Class<CustomScriptPager> CUSTOM_PAGER = CustomScriptPager.class;
 	}
 
 	public enum FormattingType {
@@ -103,7 +102,7 @@ public class PagerController {
 			throw new IllegalStateException("There are no pagers to be written.");
 		}
 
-		if (pagers.containsKey(PagerType.TITLE_PAGER)) {
+		if (pagers.containsKey(PagerType.TITLE_PAGER) && options.printTitlePage()) {
 			TitlePager pager = (TitlePager) pagers.get(PagerType.TITLE_PAGER);
 			pager.closeStream();
 			PDPageTree pages = pagers.get(PagerType.TITLE_PAGER).getPages();
@@ -113,7 +112,7 @@ public class PagerController {
 			}
 		}
 
-		if (pagers.containsKey(PagerType.CHARACTER_PAGER)) {
+		if (pagers.containsKey(PagerType.CHARACTER_PAGER) && options.printCharacterPage()) {
 			CharacterPager pager = (CharacterPager) pagers.get(PagerType.CHARACTER_PAGER);
 			pager.closeStream();
 			PDPageTree pages = pagers.get(PagerType.CHARACTER_PAGER).getPages();
@@ -131,14 +130,6 @@ public class PagerController {
 			}
 		}
 
-		if (pagers.containsKey(PagerType.CUSTOM_PAGER)) {
-			CustomScriptPager pager = (CustomScriptPager) pagers.get(PagerType.CUSTOM_PAGER);
-			pager.closeStream();
-			PDPageTree pages = pagers.get(PagerType.CUSTOM_PAGER).getPages();
-			for (PDPage p : pages) {
-				doc.addPage(p);
-			}
-		}
 		doc.save(fileName);
 		doc.close();
 		closePagers();
