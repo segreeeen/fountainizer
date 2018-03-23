@@ -1,5 +1,6 @@
 package at.hsol.fountainizer.pdfbox.pager;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class StandardPager extends AbstractPager<ParserContent> {
 	@Override
 	public void printContent(ParserContent t) throws IOException {
 		for (Line line : t) {
+
 			LinkedList<Paragraph> paragraphs = line.getParagraphForPDF();
 			if (paragraphs != null) {
 				for (Paragraph p : paragraphs) {
@@ -79,6 +81,12 @@ public class StandardPager extends AbstractPager<ParserContent> {
 		List<RichString> lines = p.getLines();
 
 		for (RichString rs : lines) {
+			setColor(null);
+			if (p.getLinetype() == LineType.CHARACTER && super.controller.options.customCharacterScript()) {
+				if (p.getRichText().getRawText().equals(controller.options.getCustomCharacter().toLowerCase())) {
+					setColor(Color.RED);
+				}
+			}
 
 			if (p.getLinetype() == LineType.PAGEBREAK) {
 				super.nextPage();
