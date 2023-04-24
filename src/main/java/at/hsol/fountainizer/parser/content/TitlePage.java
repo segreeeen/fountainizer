@@ -3,10 +3,10 @@ package at.hsol.fountainizer.parser.content;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import at.hsol.fountainizer.parser.interfaces.MarginType;
 import at.hsol.fountainizer.parser.types.LineType;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
 
 /**
  * This is the TitlePage, it is used as a substitute for all the title Lines and

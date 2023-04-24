@@ -1,15 +1,15 @@
 package at.hsol.fountainizer;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
-
 import at.hsol.fountainizer.io.FilePrinter;
 import at.hsol.fountainizer.io.FileReader;
 import at.hsol.fountainizer.parser.Parser;
 import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.meta.CharacterDesc;
 import at.hsol.fountainizer.parser.meta.Statistics;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Use this class to read, parse and print.

@@ -3,11 +3,11 @@ package at.hsol.fountainizer.pdfbox.pager;
 import java.io.IOException;
 import java.util.List;
 
+import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
+import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 import at.hsol.fountainizer.parser.content.TitlePage;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
-import at.hsol.fountainizer.pdfbox.paragraph.RichFormat;
-import at.hsol.fountainizer.pdfbox.paragraph.RichString;
 
 public class TitlePager extends AbstractPager<TitlePage> {
 	private static final int TITLE_SIZE = 18;

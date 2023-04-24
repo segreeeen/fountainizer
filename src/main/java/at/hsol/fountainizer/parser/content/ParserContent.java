@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import at.hsol.fountainizer.parser.interfaces.Content;
 import at.hsol.fountainizer.parser.meta.Scene;
 import at.hsol.fountainizer.parser.types.LineType;
+import at.hsol.fountainizer.parser.interfaces.Content;
 
 /**
  * @author Felix Batusic

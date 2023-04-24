@@ -2,10 +2,10 @@ package at.hsol.fountainizer.parser.content;
 
 import java.util.LinkedList;
 
-import at.hsol.fountainizer.parser.interfaces.Line;
-import at.hsol.fountainizer.parser.interfaces.MarginType;
 import at.hsol.fountainizer.parser.types.TitlePageType;
 import at.hsol.fountainizer.pdfbox.paragraph.Paragraph;
+import at.hsol.fountainizer.parser.interfaces.Line;
+import at.hsol.fountainizer.parser.interfaces.MarginType;
 
 /**
  * @author Felix Batusic

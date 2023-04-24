@@ -34,7 +34,7 @@ public class Settings {
 		propz.setProperty("printTitlePage", Boolean.toString(o.printTitlePage()));
 		propz.setProperty("printCharacterPage", Boolean.toString(o.printCharacterPage()));
 		propz.setProperty("customCharacterScript", Boolean.toString(o.customCharacterScript()));
-		propz.setProperty("sortCharacters", Integer.toString(o.sortCharacters()));
+		propz.setProperty("sortCharacters", o.sortCharacters().toString());
 		propz.setProperty("customCharacter", o.getCustomCharacter());
 	}
 
@@ -44,7 +44,7 @@ public class Settings {
 		boolean printTitlePage = Boolean.getBoolean(propz.getProperty("printTakeNumbers"));
 		boolean printCharacterPage = Boolean.getBoolean(propz.getProperty("printTakeNumbers"));
 		boolean customCharacterScript = Boolean.getBoolean(propz.getProperty("printTakeNumbers"));
-		int sortCharacters = Integer.parseInt(propz.getProperty("sortCharacters"));
+		Options.SortMode sortCharacters = Options.SortMode.valueOf(propz.getProperty("sortCharacters"));
 		String customCharacter = propz.getProperty("customCharacter");
 		return new Options(printTakeNumbers, printPageNumbers, printTitlePage, printCharacterPage,
 				customCharacterScript, sortCharacters, customCharacter);

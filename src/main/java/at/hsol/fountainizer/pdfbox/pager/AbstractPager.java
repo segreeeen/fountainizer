@@ -3,13 +3,12 @@ package at.hsol.fountainizer.pdfbox.pager;
 import java.awt.Color;
 import java.io.IOException;
 
+import at.hsol.fountainizer.pdfbox.interfaces.Pager;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.font.PDFont;
-
-import at.hsol.fountainizer.pdfbox.interfaces.Pager;
 
 public abstract class AbstractPager<T> implements Pager {
 	enum Alignment {

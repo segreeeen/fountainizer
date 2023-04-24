@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import at.hsol.fountainizer.Options;
+import at.hsol.fountainizer.pdfbox.pager.PagerController;
+import at.hsol.fountainizer.pdfbox.pager.TitlePager;
 import at.hsol.fountainizer.parser.content.ParserContent;
 import at.hsol.fountainizer.parser.meta.Statistics;
 import at.hsol.fountainizer.pdfbox.pager.CharacterPager;
-//import at.hsol.fountainizer.pdfbox.pager.CustomScriptPager;
-import at.hsol.fountainizer.pdfbox.pager.PagerController;
+//import main.java.fountainizer.pdfbox.pager.CustomScriptPager;
 import at.hsol.fountainizer.pdfbox.pager.StandardPager;
-import at.hsol.fountainizer.pdfbox.pager.TitlePager;
 
 /**
  * @author Felix Batusic

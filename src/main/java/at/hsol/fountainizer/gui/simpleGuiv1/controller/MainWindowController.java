@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
@@ -97,11 +98,11 @@ public class MainWindowController {
 
 	private void loadIconInto(Stage stage) throws IOException {
 		// loads on windows machines
-		stage.getIcons().add(new javafx.scene.image.Image(Fountainizer.class.getResourceAsStream("img/icon.png")));
+		stage.getIcons().add(new javafx.scene.image.Image(Objects.requireNonNull(Fountainizer.class.getResourceAsStream("img/icon.png"))));
 
 		// loads icon on mac osx
 		if (System.getProperty("os.name").contains("Mac")) {
-			java.awt.Image image = ImageIO.read(Fountainizer.class.getResourceAsStream("img/icon.png"));
+			java.awt.Image image = ImageIO.read(Objects.requireNonNull(Fountainizer.class.getResourceAsStream("img/icon.png")));
 
 			try {
 				@SuppressWarnings("rawtypes")

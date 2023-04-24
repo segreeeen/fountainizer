@@ -4,14 +4,17 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.HashMap;
 
+import at.hsol.fountainizer.FountainizerHelper;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 import at.hsol.fountainizer.Options;
 import at.hsol.fountainizer.pdfbox.fonts.Fonts;
+import org.apache.pdfbox.pdmodel.font.encoding.WinAnsiEncoding;
 
 /**
  * This class controls all the printing for the various Pagetypes. Serves as an
@@ -73,10 +76,10 @@ public class PagerController {
 
 		// initialize standard values.
 		// note that it should be possible to set a custom font at a later time.
-		this.font = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrime.ttf"));
-		this.boldFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeBold.ttf"));
-		this.italicFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeItalic.ttf"));
-		this.boldItalicFont = PDType0Font.load(doc, Fonts.class.getResourceAsStream("CourierPrimeBoldItalic.ttf"));
+		this.font = PDTrueTypeFont.load(doc, FountainizerHelper.class.getResourceAsStream("pdfbox/fonts/CourierPrime.ttf"), WinAnsiEncoding.INSTANCE);
+		this.boldFont = PDTrueTypeFont.load(doc, FountainizerHelper.class.getResourceAsStream("pdfbox/fonts/CourierPrimeBold.ttf"), WinAnsiEncoding.INSTANCE);
+		this.italicFont = PDTrueTypeFont.load(doc, FountainizerHelper.class.getResourceAsStream("pdfbox/fonts/CourierPrimeItalic.ttf"), WinAnsiEncoding.INSTANCE);
+		this.boldItalicFont = PDTrueTypeFont.load(doc, FountainizerHelper.class.getResourceAsStream("pdfbox/fonts/CourierPrimeBoldItalic.ttf"), WinAnsiEncoding.INSTANCE);
 
 		this.pagers = new HashMap<>();
 	}
