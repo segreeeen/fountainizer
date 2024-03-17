@@ -46,10 +46,11 @@ public class FountainEmphasizedText implements StylizedText {
 
 		FountainEmphasizedTextPart currentFormat = this.formattings.getFirst();
 		String currentString = currentFormat.getText();
-		String newString;
+		String newString = "";
 		while (i < endIndex) {
+			newString = "";
 			if (i + currentString.length() < beginIndex) {
-				continue;
+				// do nothing
 			} else if (i + currentString.length() < endIndex) {
 				if (i < beginIndex) {
 					newString = (currentString.substring(beginIndex - i));
@@ -65,9 +66,7 @@ public class FountainEmphasizedText implements StylizedText {
 				}
 				formattings.add(currentFormat.cloneWithNewText(newString));
 			}
-
-			i += currentString.length();
-
+			i = i + currentString.length();
 			if (currentFormat != this.formattings.getLast()) {
 				currentFormat = this.formattings.get(this.formattings.indexOf(currentFormat) + 1);
 				currentString = currentFormat.getText();
