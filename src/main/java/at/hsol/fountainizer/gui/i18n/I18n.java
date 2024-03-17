@@ -1,9 +1,6 @@
 package at.hsol.fountainizer.gui.i18n;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class I18n {
 	
@@ -12,10 +9,7 @@ public class I18n {
 	}
 	
 	static public List<Locale> getAvaiableLocales(){
-		List<Locale> list = new LinkedList<Locale>();
-		for (Locale locale : Locale.getAvailableLocales()) {
-			list.add(locale);
-		}
+		List<Locale> list = new LinkedList<Locale>(Arrays.stream(Locale.getAvailableLocales()).toList());
 		return list;
 	}
 	

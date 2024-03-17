@@ -46,7 +46,7 @@ public class Dump {
 	}
 
 	/**
-	 * @see thatShit(String s) Logs an exception to a file!
+	 * Logs an exception to a file!
 	 * @param e
 	 */
 	public static void thatShit(Exception e) {
