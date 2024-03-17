@@ -6,8 +6,13 @@ src/at/hacksolutions/f2p/sample.pdf
 icon.ico
 /testfile2.pdf
 /fountain_dump.txt
-
+/.gradle/
+/.idea/
 /bin
 /target
 /fountain2pdf.iml
 .idea/
+/fountainizer-gui-simplegui/build/
+/fountainizer-parser/build/
+/fountainizer-printer-pdf/build/
+/fountainizer-api/build/

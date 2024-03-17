@@ -1,17 +1,14 @@
 plugins {
-    id 'java'
-    id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.14'
+    id "org.javamodularity.moduleplugin" version "1.8.15"
 }
+
+apply plugin: 'java'
 
 group = 'at.hsol'
-version = '0.5.5ad8763'
+version = '1.0-SNAPSHOT'
 
-// If you're using application plugin
-application {
-    mainModule = 'fountainizer.parser'
-    mainClassName = 'at.hsol.fountainizer.gui.simpleGuiv1.Fountainizer'
-}
+sourceCompatibility = '21'
+targetCompatibility = '21'
 
 java {
     toolchain {
@@ -19,23 +16,49 @@ java {
     }
 }
 
-// For Groovy DSL in build.gradle
-sourceCompatibility = '21'
-targetCompatibility = '21'
-
 repositories {
     mavenCentral()
 }
 
-
-
 dependencies {
-    implementation 'org.apache.pdfbox:pdfbox:2.0.27'
-    implementation 'org.openjfx:javafx-controls:19.0.2.1'
-    implementation 'org.openjfx:javafx-fxml:19.0.2.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
-javafx {
-    version = "19.0.2.1"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+test {
+    useJUnitPlatform()
+}
+
+// Apply common plugins and configurations to all subprojects
+subprojects {
+    apply plugin: 'org.javamodularity.moduleplugin'
+
+    // Define repository where dependencies will be downloaded from
+    repositories {
+        mavenCentral()
+    }
+
+// Common dependencies can be defined here
+// For example, you can define the JUnit test dependency for all projects
+    dependencies {
+        testImplementation 'junit:junit:4.13.2'
+    }
+}
+
+// Configure specific subprojects
+project(':fountainizer-gui-simplegui') {
+    apply plugin: 'application'
+}
+
+// Applying the Java Library plugin specifically to library projects
+project(':fountainizer-api') {
+    apply plugin: 'java-library'
+}
+
+project(':fountainizer-parser') {
+    apply plugin: 'java-library'
+}
+
+project(':fountainizer-printer-pdf') {
+    apply plugin: 'java-library'
 }
