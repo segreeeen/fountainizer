@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
+}
+
+group = 'at.hsol'
+version = '0.5.5ad8763'
+
+// If you're using application plugin
+application {
+    mainModule = 'fountainizer.parser'
+    mainClassName = 'at.hsol.fountainizer.gui.simpleGuiv1.Fountainizer'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+// For Groovy DSL in build.gradle
+sourceCompatibility = '21'
+targetCompatibility = '21'
+
+repositories {
+    mavenCentral()
+}
+
+
+
+dependencies {
+    implementation 'org.apache.pdfbox:pdfbox:2.0.27'
+    implementation 'org.openjfx:javafx-controls:19.0.2.1'
+    implementation 'org.openjfx:javafx-fxml:19.0.2.1'
+}
+
+javafx {
+    version = "19.0.2.1"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
