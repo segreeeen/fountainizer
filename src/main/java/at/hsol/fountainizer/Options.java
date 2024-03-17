@@ -2,7 +2,7 @@ package at.hsol.fountainizer;
 
 public class Options {
 	public enum SortMode {
-		BY_NAME, BY_TAKE_COUNT;
+		BY_NAME, BY_TAKE_COUNT
 	}
 
 	private boolean printTakeNumbers;

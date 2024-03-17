@@ -10,15 +10,15 @@ import at.hsol.fountainizer.gui.simpleGuiv1.log.Dump;
 public class Settings {
 	private static Settings instance = null;
 
-	private final String filePath = System.getProperty("user.dir");
 	private static final String FILENAME = "settings.fu";
 
-	private Properties propz;
+	private final Properties propz;
 
 	private Settings() {
 		propz = new Properties();
 
 		try {
+			String filePath = System.getProperty("user.dir");
 			propz.loadFromXML(new FileInputStream(filePath + File.separator + FILENAME));
 
 		} catch (Exception e) {
