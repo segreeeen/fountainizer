@@ -10,7 +10,7 @@
 * Full support and notifications for Link drag&drop into source field
 * Fixed a new-page bug that occured when printing without title-page
 * Corrected formatting and added page numbers
-* Counting every line and displaying line numbers for Character lines.
+* Counting every parserLine and displaying parserLine numbers for Character parserLines.
 * New icon by Boris Baumann! Thank you!
 * Abbreviations (Define an abbreviation like: "THE MAN = M", and use M instead of THE MAN as you write along.)
 
