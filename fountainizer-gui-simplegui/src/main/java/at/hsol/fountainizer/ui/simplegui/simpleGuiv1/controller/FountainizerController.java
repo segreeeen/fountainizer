@@ -1,9 +1,13 @@
-package at.hsol.fountainizer.parser;
+package at.hsol.fountainizer.ui.simplegui.simpleGuiv1.controller;
 
 import at.hsol.fountainizer.core.api.parser.*;
+import at.hsol.fountainizer.parser.FountainParserFactory;
+import at.hsol.fountainizer.printer.pdf.PdfPrinterFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -13,19 +17,27 @@ import java.util.List;
  * @author Thomas Sulzbacher
  * @version 0.2
  */
-public class ParserController implements Parser {
-	private final FountainParser parser;
-	private final String fileIn;
-	private final String fileOut;
-	private final Printer printer;
+public class ParserController {
 
-	public ParserController(String fileIn, String fileOut, Printer printer, Options options) {
+	
+
+	public void processFile(String fileIn, String fileOut, Options options) throws IOException {
 		if (fileIn != null && fileOut != null) {
-			this.fileIn = fileIn;
-			this.fileOut = fileOut;
-			this.printer = printer;
-			this.printer.setOptions(options);
-			this.parser = new FountainParser(options);
+			String fileAsString = Files.readString(Path.of(fileIn));
+
+			// as Parser we choose FountainParser
+			Parser parser = FountainParserFactory.create(options);
+
+			// as Printer we choose PDF Printer
+			Printer printer = PdfPrinterFactory.create();
+
+			// now we parse
+			Content content = parser.parse(fileAsString);
+
+			//now we print
+			printer.print(content, fileOut);
+
+
 		} else {
 			throw new IllegalArgumentException("input/output file can't be null");
 		}
@@ -36,7 +48,6 @@ public class ParserController implements Parser {
 	 * @return measured time in seconds
 	 * @throws IOException
 	 */
-	@Override
 	public double read() throws IOException {
 		long time = System.currentTimeMillis();
 		parser.readFile(fileIn);
@@ -48,7 +59,6 @@ public class ParserController implements Parser {
 	 * @return measured time in seconds
 	 * @throws IOException
 	 */
-	@Override
 	public double parse() throws IllegalStateException {
 			long time = System.currentTimeMillis();
 			parser.parseDocument();
@@ -61,7 +71,6 @@ public class ParserController implements Parser {
 	 * @return measured time in seconds
 	 * @throws IOException
 	 */
-	@Override
 	public double print() throws IOException, URISyntaxException {
 		long time = System.currentTimeMillis();
 		printer.print(parser.getContent(), fileOut);
@@ -72,17 +81,14 @@ public class ParserController implements Parser {
 	 * 
 	 * @return Number of Parsed Lines or -1 if not parsed yet
 	 */
-	@Override
 	public int numOfLines() {
 		return parser.getContent().getLineCount();
 	}
 
-	@Override
 	public Statistics getStats() {
 		return parser.getContent().getStats();
 	}
 
-	@Override
 	public List<? extends CharacterInfo>  getCharacterStats() {
 		return parser.getContent().getStats().getCharacterStats();
 	}

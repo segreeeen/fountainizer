@@ -2,8 +2,8 @@ package at.hsol.fountainizer.parser;
 
 import at.hsol.fountainizer.core.api.parser.Content;
 import at.hsol.fountainizer.core.api.parser.Line;
-import at.hsol.fountainizer.core.api.parser.LineType;
-import at.hsol.fountainizer.core.api.parser.Options;
+import at.hsol.fountainizer.core.api.types.LineType;
+import at.hsol.fountainizer.core.api.Options;
 
 import java.util.*;
 

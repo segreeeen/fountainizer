@@ -1,8 +1,8 @@
 package at.hsol.fountainizer.parser;
 
-import at.hsol.fountainizer.core.api.parser.HeadingType;
+import at.hsol.fountainizer.core.api.types.HeadingType;
 import at.hsol.fountainizer.core.api.parser.Line;
-import at.hsol.fountainizer.core.api.parser.LineType;
+import at.hsol.fountainizer.core.api.types.LineType;
 
 /**
  * @author Felix Batusic

@@ -1,6 +1,6 @@
 package at.hsol.fountainizer.parser;
 
-import at.hsol.fountainizer.core.api.parser.HeadingType;
+import at.hsol.fountainizer.core.api.types.HeadingType;
 
 import java.util.HashMap;
 import java.util.LinkedList;

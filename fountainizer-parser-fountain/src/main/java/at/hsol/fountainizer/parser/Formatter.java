@@ -1,6 +1,6 @@
 package at.hsol.fountainizer.parser;
 
-import at.hsol.fountainizer.core.api.parser.LineType;
+import at.hsol.fountainizer.core.api.types.LineType;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

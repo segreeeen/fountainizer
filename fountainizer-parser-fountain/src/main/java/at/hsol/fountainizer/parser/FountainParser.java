@@ -4,23 +4,18 @@
 
 package at.hsol.fountainizer.parser;
 
-import at.hsol.fountainizer.core.api.parser.Content;
-import at.hsol.fountainizer.core.api.parser.Line;
-import at.hsol.fountainizer.core.api.parser.LineType;
-import at.hsol.fountainizer.core.api.parser.Options;
+import at.hsol.fountainizer.core.api.Options;
+import at.hsol.fountainizer.core.api.parser.*;
+import at.hsol.fountainizer.core.api.types.LineType;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Felix Batusic
  */
-class FountainParser {
+class FountainParser implements ParserAPI {
 	private final Options options;
 	private final TypeHelper typeHelper;
 	private ParserContent content;
@@ -35,16 +30,15 @@ class FountainParser {
 		this(new ParserContent(options), options);
 	}
 
-	void readFile(String fileName) throws IOException {
+	void internalizeFountainString(List<String> fountainTextLines) {
 		ParserContent parserContent = new ParserContent(options);
-		InputStreamReader reader = new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8);
-		BufferedReader readLine = new BufferedReader(reader);
+
 		ParserLine prev = null;
 		ParserLine cur = null;
 		ParserLine next;
-		while (readLine.ready()) {
-			String text = readLine.readLine();
-			text = cleanText(text);
+
+		for (String line: fountainTextLines) {
+			String text = cleanText(line);
 			if (prev == null) { // first line
 				prev = parserContent.addLine(text);
 			} else if (cur == null) { // second line
@@ -59,7 +53,7 @@ class FountainParser {
 				cur = next;
 			}
 		}
-		readLine.close();
+
 		this.content = parserContent;
 	}
 
@@ -196,6 +190,15 @@ class FountainParser {
 
 
 	public Content getContent() {
+		return this.content;
+	}
+
+	@Override
+	public Content parse(String fountainText) {
+		Objects.requireNonNull(fountainText);
+		List<String> lines = List.of(fountainText.split("\n"));
+		internalizeFountainString(lines);
+		parseDocument();
 		return this.content;
 	}
 }

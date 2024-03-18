@@ -3,8 +3,8 @@ package at.hsol.fountainizer.parser;
 import java.util.*;
 
 import at.hsol.fountainizer.core.api.parser.CharacterInfo;
-import at.hsol.fountainizer.core.api.parser.LineType;
-import at.hsol.fountainizer.core.api.parser.Options;
+import at.hsol.fountainizer.core.api.types.LineType;
+import at.hsol.fountainizer.core.api.Options;
 import at.hsol.fountainizer.core.api.parser.Statistics;
 
 /**
