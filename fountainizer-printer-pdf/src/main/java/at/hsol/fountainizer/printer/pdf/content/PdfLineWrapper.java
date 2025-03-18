@@ -1,100 +1,82 @@
 package at.hsol.fountainizer.printer.pdf.content;
 
-import at.hsol.fountainizer.core.api.parser.HeadingType;
 import at.hsol.fountainizer.core.api.parser.Line;
-import at.hsol.fountainizer.core.api.parser.LineType;
 import at.hsol.fountainizer.core.api.parser.StylizedText;
-
+import at.hsol.fountainizer.core.api.types.HeadingType;
+import at.hsol.fountainizer.core.api.types.LineType;
 import java.util.LinkedList;
 
-public class PDFLineWrapper implements Line {
-
+public class PdfLineWrapper implements Line {
     private final Line line;
 
-    public PDFLineWrapper(Line line) {
+    public PdfLineWrapper(Line line) {
         this.line = line;
     }
 
     public LinkedList<Paragraph> getParagraphForPDF() {
-        LineTypeMarginDecorator margins = LineTypeMarginDecorator.getFromLineType(line.getLineType());
-
+        LineTypeMarginDecorator margins = LineTypeMarginDecorator.getFromLineType(this.line.getLineType());
         if (getText() != null) {
             Paragraph p = new Paragraph(this.line.getRichString());
-            p.setLinetype(line.getLineType());
+            p.setLinetype(this.line.getLineType());
             p.setUppercase(margins.isUppercase());
             p.setUnderlined(margins.isUnderlined());
             p.setCentered(margins.isCentered());
             p.setMargin(margins.getMarginTop(), margins.getMarginLeft(), margins.getMarginRight(), margins.getMarginBottom());
-            LinkedList<Paragraph> paragraphs = new LinkedList<>();
+            LinkedList<Paragraph> linkedList = new LinkedList<>();
             p.setLineTypeNumber(getLineTypeNumber());
             p.setDualDialogue(isDualDialogue());
-            paragraphs.add(p);
-            return paragraphs;
-        } else {
-            LinkedList<Paragraph> paragraphs = new LinkedList<>();
-            paragraphs.add(Paragraph.getEmptyParagraph());
-            return paragraphs;
+            linkedList.add(p);
+            return linkedList;
         }
+        LinkedList<Paragraph> paragraphs = new LinkedList<>();
+        paragraphs.add(Paragraph.getEmptyParagraph());
+        return paragraphs;
     }
 
-    @Override
     public LineType getLineType() {
         return this.line.getLineType();
     }
 
-    @Override
     public HeadingType getHeadingType() {
         return this.line.getHeadingType();
     }
 
-    @Override
     public int getLineNr() {
-        return line.getLineNr();
+        return this.line.getLineNr();
     }
 
-    @Override
     public boolean emptyText() {
-        return line.emptyText();
+        return this.line.emptyText();
     }
 
-
-    @Override
     public boolean isDualDialogue() {
-        return line.isDualDialogue();
+        return this.line.isDualDialogue();
     }
 
-    @Override
     public int getLineTypeNumber() {
-        return line.getLineTypeNumber();
+        return this.line.getLineTypeNumber();
     }
 
-
-    @Override
     public String getText() {
-        return line.getText();
+        return this.line.getText();
     }
 
-    @Override
     public Line getPrev() {
-        return line.getPrev();
+        return this.line.getPrev();
     }
 
-    @Override
     public Line getNext() {
-        return line.getNext();
+        return this.line.getNext();
     }
 
-    @Override
     public boolean hasNext() {
-        return line.hasNext();
+        return this.line.hasNext();
     }
 
-    @Override
     public boolean hasPrev() {
-        return line.hasPrev();
+        return this.line.hasPrev();
     }
 
-    @Override
     public StylizedText getRichString() {
         return this.line.getRichString();
     }

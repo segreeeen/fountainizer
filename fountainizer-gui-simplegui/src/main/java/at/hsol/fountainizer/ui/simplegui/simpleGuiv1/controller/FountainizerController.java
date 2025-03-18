@@ -1,95 +1,56 @@
 package at.hsol.fountainizer.ui.simplegui.simpleGuiv1.controller;
 
-import at.hsol.fountainizer.core.api.parser.*;
+import at.hsol.fountainizer.core.api.Options;
+import at.hsol.fountainizer.core.api.parser.Content;
+import at.hsol.fountainizer.core.api.parser.ParserAPI;
+import at.hsol.fountainizer.core.api.printer.PrinterAPI;
 import at.hsol.fountainizer.parser.FountainParserFactory;
 import at.hsol.fountainizer.printer.pdf.PdfPrinterFactory;
-
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
-/**
- * Use this class to read, parse and print.
- * 
- * @author Felix Batusic
- * @author Thomas Sulzbacher
- * @version 0.2
- */
-public class ParserController {
+public class FountainizerController {
+	private double readTime = 0.0D;
 
-	
+	private double printTime = 0.0D;
+
+	private int numOfLines = 0;
 
 	public void processFile(String fileIn, String fileOut, Options options) throws IOException {
 		if (fileIn != null && fileOut != null) {
-			String fileAsString = Files.readString(Path.of(fileIn));
-
-			// as Parser we choose FountainParser
-			Parser parser = FountainParserFactory.create(options);
-
-			// as Printer we choose PDF Printer
-			Printer printer = PdfPrinterFactory.create();
-
-			// now we parse
+			String fileAsString = Files.readString(Path.of(fileIn, new String[0]));
+			ParserAPI parser = FountainParserFactory.create(options);
+			PrinterAPI printerAPI = PdfPrinterFactory.create(options);
+			long time = System.currentTimeMillis();
 			Content content = parser.parse(fileAsString);
-
-			//now we print
-			printer.print(content, fileOut);
-
-
+			this.readTime = (System.currentTimeMillis() - time) / 1000.0D;
+			time = System.currentTimeMillis();
+			printerAPI.print(content, fileOut);
+			this.printTime = (System.currentTimeMillis() - time) / 1000.0D;
+			this.numOfLines = content.getLineCount();
 		} else {
 			throw new IllegalArgumentException("input/output file can't be null");
 		}
 	}
 
-	/**
-	 * 
-	 * @return measured time in seconds
-	 * @throws IOException
-	 */
-	public double read() throws IOException {
-		long time = System.currentTimeMillis();
-		parser.readFile(fileIn);
-		return (System.currentTimeMillis() - time) / 1000d;
-	}
-
-	/**
-	 * 
-	 * @return measured time in seconds
-	 * @throws IOException
-	 */
-	public double parse() throws IllegalStateException {
-			long time = System.currentTimeMillis();
-			parser.parseDocument();
-			time = (long) ((System.currentTimeMillis() - time) / 1000d);
-			return time;
-	}
-
-	/**
-	 * 
-	 * @return measured time in seconds
-	 * @throws IOException
-	 */
-	public double print() throws IOException, URISyntaxException {
-		long time = System.currentTimeMillis();
-		printer.print(parser.getContent(), fileOut);
-		return (System.currentTimeMillis() - time) / 1000d;
-	}
-
-	/**
-	 * 
-	 * @return Number of Parsed Lines or -1 if not parsed yet
-	 */
 	public int numOfLines() {
-		return parser.getContent().getLineCount();
+		return this.numOfLines;
 	}
 
-	public Statistics getStats() {
-		return parser.getContent().getStats();
+	public double getReadTime() {
+		return this.readTime;
 	}
 
-	public List<? extends CharacterInfo>  getCharacterStats() {
-		return parser.getContent().getStats().getCharacterStats();
+	public void setReadTime(double readTime) {
+		this.readTime = readTime;
+	}
+
+	public double getPrintTime() {
+		return this.printTime;
+	}
+
+	public void setPrintTime(double printTime) {
+		this.printTime = printTime;
 	}
 }

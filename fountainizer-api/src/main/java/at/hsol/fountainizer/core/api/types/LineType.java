@@ -1,4 +1,4 @@
-package at.hsol.fountainizer.core.api.parser;
+package at.hsol.fountainizer.core.api.types;
 
 /**
  * @author Felix Batusic

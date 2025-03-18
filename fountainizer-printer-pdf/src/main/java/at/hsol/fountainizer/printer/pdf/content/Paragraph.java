@@ -1,7 +1,7 @@
 package at.hsol.fountainizer.printer.pdf.content;
 
-import at.hsol.fountainizer.core.api.parser.LineType;
 import at.hsol.fountainizer.core.api.parser.StylizedText;
+import at.hsol.fountainizer.core.api.types.LineType;
 import at.hsol.fountainizer.printer.pdf.pager.AbstractPager;
 import at.hsol.fountainizer.printer.pdf.pager.PagerUtils;
 

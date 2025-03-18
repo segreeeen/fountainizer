@@ -1,6 +1,6 @@
 package at.hsol.fountainizer.printer.pdf.content;
 
-import at.hsol.fountainizer.core.api.parser.LineType;
+import at.hsol.fountainizer.core.api.types.LineType;
 
 /**
  * @author Felix Batusic

@@ -55,7 +55,7 @@ project(':fountainizer-api') {
     apply plugin: 'java-library'
 }
 
-project(':fountainizer-parser') {
+project(':fountainizer-parser-fountain') {
     apply plugin: 'java-library'
 }
 

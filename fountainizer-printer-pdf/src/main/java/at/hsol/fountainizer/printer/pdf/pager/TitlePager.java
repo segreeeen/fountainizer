@@ -1,10 +1,10 @@
 package at.hsol.fountainizer.printer.pdf.pager;
 
 import at.hsol.fountainizer.core.api.parser.Line;
-import at.hsol.fountainizer.core.api.parser.LineType;
 import at.hsol.fountainizer.core.api.parser.StylizedText;
 import at.hsol.fountainizer.core.api.parser.StylizedTextPart;
-import at.hsol.fountainizer.printer.pdf.content.PDFTitlePageWrapper;
+import at.hsol.fountainizer.core.api.types.LineType;
+import at.hsol.fountainizer.printer.pdf.content.PdfTitlePageWrapper;
 import at.hsol.fountainizer.printer.pdf.content.Paragraph;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class TitlePager extends AbstractPager<Map<LineType, List<Line>>> {
 	@Override
 	public void printContent(Map<LineType, List<Line>> page) throws IOException {
 
-		PDFTitlePageWrapper pdfPage = new PDFTitlePageWrapper(page);
+		PdfTitlePageWrapper pdfPage = new PdfTitlePageWrapper(page);
 
 		if (pdfPage.contains(LineType.TITLEPAGE_CENTERED)) {
 			List<Paragraph> paragraphs = pdfPage.getParagraphForPDF(LineType.TITLEPAGE_CENTERED);

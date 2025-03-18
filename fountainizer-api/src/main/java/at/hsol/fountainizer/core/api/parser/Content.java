@@ -1,30 +1,28 @@
 package at.hsol.fountainizer.core.api.parser;
 
+import at.hsol.fountainizer.core.api.types.LineType;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-/**
- * @author Felix Batusic
- */
 public interface Content extends Iterable<Line> {
-    Line get(int index);
+    Line get(int paramInt);
 
-    Line getNext(Line l);
+    Optional<Line> getNext(Line paramLine);
 
-    Line getPrev(Line l);
+    Optional<Line> getPrev(Line paramLine);
 
-    boolean hasNext(Line l);
+    boolean hasNext(Line paramLine);
 
     int getLineCount();
 
-    boolean prevLineIsEmpty(Line l);
+    boolean prevLineIsEmpty(Line paramLine);
 
-    boolean nextLineIsEmpty(Line l);
+    boolean nextLineIsEmpty(Line paramLine);
 
-    void remove(Line l);
+    void remove(Line paramLine);
 
-    Map<LineType, List<Line>> getTitlepageLines();
-
+    Map<at.hsol.fountainizer.core.api.types.LineType, List<Line>> getTitlepageLines();
 
     Statistics getStats();
 }

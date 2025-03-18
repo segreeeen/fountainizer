@@ -1,26 +1,32 @@
 package at.hsol.fountainizer.parser;
 
-import java.util.*;
-
-import at.hsol.fountainizer.core.api.parser.CharacterInfo;
-import at.hsol.fountainizer.core.api.types.LineType;
 import at.hsol.fountainizer.core.api.Options;
+import at.hsol.fountainizer.core.api.parser.CharacterInfo;
 import at.hsol.fountainizer.core.api.parser.Statistics;
+import at.hsol.fountainizer.core.api.types.LineType;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-/**
- * This class is used to count... Everything.
- *
- * @author Felix Batusic
- */
 class ParserContentMetaData implements Statistics {
     private int dialogue = 0;
+
     private int parenthetical = 0;
+
     private int transition = 0;
+
     private int action = 0;
+
     private int lyrics = 0;
+
     private int centered = 0;
+
     private int emtpy = 0;
+
     private final SceneMetaData sceneMetaData;
+
     private Options options;
 
     private static final String CHARACTER_ASSIGNMENT = "=";
@@ -34,54 +40,44 @@ class ParserContentMetaData implements Statistics {
         this.options = options;
     }
 
-    @Override
     public List<? extends CharacterInfo> getCharacterStats() {
-        return getCharacters();
+        return (List)getCharacters();
     }
 
-    @Override
     public int getCharacterLines() {
         return getTotalTakes();
     }
 
-    @Override
     public int getHeading() {
-        return sceneMetaData.getTotalScenes();
+        return this.sceneMetaData.getTotalScenes();
     }
 
-    @Override
     public int getDialogue() {
-        return dialogue;
+        return this.dialogue;
     }
 
-    @Override
     public int getParenthetical() {
-        return parenthetical;
+        return this.parenthetical;
     }
 
-    @Override
     public int getTransition() {
-        return transition;
+        return this.transition;
     }
 
-    @Override
     public int getAction() {
-        return action;
+        return this.action;
     }
 
-    @Override
     public int getLyrics() {
-        return lyrics;
+        return this.lyrics;
     }
 
-    @Override
     public int getCentered() {
-        return centered;
+        return this.centered;
     }
 
-    @Override
     public int getEmtpy() {
-        return emtpy;
+        return this.emtpy;
     }
 
     public void countLine(ParserLine l) {
@@ -108,11 +104,11 @@ class ParserContentMetaData implements Statistics {
     }
 
     private void incCharacter(ParserLine l) {
-        incCharCount(l, sceneMetaData.getCurrentScene());
+        incCharCount(l, this.sceneMetaData.getCurrentScene());
     }
 
     private void incHeading(ParserLine l) {
-        sceneMetaData.inc(l);
+        this.sceneMetaData.inc(l);
     }
 
     private void incDialogue() {
@@ -147,95 +143,69 @@ class ParserContentMetaData implements Statistics {
         this.options = options;
     }
 
-
     void incCharCount(ParserLine l, SceneDescription currentSceneDescription) {
         add(l);
         String s = format(l.getText());
-        CharacterDescription n = charRegister.get(s);
+        CharacterDescription n = this.charRegister.get(s);
         if (n != null) {
-            if (n.getFirstTake() == null) {
-                n.setFirstTake(l.getLineNr());
-            }
-            n.setLastTake(l.getLineNr());
+            if (n.getFirstTake() == null)
+                n.setFirstTake(Integer.valueOf(l.getLineNr()));
+            n.setLastTake(Integer.valueOf(l.getLineNr()));
             n.addScene(currentSceneDescription);
             n.incTakes();
-            totalTakes++;
+            this.totalTakes++;
         }
     }
 
-    /**
-     * Returns a Map of the Characters and the number of their takes.
-     */
-    @Override
     public List<CharacterDescription> getCharacters() {
-        if (charRegister.isEmpty()) {
+        if (this.charRegister.isEmpty())
             return null;
-        }
-
         LinkedList<CharacterDescription> sortedChars = new LinkedList<>();
-        for (Map.Entry<String, CharacterDescription> e : charRegister.entrySet()) {
+        for (Map.Entry<String, CharacterDescription> e : this.charRegister.entrySet())
             sortedChars.add(e.getValue());
-        }
-        if (options.sortCharacters() == Options.SortMode.BY_NAME) {
+        if (this.options.sortCharacters() == Options.SortMode.BY_NAME) {
             sortedChars.sort(Comparator.comparing(CharacterDescription::getName));
             return sortedChars;
-        } else if (options.sortCharacters() == Options.SortMode.BY_TAKE_COUNT) {
+        }
+        if (this.options.sortCharacters() == Options.SortMode.BY_TAKE_COUNT) {
             sortedChars.sort(Comparator.comparing(CharacterDescription::getTakes));
             return sortedChars;
-        } else {
-            throw new IllegalArgumentException("\nsortCharacters has to be set.\n "
-                    + "\n...Seriously, how did you get here?" + "\n\nStop screwing around, god damnit. ");
         }
+        throw new IllegalArgumentException("\nsortCharacters has to be set.\n \n...Seriously, how did you get here?\n\nStop screwing around, god damnit. ");
     }
 
-    /**
-     * Returns the corresponding Charactername
-     *
-     * @param charName charname or abbreviated charname
-     * @return full character name
-     */
-    @Override
     public String lookupCharacter(String charName) {
         charName = format(charName);
-        if (charName.contains(CHARACTER_ASSIGNMENT)) {
-            String[] abbs = charName.split(CHARACTER_ASSIGNMENT);
+        if (charName.contains("=")) {
+            String[] abbs = charName.split("=");
             charName = abbs[0].trim();
         }
-        for (Map.Entry<String, CharacterDescription> e : charRegister.entrySet()) {
-            if (e.getKey().equals(charName)) {
+        for (Map.Entry<String, CharacterDescription> e : this.charRegister.entrySet()) {
+            if (((String)e.getKey()).equals(charName))
                 return e.getKey();
-            } else if (!e.getValue().isEmpty()) {
-                if (e.getValue().getAbbreviations().contains(charName)) {
-                    return e.getKey();
-                }
-            }
+            if (!((CharacterDescription)e.getValue()).isEmpty() && (
+                    (CharacterDescription)e.getValue()).getAbbreviations().contains(charName))
+                return e.getKey();
         }
         return null;
     }
 
-    /**
-     * Add a character to the character register
-     *
-     * @return true if added, else false
-     */
     void add(ParserLine l) {
         String charName = format(l.getText());
-        if (charName.split(CHARACTER_ASSIGNMENT).length <= 1) {
+        if ((charName.split("=")).length <= 1) {
             String charInRegister = lookupCharacter(charName);
-            if (charInRegister == null) {
-                charRegister.put(charName, new CharacterDescription(charName));
-            }
+            if (charInRegister == null)
+                this.charRegister.put(charName, new CharacterDescription(charName));
         } else {
-            String[] abbs = charName.split(CHARACTER_ASSIGNMENT);
+            String[] abbs = charName.split("=");
             String fullName = abbs[0].trim();
             String charInRegister = lookupCharacter(fullName);
             if (charInRegister == null) {
-                charRegister.put(fullName, new CharacterDescription(fullName));
-                for (int i = 1; i < abbs.length; i++) {
-                    charRegister.get(fullName).getAbbreviations().add(abbs[i].trim());
-                }
+                this.charRegister.put(fullName, new CharacterDescription(fullName));
+                for (int i = 1; i < abbs.length; i++)
+                    ((CharacterDescription)this.charRegister.get(fullName)).getAbbreviations().add(abbs[i].trim());
             } else {
-                CharacterDescription n = charRegister.get(charInRegister);
+                CharacterDescription n = this.charRegister.get(charInRegister);
                 for (String s : abbs) {
                     s = s.trim();
                     s = s.toLowerCase();
@@ -248,15 +218,14 @@ class ParserContentMetaData implements Statistics {
     private String format(String charName) {
         charName = charName.replaceAll("\\^", "");
         int parPos = charName.indexOf("(");
-        if (parPos > -1) {
+        if (parPos > -1)
             charName = charName.substring(0, parPos);
-        }
         charName = charName.trim();
         charName = charName.toLowerCase();
         return charName;
     }
 
     int getTotalTakes() {
-        return totalTakes;
+        return this.totalTakes;
     }
 }

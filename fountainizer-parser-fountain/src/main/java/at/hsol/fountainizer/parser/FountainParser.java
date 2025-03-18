@@ -31,29 +31,11 @@ class FountainParser implements ParserAPI {
 	}
 
 	void internalizeFountainString(List<String> fountainTextLines) {
-		ParserContent parserContent = new ParserContent(options);
-
-		ParserLine prev = null;
-		ParserLine cur = null;
-		ParserLine next;
-
-		for (String line: fountainTextLines) {
+		ParserContent parserContent = new ParserContent(this.options);
+		for (String line : fountainTextLines) {
 			String text = cleanText(line);
-			if (prev == null) { // first line
-				prev = parserContent.addLine(text);
-			} else if (cur == null) { // second line
-				cur = parserContent.addLine(text);
-				cur.setPrev(prev);
-				prev.setNext(cur);
-			} else { // third line
-				next = parserContent.addLine(text);
-				next.setPrev(cur);
-				cur.setNext(next);
-				prev = cur;
-				cur = next;
-			}
+			parserContent.addLine(text);
 		}
-
 		this.content = parserContent;
 	}
 

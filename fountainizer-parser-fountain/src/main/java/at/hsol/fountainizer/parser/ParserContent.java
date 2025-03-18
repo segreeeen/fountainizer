@@ -1,182 +1,122 @@
 package at.hsol.fountainizer.parser;
 
+import at.hsol.fountainizer.core.api.Options;
 import at.hsol.fountainizer.core.api.parser.Content;
 import at.hsol.fountainizer.core.api.parser.Line;
+import at.hsol.fountainizer.core.api.parser.Statistics;
 import at.hsol.fountainizer.core.api.types.LineType;
-import at.hsol.fountainizer.core.api.Options;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
-import java.util.*;
-
-/**
- * @author Felix Batusic
- */
 class ParserContent implements Content {
+	private final ArrayList<Line> parserContent = new ArrayList<>(1000);
+
 	private final ParserContentMetaData stats;
-	private final ArrayList<Line> parserContent;
+
 	private final Map<LineType, List<Line>> titlePageLines;
 
+	Function<Integer, ParserLine> getPreviousLineFunction;
 
-	ParserContent(Options options) {
-		this.titlePageLines = new HashMap<>();
-		parserContent = new ArrayList<>(100);
-		this.stats = new ParserContentMetaData(options);
-	}
+	Function<Integer, ParserLine> getNextLineFunction;
 
-
-	@Override
 	public Line get(int index) {
-		if (index >= 0 && index < parserContent.size()) {
-			return parserContent.get(index);
-		} else {
-			return null;
-		}
+		if (index >= 0 && index < this.parserContent.size())
+			return this.parserContent.get(index);
+		return null;
 	}
 
-	@Override
-	public Line getNext(Line l) {
-		int index = l.getLineNr() + 1;
-		if (index > 0 && index < parserContent.size()) {
-			return parserContent.get(index);
-		} else {
-			return null;
-		}
+	public Optional<Line> getNext(Line l) {
+		return Optional.ofNullable(l.getNext());
 	}
+
 	public Iterator<Line> iterator() {
-		return parserContent.iterator();
+		return this.parserContent.iterator();
 	}
 
-	@Override
-	public Line getPrev(Line l) {
-		int index = l.getLineNr() - 1;
-		if (index > 0 && index < parserContent.size()) {
-			return parserContent.get(index);
-		} else {
-			return null;
-		}
+	public Optional<Line> getPrev(Line l) {
+		return Optional.ofNullable(l.getPrev());
 	}
 
-	@Override
 	public int getLineCount() {
-		return parserContent.size();
+		return this.parserContent.size();
 	}
 
-	@Override
 	public boolean prevLineIsEmpty(Line l) {
-		if (getPrev(l) != null) {
-			return getPrev(l).emptyText();
-		} else {
-			return true;
-		}
+		if (l.hasPrev())
+			return l.getPrev().emptyText();
+		return true;
 	}
 
-	@Override
 	public boolean nextLineIsEmpty(Line l) {
-		if (getNext(l) != null) {
-			return getNext(l).emptyText();
-		} else {
-			return true;
-		}
+		if (l.hasNext())
+			return l.getNext().emptyText();
+		return true;
 	}
 
-	@Override
 	public boolean hasNext(Line l) {
-		return getNext(l) != null;
+		return l.hasNext();
 	}
 
-	@Override
 	public void remove(Line l) {
 		remove(l.getLineNr());
 	}
 
-	@Override
 	public Map<LineType, List<Line>> getTitlepageLines() {
-		return titlePageLines;
+		return this.titlePageLines;
 	}
 
 	ParserLine addLine(String text) {
-		if (!parserContent.isEmpty()) {
-			Line lastParserLine = parserContent.getLast();
-			int lineNr = lastParserLine.getLineNr() + 1;
-			ParserLine l;
-			if (text == null || text.isEmpty()) {
-				l = new ParserLine(null, lineNr);
-			} else {
-				l = new ParserLine(text, lineNr);
-			}
-			parserContent.add(l);
-			return l;
-		} else {
-			ParserLine l;
-			if (text == null || text.isEmpty()) {
-				l = new ParserLine(null, 0);
-			} else {
-				l = new ParserLine(text, 0);
-			}
-			parserContent.add(l);
-			return l;
-		}
-
-	}
-
-	void addLine(String text, int index) {
-		ParserLine l;
-		if (text == null || text.isEmpty()) {
-			l = new ParserLine(null, index);
-		} else {
-			l = new ParserLine(text, index);
-		}
-		if (index >= 0 && index < parserContent.size() - 1) {
-			Line nextParserLine = parserContent.get(index);
-			incFollowing((ParserLine)nextParserLine);
-			parserContent.add(index, l);
-		} else if (index == parserContent.size() - 1) {
-			addLine(text);
-		}
+		String setText = text.isEmpty() ? null : text;
+		ParserLine l = new ParserLine(setText);
+		this.parserContent.add(l);
+		l.setLineNr(this.parserContent.size());
+		l.setGetPrevLineFunction(this.getPreviousLineFunction);
+		l.setGetNextLineFunction(this.getNextLineFunction);
+		return l;
 	}
 
 	void remove(int index) {
-		if (index >= 0 && index < parserContent.size()) {
-			ParserLine l = (ParserLine) parserContent.get(index);
+		if (index >= 0 && index < this.parserContent.size()) {
+			ParserLine l = (ParserLine)this.parserContent.get(index);
 			decFollowing(l);
-			parserContent.remove(index);
+			this.parserContent.remove(index);
 		}
 	}
 
 	private void decFollowing(ParserLine l) {
 		int start = l.getLineNr();
 		int end = getLineCount();
-		for (int i = start; i < end; i++) {
-			((ParserLine)parserContent.get(i)).decLineNr();
-		}
+		for (int i = start; i < end; i++)
+			((ParserLine)this.parserContent.get(i)).decLineNr();
 	}
 
 	private void incFollowing(ParserLine nextParserLine) {
 		int start = nextParserLine.getLineNr();
 		int end = getLineCount();
-		for (int i = start; i < end; i++) {
-			((ParserLine)parserContent.get(i)).incLineNr();
-		}
+		for (int i = start; i < end; i++)
+			((ParserLine)this.parserContent.get(i)).incLineNr();
 	}
 
 	public void addTitlePageLine(LineType t, Line l) {
-		List<Line> lines = titlePageLines.computeIfAbsent(t, k -> new ArrayList<>());
+		List<Line> lines = this.titlePageLines.computeIfAbsent(t, k -> new ArrayList());
 		lines.add(l);
 	}
 
-	public List<Line> getTitlePageLines(LineType t) {
-		return titlePageLines.get(t);
-	}
-
-	public boolean containsTitlePageLine(LineType t) {
-		return titlePageLines.containsKey(t);
-	}
-
-	public boolean titlePageLinesEmpty() {
-		return titlePageLines.isEmpty();
-	}
-
-	@Override
 	public ParserContentMetaData getStats() {
-		return stats;
+		return this.stats;
+	}
+
+	ParserContent(Options options) {
+		this.getPreviousLineFunction = (lineNum ->
+				(lineNum.intValue() - 2 >= 0 && lineNum.intValue() < this.parserContent.size()) ? (ParserLine)this.parserContent.get(lineNum.intValue() - 2) : null);
+		this.getNextLineFunction = (lineNum ->
+				(lineNum.intValue() >= 0 && lineNum.intValue() < this.parserContent.size()) ? (ParserLine)this.parserContent.get(lineNum.intValue()) : null);
+		this.titlePageLines = new HashMap<>();
+		this.stats = new ParserContentMetaData(options);
 	}
 }

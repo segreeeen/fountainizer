@@ -1,7 +1,8 @@
 package at.hsol.fountainizer.printer.pdf.pager;
 
 import at.hsol.fountainizer.core.api.parser.*;
-import at.hsol.fountainizer.printer.pdf.content.PDFLineWrapper;
+import at.hsol.fountainizer.core.api.types.LineType;
+import at.hsol.fountainizer.printer.pdf.content.PdfLineWrapper;
 import at.hsol.fountainizer.printer.pdf.content.Paragraph;
 
 import java.awt.*;
@@ -35,7 +36,7 @@ public class StandardPager extends AbstractPager<Content> {
 	@Override
 	public void printContent(Content parserContent) throws IOException {
 		for (Line line : parserContent) {
-			PDFLineWrapper pdfLine = new PDFLineWrapper(line);
+			PdfLineWrapper pdfLine = new PdfLineWrapper(line);
 			LinkedList<Paragraph> paragraphs = pdfLine.getParagraphForPDF();
 			if (paragraphs != null) {
 				for (Paragraph p : paragraphs) {

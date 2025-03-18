@@ -1,100 +1,92 @@
 package at.hsol.fountainizer.parser;
 
-import at.hsol.fountainizer.core.api.types.HeadingType;
 import at.hsol.fountainizer.core.api.parser.Line;
+import at.hsol.fountainizer.core.api.parser.StylizedText;
+import at.hsol.fountainizer.core.api.types.HeadingType;
 import at.hsol.fountainizer.core.api.types.LineType;
+import java.util.function.Function;
 
-/**
- * @author Felix Batusic
- */
 public class ParserLine implements Line {
 	private String text;
+
 	private int lineNr;
+
 	private LineType type;
+
 	private boolean dualDialogue;
+
 	private int lineTypeNumber;
+
 	private ParserLine prev = null;
+
 	private ParserLine next = null;
+
 	private HeadingType headingType;
 
-	ParserLine(String text, int lineNr) {
+	private Function<Integer, ParserLine> getPreviousLineFunction;
+
+	private Function<Integer, ParserLine> getNextLineFunction;
+
+	ParserLine(String text) {
 		this.text = text;
-		this.lineNr = lineNr;
+		this.lineNr = this.lineNr;
 		this.dualDialogue = false;
 	}
 
+	public void setLineNr(int lineNr) {
+		this.lineNr = lineNr;
+	}
 
-	@Override
 	public boolean isDualDialogue() {
-		return dualDialogue;
+		return this.dualDialogue;
 	}
 
-	@Override
 	public int getLineTypeNumber() {
-		return lineTypeNumber;
+		return this.lineTypeNumber;
 	}
 
-
-	@Override
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
-	@Override
 	public LineType getLineType() {
 		return this.type;
 	}
 
-	@Override
 	public HeadingType getHeadingType() {
 		return this.headingType;
 	}
 
-	@Override
 	public int getLineNr() {
-		return lineNr;
+		return this.lineNr;
 	}
 
-	@Override
 	public boolean emptyText() {
-		return this.text == null || this.text.isEmpty();
+		return (this.text == null || this.text.isEmpty());
 	}
 
-	@Override
 	public ParserLine getPrev() {
-		return prev;
+		return this.getPreviousLineFunction.apply(Integer.valueOf(this.lineNr));
 	}
 
-	@Override
 	public ParserLine getNext() {
-		return next;
+		return this.getNextLineFunction.apply(Integer.valueOf(this.lineNr));
 	}
 
-	@Override
 	public boolean hasNext() {
-		return next != null;
+		return (getNext() != null);
 	}
 
-	@Override
 	public boolean hasPrev() {
-		return prev != null;
+		return (getPrev() != null);
 	}
 
-	@Override
 	public FountainEmphasizedText getRichString() {
 		return new FountainEmphasizedText(getText(), null);
 	}
 
 	void setType(LineType type) {
 		this.type = type;
-	}
-
-	void setNext(ParserLine next) {
-		this.next = next;
-	}
-
-	void setPrev(ParserLine prev) {
-		this.prev = prev;
 	}
 
 	void incLineNr() {
@@ -119,5 +111,13 @@ public class ParserLine implements Line {
 
 	void setLineType(LineType type) {
 		this.type = type;
+	}
+
+	public void setGetPrevLineFunction(Function<Integer, ParserLine> getPreviousLineFunction) {
+		this.getPreviousLineFunction = getPreviousLineFunction;
+	}
+
+	public void setGetNextLineFunction(Function<Integer, ParserLine> getNextLineFunction) {
+		this.getNextLineFunction = getNextLineFunction;
 	}
 }
