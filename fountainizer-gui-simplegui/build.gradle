@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.openjfx:javafx-fxml:19.0.2.1'
     implementation project(':fountainizer-parser-fountain')
     implementation project(':fountainizer-printer-pdf')
+    implementation project(':fountainizer-printer-html')
     implementation project(':fountainizer-api')
 }
 

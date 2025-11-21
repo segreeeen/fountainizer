@@ -1,6 +1,7 @@
 package at.hsol.fountainizer.ui.simplegui.simpleGuiv1.controller;
 
 import at.hsol.fountainizer.core.api.Options;
+import at.hsol.fountainizer.printer.pdf.PdfOptions;
 import at.hsol.fountainizer.ui.simplegui.simpleGuiv1.Fountainizer;
 import at.hsol.fountainizer.ui.simplegui.simpleGuiv1.log.Dump;
 import java.awt.Desktop;
@@ -8,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.Optional;
@@ -158,7 +160,7 @@ public class MainWindowController {
         }
         String source = this.txtResourcePath.getText();
         String dest = this.txtTargetPath.getText();
-        Options options = new Options();
+        PdfOptions options = new PdfOptions();
         options.setPrintTitlePage(true);
         options.setPrintTakeNumbers(true);
         options.setPrintCharacterPage(true);
@@ -185,14 +187,14 @@ public class MainWindowController {
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose txt-File to parse...");
         fc.setInitialDirectory(new File(System.getProperty("user.home")));
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(".txt", new String[] { "*.txt" }));
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(".fountain", new String[] { "*.fountain" }));
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(".txt", new String[] { "*.txt" }));
         File selectedFile = fc.showOpenDialog((Window)this.stage);
         if (selectedFile == null) {
             this.infobox.setText("Please select a valid *.txt or *.fountain-file!");
             return;
         }
-        this.txtResourcePath.setText(selectedFile.getAbsolutePath());
+            this.txtResourcePath.setText(selectedFile.getAbsolutePath());
         String path = createNewPath(selectedFile);
         this.txtTargetPath.setText(path);
         this.show.setDisable(true);
@@ -200,10 +202,10 @@ public class MainWindowController {
     }
 
     private String createNewPath(File f) {
-        String path = f.getParentFile().toString() + f.getParentFile().toString();
+        String path = f.getParentFile().toString();
         String name = f.getName();
         String newName = name.endsWith(".txt") ? f.getName().substring(0, name.length() - 4) : name.substring(0, name.length() - 9);
-        return path + path + ".pdf";
+        return Paths.get(path, newName + ".pdf").toString();
     }
 
     @FXML

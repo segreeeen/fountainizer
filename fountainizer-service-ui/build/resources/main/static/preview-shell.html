@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Script Preview Shell</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem 0;
+            background: #dcdcdc;
+            font-family: "Courier Prime", "Courier New", monospace;
+        }
+
+        .document {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .page {
+            width: 816px;   /* 8.5in @ 96dpi */
+            height: 1056px; /* 11in @ 96dpi */
+            background: #fff;
+            box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);
+            padding: 96px 96px 96px 135px;
+            box-sizing: border-box;
+            color: #000;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .document { gap: 0; }
+            .page { box-shadow: none; margin: 0; page-break-after: always; }
+            .page:last-child { page-break-after: auto; }
+        }
+
+        .page p {
+            margin: 0;
+            white-space: pre-wrap;
+            font-size: 12pt;
+            line-height: 1.3;
+        }
+
+        /* Script formatting */
+        p.heading { text-transform: uppercase; font-weight: bold; margin-left: 80px; margin-bottom: 15px; }
+        p.action {
+            margin-top: 18px;
+            margin-left: 0;
+            margin-right: 40px;
+            margin-bottom: 10px;
+        }
+        p.character { text-transform: uppercase; margin-left: 0; margin-bottom: 0; margin-top: 18px; }
+        p.dialogue { margin-left: 40px; margin-right: 80px; margin-bottom: 0; }
+        p.parenthetical { margin-left: 20px; margin-right: 0; margin-bottom: 0; font-style: italic; }
+        p.transition { margin-right: 40px; text-transform: uppercase; font-weight: bold; text-align: right; }
+        p.lyrics,
+        p.centered { text-align: center; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; }
+        p.empty { margin: 0; }
+
+        /* Title page layout */
+        .titlepage {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 14pt;
+        }
+
+        p.titlepage_title { font-size: 24pt; font-weight: bold; margin-bottom: 40px; }
+        p.titlepage_centered { margin-bottom: 20px; }
+        p.titlepage_left {
+            align-self: flex-start;
+            margin-top: auto;
+            margin-left: 80px;
+            font-size: 11pt;
+        }
+        p.titlepage_right {
+            align-self: flex-end;
+            margin-top: -15px;
+            margin-right: 40px;
+            font-size: 11pt;
+        }
+
+        /* Page number */
+        .page-number {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10pt;
+            color: #444;
+            pointer-events: none;
+        }
+
+        /* Source script is hidden after pagination */
+        #script-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="document" id="document"></div>
+<div id="script-content"></div>
+
+<script>
+    function createPage(extraClass) {
+        const page = document.createElement('div');
+        page.className = 'page' + (extraClass ? ' ' + extraClass : '');
+        return page;
+    }
+
+    function buildBlocks(source) {
+        const blocks = [];
+        const children = Array.from(source.children);
+        let i = 0;
+
+        while (i < children.length) {
+            const el = children[i];
+
+            if (el.classList && el.classList.contains('titlepage')) {
+                blocks.push({ type: 'titlepage', nodes: [el] });
+                i++;
+                continue;
+            }
+
+            if (el.classList && el.classList.contains('character')) {
+                const group = [el];
+                let j = i + 1;
+                while (j < children.length) {
+                    const next = children[j];
+                    if (!next.classList) break;
+                    if (next.classList.contains('dialogue') || next.classList.contains('parenthetical')) {
+                        group.push(next);
+                        j++;
+                    } else {
+                        break;
+                    }
+                }
+                blocks.push({ type: 'block', nodes: group, isDialogue: true });
+                i = j;
+                continue;
+            }
+
+            blocks.push({ type: 'block', nodes: [el] });
+            i++;
+        }
+
+        return blocks;
+    }
+
+    function addPageNumbers() {
+        const pages = Array.from(document.querySelectorAll('.document .page'));
+        let num = 1;
+        pages.forEach(page => {
+            if (page.classList.contains('titlepage')) {
+                const existing = page.querySelector('.page-number');
+                if (existing) existing.remove();
+                return;
+            }
+
+            const existing = page.querySelector('.page-number');
+            if (existing) existing.remove();
+
+            const label = document.createElement('div');
+            label.className = 'page-number';
+            label.textContent = num++;
+            page.appendChild(label);
+        });
+    }
+
+    function paginate() {
+        const docEl = document.getElementById('document');
+        const source = document.getElementById('script-content');
+        const blocks = buildBlocks(source);
+
+        docEl.innerHTML = '';
+
+        let currentPage = null;
+
+        function ensurePage(extraClass) {
+            if (!currentPage) {
+                currentPage = createPage(extraClass);
+                docEl.appendChild(currentPage);
+            }
+        }
+
+        for (const block of blocks) {
+            if (block.type === 'titlepage') {
+                const page = createPage('titlepage');
+                const src = block.nodes[0];
+                Array.from(src.childNodes).forEach(node => {
+                    page.appendChild(node.cloneNode(true));
+                });
+                docEl.appendChild(page);
+                currentPage = null;
+                continue;
+            }
+
+            ensurePage();
+
+            const frag = document.createDocumentFragment();
+            block.nodes.forEach(node => frag.appendChild(node.cloneNode(true)));
+
+            currentPage.appendChild(frag);
+
+            if (currentPage.scrollHeight > currentPage.clientHeight) {
+                for (let k = 0; k < block.nodes.length; k++) {
+                    currentPage.removeChild(currentPage.lastChild);
+                }
+
+                currentPage = createPage();
+                docEl.appendChild(currentPage);
+
+                block.nodes.forEach(node => {
+                    currentPage.appendChild(node.cloneNode(true));
+                });
+            }
+        }
+
+        source.style.display = 'none';
+        addPageNumbers();
+    }
+
+    function paginateFromSource() {
+        const docEl = document.getElementById('document');
+        const source = document.getElementById('script-content');
+        docEl.innerHTML = '';
+        source.style.display = '';
+        paginate();
+    }
+
+    window.addEventListener('resize', paginateFromSource);
+
+    // API für index.html: bekommt ein komplettes <div id="script-content">...</div>
+    window.replaceScriptContent = function (html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const newDiv = doc.getElementById('script-content');
+        if (!newDiv) return;
+
+        const oldDiv = document.getElementById('script-content');
+        oldDiv.replaceWith(newDiv);
+
+        paginateFromSource();
+    };
+</script>
+</body>
+</html>

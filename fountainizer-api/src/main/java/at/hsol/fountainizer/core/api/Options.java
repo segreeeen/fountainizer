@@ -1,6 +1,6 @@
 package at.hsol.fountainizer.core.api;
 
-public class Options {
+public abstract class Options {
 	public enum SortMode {
 		BY_NAME, BY_TAKE_COUNT
 	}

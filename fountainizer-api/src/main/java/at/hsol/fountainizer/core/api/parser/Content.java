@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface Content extends Iterable<Line> {
     Line get(int paramInt);
 
+    Line getFirst();
+
     Optional<Line> getNext(Line paramLine);
 
     Optional<Line> getPrev(Line paramLine);

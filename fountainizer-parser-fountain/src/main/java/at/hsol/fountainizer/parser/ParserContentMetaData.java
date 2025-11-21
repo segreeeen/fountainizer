@@ -174,32 +174,36 @@ class ParserContentMetaData implements Statistics {
         throw new IllegalArgumentException("\nsortCharacters has to be set.\n \n...Seriously, how did you get here?\n\nStop screwing around, god damnit. ");
     }
 
-    public String lookupCharacter(String charName) {
-        charName = format(charName);
-        if (charName.contains("=")) {
-            String[] abbs = charName.split("=");
-            charName = abbs[0].trim();
-        }
-        for (Map.Entry<String, CharacterDescription> e : this.charRegister.entrySet()) {
-            if (((String)e.getKey()).equals(charName))
-                return e.getKey();
-            if (!((CharacterDescription)e.getValue()).isEmpty() && (
-                    (CharacterDescription)e.getValue()).getAbbreviations().contains(charName))
-                return e.getKey();
-        }
-        return null;
+    public String resolveCharacterAbbreviation(String charName) {
+        final String charNameFormatted = format(charName);
+
+        String abbreviation = charNameFormatted.contains("=")
+                ? charNameFormatted.split("=")[0].trim()
+                : null;
+
+        //name is not an abbreviation
+        if (abbreviation == null && this.charRegister.containsKey(charNameFormatted)) return charNameFormatted;
+
+        //name is an abbreviation
+
+        String resolvedName = this.charRegister.values().stream()
+                .filter(desc -> desc.getAbbreviations().contains(abbreviation))
+                .findFirst()
+                .map(CharacterDescription::getName).orElse(null);
+
+        return resolvedName;
     }
 
     void add(ParserLine l) {
         String charName = format(l.getText());
         if ((charName.split("=")).length <= 1) {
-            String charInRegister = lookupCharacter(charName);
+            String charInRegister = resolveCharacterAbbreviation(charName);
             if (charInRegister == null)
                 this.charRegister.put(charName, new CharacterDescription(charName));
         } else {
             String[] abbs = charName.split("=");
             String fullName = abbs[0].trim();
-            String charInRegister = lookupCharacter(fullName);
+            String charInRegister = resolveCharacterAbbreviation(fullName);
             if (charInRegister == null) {
                 this.charRegister.put(fullName, new CharacterDescription(fullName));
                 for (int i = 1; i < abbs.length; i++)

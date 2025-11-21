@@ -8,6 +8,7 @@ module fountainizer.gui.simplegui {
     requires fountainizer.api;
     requires fountainizer.parser;
     requires fountainizer.printer.pdf;
+    requires fountainizer.printer.html;
 
     exports at.hsol.fountainizer.ui.simplegui.simpleGuiv1;
     opens at.hsol.fountainizer.ui.simplegui.simpleGuiv1.controller;

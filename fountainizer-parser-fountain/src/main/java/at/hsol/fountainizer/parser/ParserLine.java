@@ -23,9 +23,9 @@ public class ParserLine implements Line {
 
 	private HeadingType headingType;
 
-	private Function<Integer, ParserLine> getPreviousLineFunction;
+	private Function<ParserLine, ParserLine> getPreviousLineFunction;
 
-	private Function<Integer, ParserLine> getNextLineFunction;
+	private Function<ParserLine, ParserLine> getNextLineFunction;
 
 	ParserLine(String text) {
 		this.text = text;
@@ -66,11 +66,11 @@ public class ParserLine implements Line {
 	}
 
 	public ParserLine getPrev() {
-		return this.getPreviousLineFunction.apply(Integer.valueOf(this.lineNr));
+		return this.getPreviousLineFunction.apply(this);
 	}
 
 	public ParserLine getNext() {
-		return this.getNextLineFunction.apply(Integer.valueOf(this.lineNr));
+		return this.getNextLineFunction.apply(this);
 	}
 
 	public boolean hasNext() {
@@ -113,11 +113,11 @@ public class ParserLine implements Line {
 		this.type = type;
 	}
 
-	public void setGetPrevLineFunction(Function<Integer, ParserLine> getPreviousLineFunction) {
+	public void setGetPrevLineFunction(Function<ParserLine, ParserLine> getPreviousLineFunction) {
 		this.getPreviousLineFunction = getPreviousLineFunction;
 	}
 
-	public void setGetNextLineFunction(Function<Integer, ParserLine> getNextLineFunction) {
+	public void setGetNextLineFunction(Function<ParserLine, ParserLine> getNextLineFunction) {
 		this.getNextLineFunction = getNextLineFunction;
 	}
 }

@@ -7,6 +7,7 @@ import at.hsol.fountainizer.printer.pdf.content.Paragraph;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,18 +36,20 @@ public class StandardPager extends AbstractPager<Content> {
 
 	@Override
 	public void printContent(Content parserContent) throws IOException {
-		for (Line line : parserContent) {
-			PdfLineWrapper pdfLine = new PdfLineWrapper(line);
-			LinkedList<Paragraph> paragraphs = pdfLine.getParagraphForPDF();
-			if (paragraphs != null) {
-				for (Paragraph p : paragraphs) {
-					printParagraph(p);
-				}
-			}
-		}
+        for (int i = 0; i < parserContent.getLineCount(); i++) {
+            Line line = parserContent.get(i);
+            PdfLineWrapper pdfLine = new PdfLineWrapper(line);
+            LinkedList<Paragraph> paragraphs = pdfLine.getParagraphForPDF();
+            if (paragraphs != null) {
+                for (Paragraph p : paragraphs) {
+                    printParagraph(p);
+                }
+            }
+        }
 	}
 
 	public void printParagraph(Paragraph p) throws IOException {
+
 		// go to next line, if this is a newline
 		if (p.getLinetype() == LineType.EMPTY) {
 			super.nextLine();

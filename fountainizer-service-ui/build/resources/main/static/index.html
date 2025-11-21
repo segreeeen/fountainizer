@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Script Editor with STOMP Preview</title>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #050816;
+            color: #e5e7eb;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+        }
+        .wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1600px;
+            padding: 16px;
+            gap: 16px;
+        }
+        .panel {
+            flex: 1;
+            min-width: 0;
+            background: radial-gradient(circle at top left, rgba(79,70,229,0.16), transparent),
+            #020817;
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,253,0.16);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.7);
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+        .hint {
+            font-size: 10px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        textarea {
+            flex: 1;
+            width: 100%;
+            resize: none;
+            border: none;
+            outline: none;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(15,23,42,0.98);
+            color: #e5e7eb;
+            font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            box-shadow: inset 0 0 0 1px rgba(75,85,99,0.7);
+        }
+        .frame-wrap {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(75,85,99,0.4);
+            background: #111827;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #dcdcdc;
+        }
+        /* simple button styling */
+        #export-pdf-btn {
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: none;
+            background: #4b5563;
+            color: #e5e7eb;
+            cursor: pointer;
+        }
+        #export-pdf-btn:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- LEFT: EDITOR -->
+    <section class="panel">
+        <div class="panel-header">
+            <span>Editor</span>
+            <span class="hint">STOMP /app/preview (debounced)</span>
+        </div>
+
+        <textarea id="script-input">
+INT. RADIO STATION BOOTH - NIGHT
+Soft static hums. A single red “ON AIR” light glows in the dark booth...
+        </textarea>
+    </section>
+
+    <!-- RIGHT: PREVIEW -->
+    <section class="panel">
+        <div class="panel-header">
+            <span>Preview</span>
+            <span class="hint">
+                /topic/preview → preview-shell
+                <!-- PDF-Button -->
+                <button id="export-pdf-btn" type="button">Export as PDF</button>
+            </span>
+        </div>
+        <div class="frame-wrap">
+            <iframe id="preview-frame" src="/preview-shell.html"></iframe>
+        </div>
+    </section>
+</div>
+
+<!-- SockJS + STOMP -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+<script>
+    function debounce(fn, delay) {
+        let t;
+        return function (...args) {
+            clearTimeout(t);
+            t = setTimeout(() => fn.apply(this, args), delay);
+        };
+    }
+
+    let stompClient = null;
+
+    function connectStomp() {
+        const socket = new SockJS('/ws'); // must match your Spring endpoint
+        stompClient = Stomp.over(socket);
+        // optional: disable STOMP debug spam
+        stompClient.debug = null;
+
+        stompClient.connect({}, function () {
+            console.log('[STOMP] connected');
+
+            // subscribe to preview topic
+            stompClient.subscribe('/topic/preview', function (message) {
+                const body = message.body;
+
+                // here we expect **full <div id="script-content">...</div>**
+                const iframe = document.getElementById('preview-frame');
+                if (!iframe || !iframe.contentWindow) return;
+
+                if (typeof iframe.contentWindow.replaceScriptContent === 'function') {
+                    iframe.contentWindow.replaceScriptContent(body);
+                }
+            });
+
+            // send initial content
+            const initial = document.getElementById('script-input').value;
+            stompClient.send('/app/preview', {}, initial);
+        });
+    }
+
+    connectStomp();
+
+    // send updates on typing (debounced)
+    const textarea = document.getElementById('script-input');
+    textarea.addEventListener('input', debounce(function () {
+        if (stompClient && stompClient.connected) {
+            stompClient.send('/app/preview', {}, textarea.value);
+        }
+    }, 120));
+
+    // -------- Export as PDF via POST /pdf --------
+    const exportBtn = document.getElementById('export-pdf-btn');
+
+    exportBtn.addEventListener('click', async function () {
+        const fountainText = document.getElementById('script-input').value;
+
+        try {
+            exportBtn.disabled = true;
+
+            const response = await fetch('/pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=UTF-8',
+                    'Accept': 'application/pdf'
+                },
+                body: fountainText
+            });
+
+            if (!response.ok) {
+                throw new Error('Server responded with ' + response.status);
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'script.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error('PDF export failed', e);
+            alert('PDF-Export fehlgeschlagen. Details in der Konsole.');
+        } finally {
+            exportBtn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

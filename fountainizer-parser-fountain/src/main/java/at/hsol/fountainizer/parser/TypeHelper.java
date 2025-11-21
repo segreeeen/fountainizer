@@ -66,7 +66,7 @@ class TypeHelper {
 
 	private boolean isCharacter(ParserLine l) {
 		String text = l.getText();
-		if (content.getStats().lookupCharacter(text) != null) {
+		if (content.getStats().resolveCharacterAbbreviation(text) != null) {
 			return true;
 		}
 		if (text.matches(ParserConstants.L_CHARACTER)) {
@@ -90,10 +90,8 @@ class TypeHelper {
 		Line prevLine = l.getPrev();
 		if (prevLine != null) {
 			LineType prevType = prevLine.getLineType();
-			if (l.getText() == null) {
-				return prevType == LineType.DIALOGUE;
-			} else
-				return prevType == LineType.CHARACTER || prevType == LineType.PARENTHETICAL;
+			if (prevType != null)
+				return prevType == LineType.CHARACTER || prevType == LineType.PARENTHETICAL || prevType == LineType.DIALOGUE;
 		}
 		return false;
 	}

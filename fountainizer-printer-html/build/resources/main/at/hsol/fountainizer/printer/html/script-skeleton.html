@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Script — Auto Pagination with Page Numbers & Dialogue Blocks</title>
+    <style>
+        body {
+          margin: 0;
+          padding: 2rem 0;
+          background: #dcdcdc;
+          font-family: "Courier Prime", "Courier New", monospace;
+        }
+
+        .document {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 40px;
+        }
+
+        .page {
+          width: 816px;   /* 8.5in @ 96dpi */
+          height: 1056px; /* 11in @ 96dpi */
+          background: #fff;
+          box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);
+          padding: 96px 96px 96px 135px;
+          box-sizing: border-box;
+          color: #000;
+          overflow: hidden;
+          position: relative;
+        }
+
+        @media print {
+          body { background: #fff; padding: 0; }
+          .document { gap: 0; }
+          .page { box-shadow: none; margin: 0; page-break-after: always; }
+          .page:last-child { page-break-after: auto; }
+        }
+
+        .page p {
+          margin: 0;
+          white-space: pre-wrap;
+          font-size: 12pt;
+          line-height: 1.3;
+        }
+
+        /* Script formatting */
+        p.heading { text-transform: uppercase; font-weight: bold; margin-left: 80px; margin-bottom: 15px; }
+        p.action {
+          margin-top: 18px;
+          margin-left: 0;
+          margin-right: 40px;
+          margin-bottom: 10px;
+        }
+        p.character { text-transform: uppercase; margin-left: 0; margin-bottom: 0; margin-top: 18px; }
+        p.dialogue { margin-left: 40px; margin-right: 80px; margin-bottom: 0; }
+        p.parenthetical { margin-left: 20px; margin-right: 0; margin-bottom: 0; font-style: italic; }
+        p.transition { margin-right: 40px; text-transform: uppercase; font-weight: bold; text-align: right; }
+        p.lyrics,
+        p.centered { text-align: center; margin-left: 10px; margin-top: 10px; margin-bottom: 10px; }
+        p.empty { margin: 0; }
+
+        /* Title page layout */
+        .titlepage {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          font-size: 14pt;
+        }
+
+        p.titlepage_title { font-size: 24pt; font-weight: bold; margin-bottom: 40px; }
+        p.titlepage_centered { margin-bottom: 20px; }
+        p.titlepage_left {
+          align-self: flex-start;
+          margin-top: auto;
+          margin-left: 80px;
+          font-size: 11pt;
+        }
+        p.titlepage_right {
+          align-self: flex-end;
+          margin-top: -15px;
+          margin-right: 40px;
+          font-size: 11pt;
+        }
+
+        /* Page number */
+        .page-number {
+          position: absolute;
+          bottom: 40px;
+          left: 0;
+          right: 0;
+          text-align: center;
+          font-size: 10pt;
+          color: #444;
+          pointer-events: none;
+        }
+
+        /* Source script is hidden after pagination */
+        #script-content {
+          display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="document" id="document"></div>
+
+<!-- RAW SCRIPT INPUT: no .page divs, just content -->
+<div id="script-content">
+    <div class="titlepage">
+        <p class="titlepage_title">THE STATIC SIGNAL</p>
+        <p class="titlepage_centered">An Original Audio Play</p>
+        <p class="titlepage_centered">by John Doe</p>
+
+        <p class="titlepage_left">
+            Written for Audio Drama Festival 2025<br>
+            Runtime: Approx. 25 Minutes
+        </p>
+        <p class="titlepage_right">Draft 3 — November 2025</p>
+    </div>
+
+    <p class="heading">INT. RADIO STATION BOOTH - NIGHT</p>
+    <p class="action">Soft static hums. A single red “ON AIR” light glows in the dark booth.</p>
+
+    <p class="character">NARRATOR (V.O.)</p>
+    <p class="dialogue">This is Station 8-2-4, broadcasting to no one in particular…</p>
+    <p class="parenthetical">(pause, faint hiss)</p>
+    <p class="dialogue">…and maybe that’s the point.</p>
+
+    <p class="action">The sound of a tape reel slowing. Silence swells.</p>
+
+    <p class="character">ENGINEER</p>
+    <p class="dialogue">Hey, did you just hear that voice?</p>
+
+    <p class="character">HOST</p>
+    <p class="dialogue">Relax. It’s probably just an old recording bleeding through.</p>
+
+    <p class="character">ENGINEER</p>
+    <p class="dialogue">Yeah… “probably.”</p>
+    <p class="transition">FADE OUT.</p>
+
+    <p class="heading">INT. EMPTY CORRIDOR - CONTINUOUS</p>
+    <p class="action">Footsteps echo. The same static hum seeps through the walls like fog.</p>
+    <p class="character">HOST</p>
+    <p class="dialogue">If there’s no audience, is it still a show?</p>
+    <p class="character">ENGINEER (O.S.)</p>
+    <p class="dialogue">Keep recording. Someone’s always listening.</p>
+    <p class="action">The static crescendos—</p>
+    <p class="heading">INT. EMPTY CORRIDOR - CONTINUOUS</p>
+    <p class="action">Footsteps echo. The same static hum seeps through the walls like fog.</p>
+    <p class="character">HOST</p>
+    <p class="dialogue">If there’s no audience, is it still a show?</p>
+    <p class="character">ENGINEER (O.S.)</p>
+    <p class="dialogue">Keep recording. Someone’s always listening.</p>
+    <p class="action">The static crescendos—</p>
+    <p class="heading">INT. EMPTY CORRIDOR - CONTINUOUS</p>
+    <p class="action">Footsteps echo. The same static hum seeps through the walls like fog.</p>
+    <p class="character">HOST</p>
+    <p class="dialogue">If there’s no audience, is it still a show?</p>
+    <p class="character">ENGINEER (O.S.)</p>
+    <p class="dialogue">Keep recording. Someone’s always listening.</p>
+    <p class="action">The static crescendos—</p>
+    <p class="heading">INT. EMPTY CORRIDOR - CONTINUOUS</p>
+    <p class="action">Footsteps echo. The same static hum seeps through the walls like fog.</p>
+    <p class="character">HOST</p>
+    <p class="dialogue">If there’s no audience, is it still a show?</p>
+    <p class="character">ENGINEER (O.S.)</p>
+    <p class="dialogue">Keep recording. Someone’s always listening.</p>
+    <p class="action">The static crescendos—</p>
+    <p class="heading">INT. EMPTY CORRIDOR - CONTINUOUS</p>
+    <p class="action">Footsteps echo. The same static hum seeps through the walls like fog.</p>
+    <p class="character">HOST</p>
+    <p class="dialogue">If there’s no audience, is it still a show?</p>
+    <p class="character">ENGINEER (O.S.)</p>
+    <p class="dialogue">Keep recording. Someone’s always listening.</p>
+    <p class="action">The static crescendos—</p>
+    <p class="heading">INT. EMPTY CORRIDOR - CONTINUOUS</p>
+    <p class="action">Footsteps echo. The same static hum seeps through the walls like fog.</p>
+    <p class="character">HOST</p>
+    <p class="dialogue">If there’s no audience, is it still a show?</p>
+    <p class="character">ENGINEER (O.S.)</p>
+    <p class="dialogue">Keep recording. Someone’s always listening.</p>
+    <p class="action">The static crescendos—</p>
+    <p class="heading">INT. EMPTY CORRIDOR - CONTINUOUS</p>
+    <p class="action">Footsteps echo. The same static hum seeps through the walls like fog.</p>
+    <p class="character">HOST</p>
+    <p class="dialogue">If there’s no audience, is it still a show?</p>
+    <p class="character">ENGINEER (O.S.)</p>
+    <p class="dialogue">Keep recording. Someone’s always listening.</p>
+    <p class="action">The static crescendos—</p>
+    <p class="lyrics">[low distorted broadcast music begins]</p>
+    <p class="centered">THE END</p>
+</div>
+
+<script>
+    function createPage(extraClass) {
+      const page = document.createElement('div');
+      page.className = 'page' + (extraClass ? ' ' + extraClass : '');
+      return page;
+    }
+
+    // Build logical blocks:
+    // - Titlepage blocks.
+    // - Dialogue blocks: CHARACTER + following PARENTHETICAL/DIALOGUE.
+    // - Single-element blocks for others (heading, action, transition, etc.)
+    function buildBlocks(source) {
+      const blocks = [];
+      const children = Array.from(source.children);
+      let i = 0;
+
+      while (i < children.length) {
+        const el = children[i];
+
+        // Titlepage container as its own block
+        if (el.classList.contains('titlepage')) {
+          blocks.push({ type: 'titlepage', nodes: [el] });
+          i++;
+          continue;
+        }
+
+        // Dialogue block: character + (parenthetical/dialogue)+
+        if (el.classList.contains('character')) {
+          const group = [el];
+          let j = i + 1;
+          while (j < children.length) {
+            const next = children[j];
+            if (!next.classList) break;
+            if (next.classList.contains('dialogue') || next.classList.contains('parenthetical')) {
+              group.push(next);
+              j++;
+            } else {
+              break;
+            }
+          }
+          blocks.push({ type: 'block', nodes: group, isDialogue: true });
+          i = j;
+          continue;
+        }
+
+        // Fallback: single element block
+        blocks.push({ type: 'block', nodes: [el] });
+        i++;
+      }
+
+      return blocks;
+    }
+
+    function addPageNumbers() {
+      const pages = Array.from(document.querySelectorAll('.document .page'));
+      let num = 1;
+      pages.forEach(page => {
+        // Skip titlepage from numbering
+        if (page.classList.contains('titlepage')) {
+          const existing = page.querySelector('.page-number');
+          if (existing) existing.remove();
+          return;
+        }
+
+        const existing = page.querySelector('.page-number');
+        if (existing) existing.remove();
+
+        const label = document.createElement('div');
+        label.className = 'page-number';
+        label.textContent = num++;
+        page.appendChild(label);
+      });
+    }
+
+    function paginate() {
+      const docEl = document.getElementById('document');
+      const source = document.getElementById('script-content');
+      const blocks = buildBlocks(source);
+
+      docEl.innerHTML = '';
+
+      let currentPage = null;
+
+      function ensurePage(extraClass) {
+        if (!currentPage) {
+          currentPage = createPage(extraClass);
+          docEl.appendChild(currentPage);
+        }
+      }
+
+      for (const block of blocks) {
+        if (block.type === 'titlepage') {
+          // Titlepage: forced standalone page
+          const page = createPage('titlepage');
+
+          // Clone children of the titlepage container
+          const src = block.nodes[0];
+          Array.from(src.childNodes).forEach(node => {
+            page.appendChild(node.cloneNode(true));
+          });
+
+          docEl.appendChild(page);
+          currentPage = null; // reset for next normal page
+          continue;
+        }
+
+        ensurePage();
+
+        // Prepare fragment for this block
+        const frag = document.createDocumentFragment();
+        block.nodes.forEach(node => frag.appendChild(node.cloneNode(true)));
+
+        // Tentatively append
+        currentPage.appendChild(frag);
+
+        // If it overflows, move whole block to a new page
+        if (currentPage.scrollHeight > currentPage.clientHeight) {
+          // Remove just-added nodes
+          for (let k = 0; k < block.nodes.length; k++) {
+            currentPage.removeChild(currentPage.lastChild);
+          }
+
+          // New page
+          currentPage = createPage();
+          docEl.appendChild(currentPage);
+
+          // Re-append full block here
+          block.nodes.forEach(node => {
+            currentPage.appendChild(node.cloneNode(true));
+          });
+        }
+      }
+
+      source.style.display = 'none';
+      addPageNumbers();
+    }
+
+    window.addEventListener('load', paginate);
+    window.addEventListener('resize', () => {
+      const docEl = document.getElementById('document');
+      const source = document.getElementById('script-content');
+      docEl.innerHTML = '';
+      source.style.display = ''; // make sure source is visible for measurement/cloning
+      paginate();
+    });
+</script>
+</body>
+</html>

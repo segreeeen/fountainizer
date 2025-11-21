@@ -85,6 +85,11 @@ final class ParserConstants {
 	 */
 	static final String LT_COMMENTARY_END = "(.*?)\\*/(.*?)";
 
+    /**
+     * Matches #
+     */
+    static final String LT_COMMENTARY_LINE = "(.*?)#(.*?)";
+
 	/**
 	 * Matches " *text" (without quotes)
 	 */

@@ -25,5 +25,5 @@ public interface Statistics {
 
     List<? extends CharacterInfo> getCharacters();
 
-    String lookupCharacter(String text);
+    String resolveCharacterAbbreviation(String text);
 }

@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * @author Felix Batusic
  */
-class FountainParser implements ParserAPI {
+class FountainParser implements Parser {
 	private final Options options;
 	private final TypeHelper typeHelper;
 	private ParserContent content;
@@ -32,10 +32,7 @@ class FountainParser implements ParserAPI {
 
 	void internalizeFountainString(List<String> fountainTextLines) {
 		ParserContent parserContent = new ParserContent(this.options);
-		for (String line : fountainTextLines) {
-			String text = cleanText(line);
-			parserContent.addLine(text);
-		}
+        fountainTextLines.stream().map(FountainParser::cleanText).forEach(parserContent::addLine);
 		this.content = parserContent;
 	}
 
@@ -50,19 +47,17 @@ class FountainParser implements ParserAPI {
 
 	void parseDocument() {
 		parseTitlePage(content);
+
 		for (int i = 0; i < content.getLineCount(); i++) {
 			ParserLine l = (ParserLine) content.get(i);
 			if (l.getText() == null) {
 				l.setLineType(LineType.EMPTY);
 				continue;
 			}
+            if (l.getLineType() == LineType.CHARACTER) {
+                ((ParserLine) l).setText(content.getStats().resolveCharacterAbbreviation(l.getText()));
+            }
 			setAttributes(l, content);
-		}
-
-		for (Line l : content) {
-			if (l.getLineType() == LineType.CHARACTER) {
-				((ParserLine) l).setText(content.getStats().lookupCharacter(l.getText()));
-			}
 		}
 	}
 
@@ -136,24 +131,28 @@ class FountainParser implements ParserAPI {
 
 		List<ParserLine> titleParserLines = new LinkedList<>();
 		ParserLine s = (ParserLine) content.get(0);
-
+        int titleLineCount = 0;
 		while (s.hasNext()) {
 			if (!s.emptyText()) {
-				content.remove(s);
 				titleParserLines.add(s);
 			} else {
 				break;
 			}
 			s = s.getNext();
+            titleLineCount++;
 		}
 
-		titleParserLines.forEach(l -> {
-			LineType t = getTitle(l);
-			l.setType(t);
-			l.setText(Formatter.format(l.getText(), t));
-			content.addTitlePageLine(t, l);
-		});
-	}
+		content.setTitleOffset(titleLineCount);
+
+		boolean indentedPartialValue = false;
+
+        for (ParserLine l : titleParserLines) {
+            LineType t = getTitle(l);
+            l.setType(t);
+            l.setText(Formatter.format(l.getText(), t));
+            content.addTitlePageLine(t, l);
+        }
+    }
 
 	private LineType getTitle(Line l) {
 		if (!l.emptyText()) {

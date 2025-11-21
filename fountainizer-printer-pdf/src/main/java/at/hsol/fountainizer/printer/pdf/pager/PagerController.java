@@ -3,7 +3,9 @@ package at.hsol.fountainizer.printer.pdf.pager;
 import at.hsol.fountainizer.core.api.Options;
 import at.hsol.fountainizer.printer.pdf.PdfPrinter;
 import java.awt.Color;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -80,7 +82,21 @@ public class PagerController {
 		return PAGER_TYPE.cast(p);
 	}
 
-	public void finalizeDocument(String fileName) throws IOException {
+    public byte[] createPDF() throws IOException {
+        finalizeDocument();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        this.doc.save(out);
+        return out.toByteArray();
+    }
+
+    public void createPDF(String fileName) throws IOException {
+        finalizeDocument();
+        this.doc.save(fileName);
+        this.doc.close();
+        closePagers();
+    }
+
+	private void finalizeDocument() throws IOException {
 		if (this.pagers.isEmpty())
 			throw new IllegalStateException("There are no pagers to be written.");
 		if (this.pagers.containsKey(PagerType.TITLE_PAGER) && this.options.printTitlePage()) {
@@ -104,9 +120,7 @@ public class PagerController {
 			for (PDPage p : pages)
 				this.doc.addPage(p);
 		}
-		this.doc.save(fileName);
-		this.doc.close();
-		closePagers();
+
 	}
 
 	private void closePagers() throws IOException {
